@@ -222,14 +222,17 @@ func loggit():
 	)
 	var f_loc: Vector3 = -fighterList1["P0"].global_transform.basis.z
 	var angle := f_loc.angle_to(l_loc)
-	di.table["delta"] = dT
-	di.table["physics_calls"] = physics_calls
-	di.table["angle"] = rad2deg(angle)
-	di.table["last_location"] = dc.last_location
-	di.table["last_velocity"] = dc.last_velocity
-	di.table["last_direction"] = dc.last_direction
-	di.table["accelaration"] = dc.acceleration
-	di.table["speed_loss"] = fighterList1["P0"].realSpeedLoss
+	di.table = {
+		"delta": dT,
+		"physics_calls": physics_calls,
+		"angle": rad2deg(angle),
+		"last_location": dc.last_location,
+		"last_velocity": dc.last_velocity,
+		"last_direction": dc.last_direction,
+		"accelaration":  dc.acceleration,
+		"speed_loss": fighterList1["P0"].realSpeedLoss,
+		"missiles_left": weapon_handler.reserve,
+	}
 
 func _input(event):
 	if (event.is_class("InputEventMouseButton")\
