@@ -16,7 +16,6 @@ onready var dc = $DistanceCompensator
 onready var squadron = $"Squadron-WildWeasel"
 onready var squadron2 = $Squadron2
 onready var camera = $CameraController
-onready var output = $Label
 onready var trackingTarget = $Spinner/Spatial2
 onready var light = $DirectionalLight
 
@@ -59,8 +58,8 @@ func setup_w_profile() -> WeaponConfiguration:
 	var new_profile := AircraftConfiguration.new()
 	new_profile.acceleration = 64.0
 	new_profile.turnRate = 0.05
-	new_profile.maxTurnRate = 0.1
-	new_profile.maxSpeed = 700.0
+	new_profile.maxTurnRate = 0.15
+	new_profile.maxSpeed = 1000.0
 	profile.dvConfig = new_profile
 	return profile
 
@@ -85,6 +84,15 @@ func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
 #	handler.target = f
 	return handler
 
+var pcalls_count := 0
+var physics_calls := 0
+
+func pc_count():
+	while true:
+		yield(get_tree().create_timer(1.0), "timeout")
+		physics_calls = pcalls_count
+		pcalls_count = 0
+
 func _ready():
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
@@ -97,6 +105,7 @@ func _ready():
 	addAllFlag(squadron)
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+	pc_count()
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -128,7 +137,7 @@ func addAllFighters(squad, fl):
 		#---------------------------------------
 		fl[m]._vehicle_config.maxSpeed = 800.0
 		fl[m]._vehicle_config.deccelaration = -64.0
-		fl[m]._vehicle_config.acceleration = 2.0
+		fl[m]._vehicle_config.acceleration = 4.0
 		fl[m]._vehicle_config.turnRate = 0.05
 		fl[m]._vehicle_config.maxTurnRate = 0.1
 #		fl[m]._vehicle_config.turnRate = 0.03
@@ -195,42 +204,32 @@ func _lead_test(delta: float):
 			timer += delta
 
 func _process(delta):
-	output.text = loggit()
+	loggit()
 	dT = delta
 	_fire_test(delta)
 
-func _physics_process(delta):
-	_lead_test(delta)
+func _physics_process(_delta):
+	# _lead_test(delta)
+	pcalls_count += 1
 	pass
 
-func loggit() -> String:
+onready var di := $DebugInfo
+
+func loggit():
 	var l_loc: Vector3
 	l_loc = fighterList1["P0"].global_transform.origin.direction_to(
 		launcher.global_transform.origin
 	)
 	var f_loc: Vector3 = -fighterList1["P0"].global_transform.basis.z
 	var angle := f_loc.angle_to(l_loc)
-	var s = ("delta: {dT}\nangle: {angle}\nlast_location: {loc}\n" +
-			"last_velocity: {vel}\nlast_direction: {dir}\n" +
-			"acceleration: {accel}\ns_loss: {loss}\nstart: {y}\ntimer: " +
-			"{tm}\npredicted: {pr}\n" +
-			"actual: {ac}\ndeviation: {dev}\nmargin: {mar}\n")\
-		.format({"loc": dc.last_location, \
-				 "vel": dc.last_velocity, \
-				 "dir": dc.last_direction, \
-				 "accel": dc.acceleration, \
-				 "loss": fighterList1["P0"].realSpeedLoss, \
-				 "y": verify_leading, \
-				 "tm": timer, \
-				 "pr": predicted_loc, \
-				 "ac": actual_loc, \
-				 "dev": deviation, \
-				 "mar": margin, \
-				 "dT": dT, 
-#				 "angle": "{a}-{b}".format({"a": f_loc, "b": l_loc})
-				 "angle": rad2deg(angle)
-				,})
-	return s
+	di.table["delta"] = dT
+	di.table["physics_calls"] = physics_calls
+	di.table["angle"] = rad2deg(angle)
+	di.table["last_location"] = dc.last_location
+	di.table["last_velocity"] = dc.last_velocity
+	di.table["last_direction"] = dc.last_direction
+	di.table["accelaration"] = dc.acceleration
+	di.table["speed_loss"] = fighterList1["P0"].realSpeedLoss
 
 func _input(event):
 	if (event.is_class("InputEventMouseButton")\

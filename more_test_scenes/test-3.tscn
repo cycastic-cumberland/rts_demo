@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
 [ext_resource path="res://plane_icon/enemy_hud_icon.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://cool_shaders/ScreenSpaceChromaAberration.tscn" type="PackedScene" id=13]
 [ext_resource path="res://cool_shaders/chroma_noise.tres" type="Texture" id=14]
 [ext_resource path="res://cool_shaders/fog_noise_bump.tres" type="Texture" id=15]
+[ext_resource path="res://addons/uic/debug_info/DebugInfo.tscn" type="PackedScene" id=16]
 [ext_resource path="res://cool_shaders/fog_shader_unshaded.gdshader" type="Shader" id=17]
 
 [sub_resource type="CubeMesh" id=1]
@@ -132,9 +133,7 @@ material/0 = SubResource( 6 )
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 3 )
 
-[node name="Label" type="Label" parent="."]
-margin_right = 238.0
-margin_bottom = 155.0
+[node name="DebugInfo" parent="." instance=ExtResource( 16 )]
 
 [node name="Spinner" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -84.1469, 10, -90.7529 )
