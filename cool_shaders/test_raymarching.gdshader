@@ -1,0 +1,57 @@
+shader_type spatial;
+render_mode unshaded, cull_front;
+
+float SDF(vec3 vec){
+	return length(vec) - 1.0;
+}
+
+void march(
+	in vec3 point,
+	in vec3 direction,
+	in int max_steps,
+	in float max_shading_distance,
+	in float min_hit_distance,
+	out int steps,
+	out float depth,
+	out float min_distance,
+	out bool hit
+){
+	min_distance = max_shading_distance;
+	for (steps = 0; depth < max_shading_distance && steps < max_steps; steps++){
+		vec3 current_pos = point + direction * depth;
+		float current_dis = SDF(current_pos);
+		if (current_dis < min_hit_distance){
+			hit = true;
+			break;
+		}
+		min_distance = min(min_distance, current_dis);
+		depth += current_dis
+	}
+}
+
+uniform float debug1: hint_range(0, 50);
+
+varying vec3 fragment_pos;
+varying vec3 camera_pos;
+varying vec3 camera_dir;
+
+const int MAX_STEPS = 127;
+const float MAX_SHADING_DISTANCE = 1000.0;
+const highp float MIN_SHADING_DISTANCE = 0.000001;
+
+void vertex(){
+	mat4 INV_WORLD_MATRIX = inverse(WORLD_MATRIX);
+	fragment_pos = (INV_WORLD_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	camera_pos = (INV_WORLD_MATRIX * CAMERA_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+	camera_dir = normalize(fragment_pos - camera_pos);
+}
+
+void fragment(){
+	int steps;
+	float depth, min_distance;
+	bool hit;
+	march(camera_pos, camera_dir,
+		MAX_STEPS, MAX_SHADING_DISTANCE, MIN_SHADING_DISTANCE,
+		steps, depth, min_distance, hit);
+	ALBEDO = vec3(depth) * debug1;
+}

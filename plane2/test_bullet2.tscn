@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://plane2/jdam.tscn" type="PackedScene" id=1]
+[ext_resource path="res://plane2/test_bullet2.gd" type="Script" id=4]
+[ext_resource path="res://plane2/EngineExhaust.tscn" type="PackedScene" id=5]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.3, 0.3, 0.3 )
+
+[node name="JDAM" type="Spatial"]
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
+script = ExtResource( 4 )
+
+[node name="jdam" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+
+[node name="Trail" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.08685 )
+
+[node name="EngineExhaust" parent="Trail" instance=ExtResource( 5 )]
+
+[node name="WarheadCollider" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.97527 )
+
+[node name="CollisionShape" type="CollisionShape" parent="WarheadCollider"]
+shape = SubResource( 1 )
+
+[connection signal="area_entered" from="WarheadCollider" to="." method="_on_WarheadCollider_area_entered"]

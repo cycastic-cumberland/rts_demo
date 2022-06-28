@@ -1,0 +1,116 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://particles/PNG (Transparent)/fire_02.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="Gradient" id=2]
+resource_local_to_scene = true
+offsets = PoolRealArray( 0, 0.327354, 0.381166, 0.542601, 0.650224, 1 )
+colors = PoolColorArray( 0.976471, 0.713726, 0.305882, 1, 0.596078, 0.258824, 0.12549, 1, 0.588235, 0.286275, 0.176471, 1, 0.227451, 0.196078, 0.152941, 1, 0.0784314, 0.0745098, 0.0745098, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+resource_local_to_scene = true
+gradient = SubResource( 2 )
+width = 100
+
+[sub_resource type="Curve" id=4]
+min_value = -40.0
+max_value = 40.0
+_data = [ Vector2( 0, 3.54546 ), 0.0, 0.0, 0, 0, Vector2( 0.268293, -2.45454 ), 4.4261, 4.4261, 0, 0, Vector2( 1, -0.818184 ), 30.6701, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+width = 100
+curve = SubResource( 4 )
+
+[sub_resource type="Curve" id=6]
+resource_local_to_scene = true
+_data = [ Vector2( 0, 0.660227 ), 0.0, 0.54398, 0, 0, Vector2( 0.0894309, 0.978409 ), 0.0532467, 0.0532467, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+resource_local_to_scene = true
+width = 100
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, -1, 0 )
+initial_velocity = 0.01
+angular_velocity = 10.0
+angular_velocity_random = 1.0
+linear_accel = 1.0
+linear_accel_curve = SubResource( 5 )
+angle = 720.0
+angle_random = 1.0
+scale = 5.0
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="QuadMesh" id=9]
+
+[sub_resource type="SpatialMaterial" id=10]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="Gradient" id=11]
+offsets = PoolRealArray( 0, 0.044843, 0.125561, 0.2287, 0.762332, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.663677, 0.663677, 0.663677, 0.336323, 0.227451, 0.196078, 0.152941, 0, 0.0784314, 0.0745098, 0.0745098, 1, 0.0784314, 0.0745098, 0.0745098, 1, 0.0784314, 0.0745098, 0.0745098, 0 )
+
+[sub_resource type="GradientTexture" id=12]
+gradient = SubResource( 11 )
+width = 100
+
+[sub_resource type="Curve" id=13]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.341463, 0.722727 ), 0.126586, 0.126586, 0, 0, Vector2( 0.52439, 0.973864 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=14]
+width = 100
+curve = SubResource( 13 )
+
+[sub_resource type="ParticlesMaterial" id=15]
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, -1, 0 )
+initial_velocity = 1.5
+angular_velocity = 21.65
+angular_velocity_random = 1.0
+scale = 5.0
+scale_curve = SubResource( 14 )
+color_ramp = SubResource( 12 )
+
+[sub_resource type="QuadMesh" id=16]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Particles" type="Particles" parent="."]
+material_override = SubResource( 1 )
+amount = 20
+lifetime = 2.0
+explosiveness = 1.0
+process_material = SubResource( 8 )
+draw_pass_1 = SubResource( 9 )
+
+[node name="Particles2" type="Particles" parent="."]
+material_override = SubResource( 10 )
+amount = 40
+lifetime = 2.0
+explosiveness = 1.0
+process_material = SubResource( 15 )
+draw_pass_1 = SubResource( 16 )

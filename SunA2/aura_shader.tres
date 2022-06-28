@@ -1,0 +1,146 @@
+[gd_resource type="VisualShader" load_steps=11 format=2]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=10]
+uniform_name = "AuraColor"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=11]
+uniform_name = "FresnelStrength"
+
+[sub_resource type="VisualShaderNodeGlobalExpression" id=15]
+size = Vector2( 250, 150 )
+expression = "//render_mode unshaded;"
+
+[sub_resource type="VisualShaderNodeExpression" id=16]
+size = Vector2( 501, 242 )
+expression = "if (fresnel > threshold){
+	output = 1.0;
+}
+else{
+	output = fresnel;
+}"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=17]
+uniform_name = "clampThreshold"
+
+[sub_resource type="VisualShaderNodeColorConstant" id=18]
+constant = Color( 0, 0, 0, 1 )
+
+[sub_resource type="VisualShaderNodeFresnel" id=5]
+default_input_values = [ 2, false, 3, 5.0 ]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=12]
+default_input_values = [ 0, 0.0, 1, 0.5 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=13]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=14]
+operator = 2
+
+[resource]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform float FresnelStrength;
+uniform float clampThreshold;
+uniform vec4 AuraColor : hint_color;
+
+
+// GlobalExpression:0
+	//render_mode unshaded;
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Color:15
+	vec3 n_out15p0 = vec3(0.000000, 0.000000, 0.000000);
+	float n_out15p1 = 1.000000;
+
+// ScalarUniform:11
+	float n_out11p0 = FresnelStrength;
+
+// Fresnel:3
+	float n_out3p0 = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), n_out11p0);
+
+// ScalarOp:5
+	float n_in5p1 = 0.50000;
+	float n_out5p0 = n_out3p0 - n_in5p1;
+
+// ScalarClamp:8
+	float n_in8p1 = 0.00000;
+	float n_in8p2 = 1.00000;
+	float n_out8p0 = clamp(n_out5p0, n_in8p1, n_in8p2);
+
+// ScalarUniform:14
+	float n_out14p0 = clampThreshold;
+
+// Expression:13
+	float n_out13p0;
+	n_out13p0 = 0.0;
+	{
+		if (n_out8p0 > n_out14p0){
+			n_out13p0 = 1.0;
+		}
+		else{
+			n_out13p0 = n_out8p0;
+		}
+	}
+
+// ColorUniform:10
+	vec3 n_out10p0 = AuraColor.rgb;
+	float n_out10p1 = AuraColor.a;
+
+// VectorOp:9
+	vec3 n_out9p0 = vec3(n_out13p0) * n_out10p0;
+
+// Output:0
+	ALBEDO = n_out15p0;
+	ALPHA = n_out5p0;
+	EMISSION = n_out9p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 2229.39, 715.501 )
+nodes/fragment/0/position = Vector2( 1860, 180 )
+nodes/fragment/3/node = SubResource( 5 )
+nodes/fragment/3/position = Vector2( -20, 320 )
+nodes/fragment/5/node = SubResource( 12 )
+nodes/fragment/5/position = Vector2( 340, 220 )
+nodes/fragment/8/node = SubResource( 13 )
+nodes/fragment/8/position = Vector2( 595.952, 291.97 )
+nodes/fragment/9/node = SubResource( 14 )
+nodes/fragment/9/position = Vector2( 1640, 360 )
+nodes/fragment/10/node = SubResource( 10 )
+nodes/fragment/10/position = Vector2( 1300, 480 )
+nodes/fragment/11/node = SubResource( 11 )
+nodes/fragment/11/position = Vector2( -205.048, 375.97 )
+nodes/fragment/12/node = SubResource( 15 )
+nodes/fragment/12/position = Vector2( 570.653, 65.9619 )
+nodes/fragment/12/size = Vector2( 250, 150 )
+nodes/fragment/12/input_ports = ""
+nodes/fragment/12/output_ports = ""
+nodes/fragment/12/expression = "//render_mode unshaded;"
+nodes/fragment/13/node = SubResource( 16 )
+nodes/fragment/13/position = Vector2( 1100, 220 )
+nodes/fragment/13/size = Vector2( 501, 242 )
+nodes/fragment/13/input_ports = "0,0,fresnel;1,0,threshold;"
+nodes/fragment/13/output_ports = "0,0,output;"
+nodes/fragment/13/expression = "if (fresnel > threshold){
+	output = 1.0;
+}
+else{
+	output = fresnel;
+}"
+nodes/fragment/14/node = SubResource( 17 )
+nodes/fragment/14/position = Vector2( 840, 400 )
+nodes/fragment/15/node = SubResource( 18 )
+nodes/fragment/15/position = Vector2( 1672.94, 85.6165 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 5, 0, 5, 0, 0, 1, 5, 0, 8, 0, 10, 0, 9, 1, 11, 0, 3, 3, 14, 0, 13, 1, 8, 0, 13, 0, 13, 0, 9, 0, 9, 0, 0, 5, 15, 0, 0, 0 )

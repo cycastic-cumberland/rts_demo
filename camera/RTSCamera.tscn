@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://camera/RTSCamera.gd" type="Script" id=1]
+
+[node name="CameraAnchor" type="Spatial"]
+script = ExtResource( 1 )
+cameraMaxZoom = 200.0
+
+[node name="CameraYaw" type="Spatial" parent="."]
+
+[node name="CameraMover" type="Spatial" parent="CameraYaw"]
+
+[node name="CameraPitch" type="Spatial" parent="CameraYaw/CameraMover"]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0 )
+
+[node name="Camera" type="Camera" parent="CameraYaw/CameraMover/CameraPitch"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
+fov = 50.0

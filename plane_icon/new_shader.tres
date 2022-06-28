@@ -1,0 +1,33 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D albedo;
+uniform sampler2D color;
+uniform float alphaModifier = 1.0;
+uniform bool blinking = false;
+uniform float blinkingSpeed = 10.0;
+uniform bool billboardMode = false;
+uniform float billboardScale = 1.0;
+
+void fragment(){
+	vec4 tex = texture(albedo, UV);
+	vec4 col = texture(color, UV);
+	ALBEDO = col.rgb;
+	if (!blinking)
+		ALPHA = tex.a * alphaModifier;
+	else{
+		if (tex.a != 0.0)
+			ALPHA = ((cos(TIME * blinkingSpeed) + 1.0) / 2.0) * alphaModifier;
+		else
+			ALPHA = 0.0;
+	}
+	EMISSION = col.rgb;
+}
+
+void vertex(){
+	if (billboardMode)
+		MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3] * (1.0 / billboardScale));
+}"

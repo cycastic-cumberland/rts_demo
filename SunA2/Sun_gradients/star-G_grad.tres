@@ -1,0 +1,4 @@
+[gd_resource type="Gradient" format=2]
+
+[resource]
+colors = PoolColorArray( 0.819608, 0.25098, 0.0352941, 1, 1, 0.8, 0.2, 1 )

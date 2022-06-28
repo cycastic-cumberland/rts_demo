@@ -1,0 +1,55 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://plane_icon/new_shader.tres" type="Shader" id=1]
+[ext_resource path="res://plane_icon/fighter_icon.png" type="Texture" id=2]
+[ext_resource path="res://plane_icon/lockon_icon.png" type="Texture" id=3]
+[ext_resource path="res://plane_icon/enemy_hud_icon.gd" type="Script" id=4]
+
+[sub_resource type="QuadMesh" id=7]
+
+[sub_resource type="Gradient" id=8]
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 8 )
+width = 10
+
+[sub_resource type="ShaderMaterial" id=9]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/alphaModifier = 1.0
+shader_param/blinking = false
+shader_param/blinkingSpeed = 5.0
+shader_param/billboardMode = true
+shader_param/billboardScale = 20.0
+shader_param/albedo = ExtResource( 2 )
+shader_param/color = SubResource( 3 )
+
+[sub_resource type="Gradient" id=10]
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 10 )
+width = 10
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/alphaModifier = 1.0
+shader_param/blinking = false
+shader_param/blinkingSpeed = 5.0
+shader_param/billboardMode = true
+shader_param/billboardScale = 20.0
+shader_param/albedo = ExtResource( 3 )
+shader_param/color = SubResource( 6 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 7 )
+material/0 = SubResource( 9 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+mesh = SubResource( 7 )
+material/0 = SubResource( 11 )

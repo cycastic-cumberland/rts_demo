@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://camera/RTSCamera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://camera/CameraController.gd" type="Script" id=2]
+[ext_resource path="res://camera/TouchInputHandler.tscn" type="PackedScene" id=3]
+
+[node name="CameraController" type="Spatial"]
+script = ExtResource( 2 )
+cameraTranslationSpeed = 300.0
+defaultCameraExtension = 200.0
+
+[node name="RTSCamera" parent="." instance=ExtResource( 1 )]
+cameraMaximumRadius = 200.0
+cameraMinZoom = 20.0
+disableCameraMaxRadius = true
+
+[node name="TouchInputHandler" parent="." instance=ExtResource( 3 )]
+
+[connection signal="on_screen_drag" from="TouchInputHandler" to="." method="_on_TouchInputHandler_on_screen_drag"]

@@ -1,0 +1,49 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://plane_icon/lockon_icon.png" type="Texture" id=1]
+[ext_resource path="res://plane_icon/fighter_icon.png" type="Texture" id=2]
+[ext_resource path="res://plane_icon/new_shader.tres" type="Shader" id=3]
+
+[sub_resource type="PlaneMesh" id=1]
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 10
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 3 )
+shader_param/blinking = true
+shader_param/blinkingSpeed = 5.0
+shader_param/billboardMode = false
+shader_param/billboardScale = 1.0
+shader_param/albedo = ExtResource( 2 )
+shader_param/color = SubResource( 3 )
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+width = 10
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = ExtResource( 3 )
+shader_param/blinking = true
+shader_param/blinkingSpeed = 10.0
+shader_param/billboardMode = false
+shader_param/billboardScale = 1.0
+shader_param/albedo = ExtResource( 1 )
+shader_param/color = SubResource( 6 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 7 )

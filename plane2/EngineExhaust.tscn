@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://plane2/smoke_ex.tres" type="Texture" id=1]
+[ext_resource path="res://particles/PNG (Transparent)/fire_01.png" type="Texture" id=2]
+[ext_resource path="res://plane2/JetPlume.tscn" type="PackedScene" id=3]
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_transparent = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 2 )
+emission_enabled = true
+emission = Color( 0.760784, 0.435294, 0.133333, 1 )
+emission_energy = 4.45
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 0.103516, 0.103516, 0.103516, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 10
+
+[sub_resource type="Curve" id=5]
+resource_local_to_scene = true
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.570652, 0.663636 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+width = 100
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+direction = Vector3( 0, 0, 1 )
+spread = 3.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 40.0
+initial_velocity_random = 1.0
+angular_velocity = 100.0
+angular_velocity_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 1.2
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=8]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+direction = Vector3( 0, 0, 1 )
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 1.0
+angular_velocity = 100.0
+angular_velocity_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 10.0
+scale_random = 1.0
+scale_curve = ExtResource( 1 )
+color_ramp = SubResource( 3 )
+
+[node name="EngineExhaust" type="Spatial"]
+
+[node name="JetPlume" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0 )
+material_override = SubResource( 4 )
+cast_shadow = 0
+amount = 30
+lifetime = 0.1
+process_material = SubResource( 7 )
+
+[node name="SmokeExhaust" parent="." instance=ExtResource( 3 )]
+material_override = SubResource( 8 )
+cast_shadow = 0
+amount = 80
+lifetime = 1.0
+visibility_aabb = AABB( 10, -4, -4, -20, 8, 50 )
+local_coords = false
+process_material = SubResource( 9 )

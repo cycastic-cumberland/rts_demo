@@ -1,0 +1,57 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://cool_shaders/explosion_sphere_shader.gdshader" type="Shader" id=1]
+
+[sub_resource type="SphereMesh" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=2]
+resource_local_to_scene = true
+seed = 1
+octaves = 9
+period = 40.9
+persistence = 0.404
+lacunarity = 3.41
+
+[sub_resource type="NoiseTexture" id=3]
+resource_local_to_scene = true
+seamless = true
+noise = SubResource( 2 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+resource_local_to_scene = true
+period = 82.1
+lacunarity = 0.62
+
+[sub_resource type="NoiseTexture" id=6]
+resource_local_to_scene = true
+seamless = true
+noise = SubResource( 5 )
+
+[sub_resource type="Gradient" id=7]
+resource_local_to_scene = true
+colors = PoolColorArray( 1, 0.894118, 0.517647, 1, 0.819608, 0.25098, 0.0352941, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+resource_local_to_scene = true
+gradient = SubResource( 7 )
+width = 256
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/alpha_progress = 0.0
+shader_param/alpha_modifier = 1.0
+shader_param/emission_strength = 2.0
+shader_param/emission_modifier = 1.222
+shader_param/albedo_lerp = 0.278
+shader_param/albedo_override = Color( 0, 0, 0, 0 )
+shader_param/enable_rim = true
+shader_param/rim_size = 0.019
+shader_param/rim_color = Color( 0.0862745, 0.0823529, 0.0745098, 1 )
+shader_param/alpha_noise = SubResource( 3 )
+shader_param/emission_noise = SubResource( 6 )
+shader_param/explosion_glow = SubResource( 8 )
+
+[node name="ExplosionSphere" type="MeshInstance"]
+mesh = SubResource( 1 )
+material/0 = SubResource( 4 )

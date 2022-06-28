@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/utils/lod.gd" type="Script" id=1]
+[ext_resource path="res://camera/CameraController.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleMesh" id=1]
+
+[sub_resource type="CylinderMesh" id=2]
+
+[sub_resource type="CubeMesh" id=3]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="CameraController" parent="." instance=ExtResource( 2 )]
+
+[node name="LevelOfDetail" type="Spatial" parent="."]
+script = ExtResource( 1 )
+distance_interpolation = PoolRealArray( 0, 100, 150 )
+
+[node name="LOD0" type="MeshInstance" parent="LevelOfDetail"]
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="LOD1" type="MeshInstance" parent="LevelOfDetail"]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="LOD2" type="MeshInstance" parent="LevelOfDetail"]
+mesh = SubResource( 3 )
+material/0 = null
