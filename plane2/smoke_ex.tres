@@ -1,8 +1,7 @@
 [gd_resource type="CurveTexture" load_steps=2 format=2]
 
 [sub_resource type="Curve" id=1]
-resource_local_to_scene = true
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.123853, 0.186364 ), 0.965501, 0.965501, 0, 0, Vector2( 0.720183, 0.325 ), 0.688803, 0.688803, 0, 0, Vector2( 0.958716, 1 ), 0.11948, 0.11948, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0.457955 ), 0.0, 0.0, 0, 0, Vector2( 0.706422, 0.448864 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
 [resource]
 width = 100

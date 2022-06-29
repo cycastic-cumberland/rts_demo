@@ -11,7 +11,7 @@ export(bool) var playMusik = false
 
 const USE_PLANE_EQUATION = true
 
-onready var launcher = $Ricardo
+onready var launcher = $Spinner2/Ricardo
 onready var dc = $DistanceCompensator
 onready var squadron = $"Squadron-WildWeasel"
 onready var squadron2 = $Squadron2
@@ -54,12 +54,12 @@ func setup_w_profile() -> WeaponConfiguration:
 	profile.travelSpeed = 3000.0
 	profile.travelTime = 5.0
 	profile.homingRange = 1000.0
-	profile.proximity = 200.0
-	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.SPATIAL
+	profile.proximity = 100.0
+	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.FORWARD
 	var new_profile := AircraftConfiguration.new()
 	new_profile.acceleration = 64.0
 	new_profile.turnRate = 0.05
-	new_profile.maxTurnRate = 0.1
+	new_profile.maxTurnRate = 0.08
 	new_profile.maxSpeed = 1500.0
 	profile.dvConfig = new_profile
 	return profile

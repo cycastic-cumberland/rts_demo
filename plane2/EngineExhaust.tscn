@@ -20,7 +20,8 @@ emission_operator = 0
 emission_on_uv2 = false
 
 [sub_resource type="Gradient" id=2]
-colors = PoolColorArray( 0.103516, 0.103516, 0.103516, 1, 0, 0, 0, 1 )
+offsets = PoolRealArray( 0, 0.928205, 1 )
+colors = PoolColorArray( 0.103516, 0.103516, 0.103516, 1, 0.00743192, 0.00743192, 0.00743192, 1, 0, 0, 0, 0 )
 
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
@@ -63,13 +64,13 @@ albedo_texture = ExtResource( 2 )
 direction = Vector3( 0, 0, 1 )
 spread = 5.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 10.0
-initial_velocity_random = 1.0
+initial_velocity = 40.0
+initial_velocity_random = 0.3
 angular_velocity = 100.0
 angular_velocity_random = 1.0
 angle = 720.0
 angle_random = 1.0
-scale = 20.0
+scale = 50.0
 scale_random = 1.0
 scale_curve = ExtResource( 1 )
 color_ramp = SubResource( 3 )
@@ -87,7 +88,7 @@ process_material = SubResource( 7 )
 [node name="SmokeExhaust" parent="." instance=ExtResource( 3 )]
 material_override = SubResource( 8 )
 cast_shadow = 0
-amount = 80
+amount = 200
 lifetime = 2.0
 visibility_aabb = AABB( 10, -4, -4, -20, 8, 50 )
 local_coords = false

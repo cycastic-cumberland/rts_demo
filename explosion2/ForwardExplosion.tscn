@@ -56,7 +56,7 @@ script = ExtResource( 1 )
 [node name="Exp" type="Particles" parent="."]
 material_override = ExtResource( 2 )
 emitting = false
-amount = 80
+amount = 60
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource( 7 )

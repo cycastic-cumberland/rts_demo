@@ -55,8 +55,13 @@ func arm_arrived(_guidance: WeaponGuidance):
 	current_scene.add_child(ex)
 	ex.translation = loc
 	ex.look_at(ex.global_transform.origin - \
-		_guidance._projectile.global_transform.basis.z, Vector3.UP)
+		guide._projectile.global_transform.basis.z, Vector3.UP)
 	
+	if guide is HomingGuidance:
+		if guide.proximity_mode != WeaponConfiguration.PROXIMITY_MODE.DELAYED:
+			ex.z_offset(1.0)
+		else:
+			ex.z_offset(0.0)
 	ex.play()
 	sd.destruct(smoke.lifetime, get_tree())
 
