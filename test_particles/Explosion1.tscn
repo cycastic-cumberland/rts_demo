@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://test_particles/flipbook_shader.shader" type="Shader" id=1]
+[ext_resource path="res://cool_shaders/flipbook_shader.shader" type="Shader" id=1]
 [ext_resource path="res://test_particles/Explosion01_5x5.png" type="Texture" id=2]
 
 [sub_resource type="QuadMesh" id=1]

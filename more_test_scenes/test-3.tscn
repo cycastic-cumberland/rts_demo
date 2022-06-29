@@ -210,6 +210,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -542.539, 20, 269.818 )
 
 [node name="BottomFog" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -34.8262, 0 )
+visible = false
 
 [node name="Fog" type="MeshInstance" parent="BottomFog"]
 mesh = SubResource( 17 )

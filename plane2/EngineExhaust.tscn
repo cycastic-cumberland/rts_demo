@@ -5,6 +5,7 @@
 [ext_resource path="res://plane2/JetPlume.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SpatialMaterial" id=4]
+render_priority = 1
 flags_transparent = true
 vertex_color_use_as_albedo = true
 params_billboard_mode = 3
@@ -48,6 +49,7 @@ scale_curve = SubResource( 6 )
 color_ramp = SubResource( 3 )
 
 [sub_resource type="SpatialMaterial" id=8]
+render_priority = 1
 flags_transparent = true
 flags_unshaded = true
 vertex_color_use_as_albedo = true
@@ -67,7 +69,7 @@ angular_velocity = 100.0
 angular_velocity_random = 1.0
 angle = 720.0
 angle_random = 1.0
-scale = 10.0
+scale = 20.0
 scale_random = 1.0
 scale_curve = ExtResource( 1 )
 color_ramp = SubResource( 3 )
@@ -86,7 +88,7 @@ process_material = SubResource( 7 )
 material_override = SubResource( 8 )
 cast_shadow = 0
 amount = 80
-lifetime = 1.0
+lifetime = 2.0
 visibility_aabb = AABB( 10, -4, -4, -20, 8, 50 )
 local_coords = false
 process_material = SubResource( 9 )

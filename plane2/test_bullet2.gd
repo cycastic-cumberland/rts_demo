@@ -2,6 +2,7 @@ extends Spatial
 
 const self_destruct := preload("res://addons/utils/self_destruct.gd")
 const explosion := preload("res://test_particles/RealExplosion1.tscn")
+const explosion2 := preload("res://explosion2/ForwardExplosion.tscn")
 
 onready var exhaust := $Trail/EngineExhaust
 onready var afterburner: Particles = $Trail/EngineExhaust/JetPlume
@@ -49,9 +50,12 @@ func arm_arrived(_guidance: WeaponGuidance):
 	afterburner.emitting = false
 	smoke.emitting = false
 	
-	var ex := explosion.instance()
+#	var ex := explosion.instance()
+	var ex := explosion2.instance()
 	current_scene.add_child(ex)
 	ex.translation = loc
+	ex.look_at(ex.global_transform.origin - \
+		_guidance._projectile.global_transform.basis.z, Vector3.UP)
 	
 	ex.play()
 	sd.destruct(smoke.lifetime, get_tree())
