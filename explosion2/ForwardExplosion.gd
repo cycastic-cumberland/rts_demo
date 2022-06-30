@@ -24,7 +24,7 @@ func play():
 	explosion1.lifetime = ani_lifetime
 	tween_fp.interpolate_property($Exp, FP_PATH, 0, 1, progress_time,\
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	tween_emission.interpolate_property($Exp, E_PATH, 5.0, 1.0, emission_time,\
+	tween_emission.interpolate_property($Exp, E_PATH, 5.0, 0.0, emission_time,\
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween_fp.start()
 	tween_emission.start()

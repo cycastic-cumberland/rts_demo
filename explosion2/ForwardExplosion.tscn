@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://explosion2/ForwardExplosion.gd" type="Script" id=1]
 [ext_resource path="res://explosion2/explosion_shader.gdshader.tres" type="Material" id=2]
+[ext_resource path="res://explosion2/meshes/CyCone.mesh" type="ArrayMesh" id=3]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.65641, 1 )
@@ -36,7 +37,7 @@ emission_shape = 3
 emission_point_texture = SubResource( 4 )
 emission_point_count = 503
 direction = Vector3( 0, 0, -1 )
-gravity = Vector3( 0, 0, 0 )
+gravity = Vector3( 0, -0.15, 0 )
 initial_velocity = 1.0
 angular_velocity = 60.0
 angular_velocity_random = 1.0
@@ -65,3 +66,9 @@ draw_pass_1 = SubResource( 8 )
 [node name="FP" type="Tween" parent="Exp"]
 
 [node name="Emission" type="Tween" parent="Exp"]
+
+[node name="CollisionShape" type="MeshInstance" parent="."]
+transform = Transform( 2, 0, 0, 0, -1.22392e-07, -2, 0, 2.8, -8.74228e-08, 0, 0, -2.79204 )
+visible = false
+mesh = ExtResource( 3 )
+material/0 = null
