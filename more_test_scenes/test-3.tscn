@@ -1,7 +1,6 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
-[ext_resource path="res://plane_icon/enemy_hud_icon.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/Vehicular/squadrons/Squadron-WildWeasel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://camera/CameraController.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/Vehicular/misc/Spinner.gd" type="Script" id=5]
@@ -138,19 +137,6 @@ shape = SubResource( 3 )
 
 [node name="DebugInfo" parent="." instance=ExtResource( 16 )]
 
-[node name="Spinner" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -84.1469, 10, -90.7529 )
-visible = false
-script = ExtResource( 5 )
-speed = 5.0
-
-[node name="Spatial2" parent="Spinner" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100 )
-visible = false
-scaling = 10.0
-ringBlinking = true
-iconBlinking = true
-
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.819152, 0.573577, 0, -0.573577, -0.819152, -279.141, 44.3293, -60.2457 )
 light_energy = 1.262
@@ -179,7 +165,7 @@ script = ExtResource( 5 )
 speed = 4.0
 
 [node name="Ricardo" type="MeshInstance" parent="Spinner2"]
-transform = Transform( 3.49108, 0, 3.57944, 0, 5, 0, -3.57944, 0, 3.49108, 0, 0, 300 )
+transform = Transform( 3.49108, 0, 3.57944, 0, 5, 0, -3.57944, 0, 3.49108, 0, 0, 0 )
 mesh = SubResource( 13 )
 skeleton = NodePath("../../DistanceCompensator")
 material/0 = null
@@ -204,7 +190,6 @@ shape = SubResource( 16 )
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 
 [node name="formidonis_stella" parent="Shippy" instance=ExtResource( 6 )]
-transform = Transform( 100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0 )
 
 [node name="Area" type="Area" parent="Shippy"]
 
@@ -225,6 +210,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -542.539, 20, 269.818 )
 
 [node name="BottomFog" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -34.8262, 0 )
+visible = false
 
 [node name="Fog" type="MeshInstance" parent="BottomFog"]
 mesh = SubResource( 17 )

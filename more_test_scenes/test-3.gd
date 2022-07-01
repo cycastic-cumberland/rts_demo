@@ -55,7 +55,7 @@ func setup_w_profile() -> WeaponConfiguration:
 	profile.travelTime = 5.0
 	profile.homingRange = 1000.0
 	profile.proximity = 100.0
-	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.FORWARD
+	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.DELAYED
 	var new_profile := AircraftConfiguration.new()
 	new_profile.acceleration = 64.0
 	new_profile.turnRate = 0.05
