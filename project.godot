@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Combatant",
+"class": "AirCombatant",
+"language": "GDScript",
+"path": "res://addons/Vehicular/air_combatant.gd"
+}, {
 "base": "CombatInstrument",
 "class": "AirInstrument",
 "language": "GDScript",
@@ -224,7 +229,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/combatant/VTOLController.gd"
 }, {
-"base": "Combatant",
+"base": "AirCombatant",
 "class": "VTOLFighterBrain",
 "language": "GDScript",
 "path": "res://addons/Vehicular/vtol_fighter.gd"
@@ -245,6 +250,7 @@ _global_script_classes=[ {
 "path": "res://addons/EpicDogfight/misc/WeaponHandler.gd"
 } ]
 _global_script_class_icons={
+"AirCombatant": "",
 "AirInstrument": "",
 "AircraftConfiguration": "",
 "AssetsPreloader": "",
@@ -271,7 +277,7 @@ _global_script_class_icons={
 "GeometryMf": "",
 "HierachialController": "",
 "HomingGuidance": "",
-"LevelConfiguration": "",
+"LevelConfiguration": "res://addons/GameFramework/icons/level_res_icon.png",
 "LineEquation": "",
 "ModifiedFuncRef": "",
 "PilotConfiguration": "",
@@ -304,6 +310,10 @@ config/icon="res://icon.png"
 
 SingletonManager="*res://addons/utils/singleton_manager.gd"
 Out="*res://addons/utils/error_handler.gd"
+
+[debug]
+
+settings/fps/force_fps=120
 
 [display]
 

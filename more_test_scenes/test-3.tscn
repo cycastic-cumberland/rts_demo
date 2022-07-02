@@ -110,7 +110,7 @@ script = ExtResource( 1 )
 bullet = ExtResource( 10 )
 
 [node name="CameraController" parent="." instance=ExtResource( 4 )]
-cameraRotationSpeed = 200.0
+cameraRotationSpeed = 100.0
 defaultCameraExtension = 300.0
 usePhysicsProcess = false
 

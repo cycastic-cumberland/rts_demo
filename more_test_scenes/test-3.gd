@@ -93,6 +93,10 @@ func pc_count():
 		physics_calls = pcalls_count
 		pcalls_count = 0
 
+func stray_nodes_test():
+	yield(get_tree(), "idle_frame")
+	print_stray_nodes()
+
 func _ready():
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
@@ -106,6 +110,8 @@ func _ready():
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
+	print()
+	stray_nodes_test()
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -121,7 +127,7 @@ func set_paths():
 		 paths[2].global_transform.origin, \
 		 paths[3].global_transform.origin, ]
 	for f in fighterList1:
-		fighterList1[f]._setCourse(p)
+		fighterList1[f].set_course(p)
 
 func initAll(squad):
 	for m in squad.memberList:
@@ -136,12 +142,11 @@ func addAllFighters(squad, fl):
 		fl[m].translation = squad.memberList[m].global_transform.origin
 		#---------------------------------------
 		fl[m]._vehicle_config.maxSpeed = 800.0
-		fl[m]._vehicle_config.deccelaration = -64.0
+		fl[m]._vehicle_config.deccelaration = -32.0
+		fl[m]._vehicle_config.slowingTime = 0.14
 		fl[m]._vehicle_config.acceleration = 4.0
 		fl[m]._vehicle_config.turnRate = 0.05
 		fl[m]._vehicle_config.maxTurnRate = 0.1
-#		fl[m]._vehicle_config.turnRate = 0.03
-#		fl[m]._vehicle_config.maxTurnRate = 0.07
 		if m == "P0":
 			dc.set_target(fl[m])
 		if m == "P0" and playMusik:
@@ -165,13 +170,13 @@ func guideAllFighter(squad):
 	for m in fighterList1:
 		if fighterList1[m] != null:
 			fighterList1[m].\
-				_setCourse(squad.memberList[m].global_transform.origin)
+				set_course(squad.memberList[m].global_transform.origin)
 
 func squadronTracking():
 	for m in fighterList1:
-		fighterList1[m]._setTracker(fighterList2[m])
+		fighterList1[m].set_tracking_target(fighterList2[m])
 	for m in fighterList2:
-		fighterList2[m]._setTracker(fighterList1[m])
+		fighterList2[m].set_tracking_target(fighterList1[m])
 
 func relocateAllFlag(squad):
 	for m in flagList:
