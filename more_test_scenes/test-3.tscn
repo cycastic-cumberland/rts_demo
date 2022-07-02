@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
 [ext_resource path="res://addons/Vehicular/squadrons/Squadron-WildWeasel.tscn" type="PackedScene" id=3]
@@ -10,7 +10,6 @@
 [ext_resource path="res://addons/EpicDogfight/misc/dc_scene.tscn" type="PackedScene" id=9]
 [ext_resource path="res://plane2/test_bullet2.tscn" type="PackedScene" id=10]
 [ext_resource path="res://more_test_scenes/ricardo.jpg" type="Texture" id=11]
-[ext_resource path="res://NewCameraSystem/SRC.tscn" type="PackedScene" id=12]
 [ext_resource path="res://cool_shaders/ScreenSpaceChromaAberration.tscn" type="PackedScene" id=13]
 [ext_resource path="res://cool_shaders/chroma_noise.tres" type="Texture" id=14]
 [ext_resource path="res://cool_shaders/fog_noise_bump.tres" type="Texture" id=15]
@@ -111,11 +110,9 @@ script = ExtResource( 1 )
 bullet = ExtResource( 10 )
 
 [node name="CameraController" parent="." instance=ExtResource( 4 )]
+cameraRotationSpeed = 200.0
 defaultCameraExtension = 300.0
-
-[node name="SRC" parent="." instance=ExtResource( 12 )]
-visible = false
-render_distance = 3000.0
+usePhysicsProcess = false
 
 [node name="Squadron-WildWeasel" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -262.291, 20, -261.93 )

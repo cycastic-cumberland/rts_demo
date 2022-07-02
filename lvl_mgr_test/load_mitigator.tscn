@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://lvl_mgr_test/load_mitigator.gd" type="Script" id=1]
+[ext_resource path="res://more_test_scenes/FakeLoadingBar.tscn" type="PackedScene" id=2]
+
+[node name="Load" type="Node"]
+script = ExtResource( 1 )
+
+[node name="FakeLoadingBar" parent="." instance=ExtResource( 2 )]

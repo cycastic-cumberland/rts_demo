@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/GameFramework/level_config.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+scene_path = "res://more_test_scenes/test-3.tscn"
+preload_list = PoolStringArray(  )
+loading_scene_path = "res://more_test_scenes/FakeLoadingBar.tscn"

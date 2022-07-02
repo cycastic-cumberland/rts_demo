@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Vehicular/configs/aircraft_config.gd"
 }, {
-"base": "Node",
-"class": "AssetsInstance",
-"language": "GDScript",
-"path": "res://addons/GameFramework/com/assets_instance.gd"
-}, {
 "base": "Reference",
 "class": "AssetsPreloader",
 "language": "GDScript",
@@ -144,20 +139,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/guidances/homing.gd"
 }, {
-"base": "Node",
-"class": "Level",
-"language": "GDScript",
-"path": "res://addons/GameFramework/level_template.gd"
-}, {
 "base": "Configuration",
 "class": "LevelConfiguration",
 "language": "GDScript",
 "path": "res://addons/GameFramework/level_config.gd"
-}, {
-"base": "Resource",
-"class": "LevelResource",
-"language": "GDScript",
-"path": "res://addons/GameFramework/com/level_resource.gd"
 }, {
 "base": "Resource",
 "class": "LineEquation",
@@ -168,11 +153,6 @@ _global_script_classes=[ {
 "class": "ModifiedFuncRef",
 "language": "GDScript",
 "path": "res://addons/utils/mod_funcref.gd"
-}, {
-"base": "Reference",
-"class": "PackageParasite",
-"language": "GDScript",
-"path": "res://addons/GameFramework/com/package_parasite.gd"
 }, {
 "base": "Configuration",
 "class": "PilotConfiguration",
@@ -267,7 +247,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AirInstrument": "",
 "AircraftConfiguration": "",
-"AssetsInstance": "",
 "AssetsPreloader": "",
 "BTBaseClass": "",
 "BTGraphNode": "",
@@ -292,12 +271,9 @@ _global_script_class_icons={
 "GeometryMf": "",
 "HierachialController": "",
 "HomingGuidance": "",
-"Level": "",
 "LevelConfiguration": "",
-"LevelResource": "res://addons/GameFramework/icons/level_res_icon.png",
 "LineEquation": "",
 "ModifiedFuncRef": "",
-"PackageParasite": "",
 "PilotConfiguration": "",
 "PilotController": "",
 "PilotProfile": "",
@@ -321,14 +297,13 @@ _global_script_class_icons={
 [application]
 
 config/name="RTS_test"
-run/main_scene="res://more_test_scenes/Level1.tscn"
+run/main_scene="res://lvl_mgr_test/load_mitigator.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 SingletonManager="*res://addons/utils/singleton_manager.gd"
 Out="*res://addons/utils/error_handler.gd"
-OutputManager="*res://addons/utils/error_handler.gd"
 
 [display]
 

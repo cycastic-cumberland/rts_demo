@@ -16,7 +16,6 @@ onready var dc = $DistanceCompensator
 onready var squadron = $"Squadron-WildWeasel"
 onready var squadron2 = $Squadron2
 onready var camera = $CameraController
-onready var trackingTarget = $Spinner/Spatial2
 onready var light = $DirectionalLight
 
 onready var paths = [
