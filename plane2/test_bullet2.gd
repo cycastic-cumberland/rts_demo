@@ -4,9 +4,10 @@ const self_destruct := preload("res://addons/utils/self_destruct.gd")
 const explosion := preload("res://test_particles/RealExplosion1.tscn")
 const explosion2 := preload("res://explosion2/ForwardExplosion.tscn")
 
-onready var exhaust := $Trail/EngineExhaust
+onready var exhaust: Spatial = $Trail/EngineExhaust
 onready var afterburner: Particles = $Trail/EngineExhaust/JetPlume
 onready var smoke: Particles = $Trail/EngineExhaust/SmokeExhaust
+onready var damage_zone: Area = $DamageZone
 
 var speed_limit_percent := 0.9
 var guide: WeaponGuidance = null
@@ -29,6 +30,7 @@ func arm_launched(guidance: WeaponGuidance):
 		smoke.emitting = false
 		yield(get_tree().create_timer(guidance._arm_time), "timeout")
 		guidance._armed = true
+		guidance._damage_zone = damage_zone
 		guidance.emit_signal("__armmament_armed", guidance)
 		vtol.enableGravity = false
 		vtol._vehicle_config.turnRate = turnRate

@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://plane2/jdam.tscn" type="PackedScene" id=1]
+[ext_resource path="res://explosion2/meshes/CyCone.mesh" type="ArrayMesh" id=2]
 [ext_resource path="res://plane2/test_bullet2.gd" type="Script" id=4]
 [ext_resource path="res://plane2/EngineExhaust.tscn" type="PackedScene" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.3, 0.3, 0.3 )
+
+[sub_resource type="CapsuleShape" id=2]
+radius = 54.6544
+height = 176.718
 
 [node name="JDAM" type="Spatial"]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
@@ -24,5 +29,18 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.97527 )
 
 [node name="CollisionShape" type="CollisionShape" parent="WarheadCollider"]
 shape = SubResource( 1 )
+
+[node name="CollisionShape" type="MeshInstance" parent="."]
+transform = Transform( 100, 0, 0, 0, -6.11959e-06, -100, 0, 140, -4.37114e-06, 0, 0, -141.091 )
+visible = false
+mesh = ExtResource( 2 )
+skeleton = NodePath("../DamageZone")
+material/0 = null
+
+[node name="DamageZone" type="Area" parent="."]
+
+[node name="CollisionShape2" type="CollisionShape" parent="DamageZone"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -154.507 )
+shape = SubResource( 2 )
 
 [connection signal="area_entered" from="WarheadCollider" to="." method="_on_WarheadCollider_area_entered"]
