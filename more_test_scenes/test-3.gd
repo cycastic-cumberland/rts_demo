@@ -98,6 +98,10 @@ func stray_nodes_test():
 	print_stray_nodes()
 
 func _ready():
+	var a: int = AirCombatant.PROJECTILE_TYPE.MISSILE \
+				+AirCombatant.PROJECTILE_TYPE.AGM
+	print(a & AirCombatant.PROJECTILE_TYPE.AGM)
+	print(a & AirCombatant.PROJECTILE_TYPE.AAM)
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X

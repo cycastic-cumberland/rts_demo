@@ -144,6 +144,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/guidances/homing.gd"
 }, {
+"base": "Reference",
+"class": "InRef",
+"language": "GDScript",
+"path": "res://addons/utils/inref.gd"
+}, {
 "base": "Configuration",
 "class": "LevelConfiguration",
 "language": "GDScript",
@@ -277,6 +282,7 @@ _global_script_class_icons={
 "GeometryMf": "",
 "HierachialController": "",
 "HomingGuidance": "",
+"InRef": "",
 "LevelConfiguration": "res://addons/GameFramework/icons/level_res_icon.png",
 "LineEquation": "",
 "ModifiedFuncRef": "",
@@ -308,8 +314,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-SingletonManager="*res://addons/utils/singleton_manager.gd"
-Out="*res://addons/utils/error_handler.gd"
+SingletonManager="*res://addons/utils/singletons/singleton_manager.gd"
+Out="*res://addons/utils/singletons/error_handler.gd"
+IRM="*res://addons/utils/singletons/inref_manager.gd"
 
 [debug]
 
