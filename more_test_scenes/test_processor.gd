@@ -5,7 +5,7 @@ class_name TestProcessor1
 var timer := 0.0
 
 func _init():
-#	._init()
+#	
 	name = "TestProcessor1"
 
 func _compute(delta):
