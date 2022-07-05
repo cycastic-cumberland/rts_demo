@@ -48,7 +48,7 @@ func setup_w_profile() -> WeaponConfiguration:
 	profile.weaponGuidance = WeaponConfiguration.GUIDANCE.FLG
 	profile.weaponFireMode = WeaponConfiguration.FIRE_MODE.BARRAGE
 	profile.rounds = 100
-	profile.loadingTime = 0.5
+	profile.loadingTime = 1.0
 	profile.seekingAngle = deg2rad(90.0)
 	profile.travelSpeed = 3000.0
 	profile.travelTime = 5.0
@@ -93,15 +93,20 @@ func pc_count():
 		physics_calls = pcalls_count
 		pcalls_count = 0
 
-func stray_nodes_test():
-	yield(get_tree(), "idle_frame")
-	print_stray_nodes()
+var cluster: ProcessorsCluster
+
+func derived_test(a: ProcessorsCluster):
+	while not a.is_ready:
+		Out.print_debug("Waiting for godot...")
+		yield(get_tree(), "idle_frame")
+	Out.print_debug("Done!")
+	a.commission()
 
 func _ready():
-	var a: int = AirCombatant.PROJECTILE_TYPE.MISSILE \
-				+AirCombatant.PROJECTILE_TYPE.AGM
-	print(a & AirCombatant.PROJECTILE_TYPE.AGM)
-	print(a & AirCombatant.PROJECTILE_TYPE.AAM)
+#	cluster = SingletonManager.fetch("ProcessorsSwarm")\
+#		.add_cluster()
+#	cluster.add_nopr(TestProcessor1.new())
+#	derived_test(cluster)
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X
@@ -114,8 +119,8 @@ func _ready():
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
-	print()
-	stray_nodes_test()
+	Out.print_error("This is a test error!", get_stack())
+	char(1)
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -195,27 +200,31 @@ func _fire_test(_delta: float):
 
 func _lead_test(delta: float):
 	if Input.is_action_just_pressed("ui_accept"):
-		verify_leading = not verify_leading
-		if verify_leading:
-			actual_loc = Vector3()
-			actual_dir = dc.last_direction
-			predicted_loc = dc.global_transform.origin
-			margin = 0.0
-			timer = 0.0
-			deviation = 0.0
-	if verify_leading:
-		if timer + delta >= dc.leading:
-			actual_loc = fighterList1["P0"].global_transform.origin
-			margin = predicted_loc.distance_to(actual_loc)
-			deviation = rad2deg(actual_dir.angle_to(dc.last_direction))
-			verify_leading = false
-		else:
-			timer += delta
+		if cluster != null:
+			cluster.decommission()
+			cluster = null
+#		verify_leading = not verify_leading
+#		if verify_leading:
+#			actual_loc = Vector3()
+#			actual_dir = dc.last_direction
+#			predicted_loc = dc.global_transform.origin
+#			margin = 0.0
+#			timer = 0.0
+#			deviation = 0.0
+#	if verify_leading:
+#		if timer + delta >= dc.leading:
+#			actual_loc = fighterList1["P0"].global_transform.origin
+#			margin = predicted_loc.distance_to(actual_loc)
+#			deviation = rad2deg(actual_dir.angle_to(dc.last_direction))
+#			verify_leading = false
+#		else:
+#			timer += delta
 
 func _process(delta):
 	loggit()
 	dT = delta
 	_fire_test(delta)
+	_lead_test(delta)
 
 func _physics_process(_delta):
 	# _lead_test(delta)

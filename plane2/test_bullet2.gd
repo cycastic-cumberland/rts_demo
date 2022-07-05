@@ -12,6 +12,9 @@ onready var damage_zone: Area = $DamageZone
 var speed_limit_percent := 0.9
 var guide: WeaponGuidance = null
 
+func __is_projectile():
+	return true
+
 func arm_launched(guidance: WeaponGuidance):
 	if guidance._armed or is_instance_valid(guide):
 		return
@@ -67,8 +70,10 @@ func arm_arrived(_guidance: WeaponGuidance):
 	ex.play()
 	sd.destruct(smoke.lifetime, get_tree())
 
-func _on_WarheadCollider_area_entered(_area):
+func _on_WarheadCollider_area_entered(area):
 	if not is_instance_valid(guide):
+		return
+	elif area.get_parent().has_method("__is_projectile"):
 		return
 	elif not guide._armed:
 		# WARNING: EXPLOITABLE
