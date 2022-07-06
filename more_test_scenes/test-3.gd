@@ -107,6 +107,8 @@ func _ready():
 #		.add_cluster()
 #	cluster.add_nopr(TestProcessor1.new())
 #	derived_test(cluster)
+	var a := PilotConfiguration.new()
+	a.current_proficience[3] = 0.7
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X
@@ -119,8 +121,6 @@ func _ready():
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
-	Out.print_error("This is a test error!", get_stack())
-	char(1)
 
 func _exit_tree():
 #	for f in fighterList1:
