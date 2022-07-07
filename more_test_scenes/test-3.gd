@@ -40,7 +40,7 @@ var deviation := 0.0
 var margin := 0.0
 var dT := 0.0
 
-var cfg_path := "C:/Users/namwm/Documents/testies_save"
+var cfg_path := "C:/Users/cycastic/Documents/testies_save.tres"
 
 func setup_w_profile() -> WeaponConfiguration:
 	var profile := WeaponConfiguration.new()
@@ -107,8 +107,6 @@ func _ready():
 #		.add_cluster()
 #	cluster.add_nopr(TestProcessor1.new())
 #	derived_test(cluster)
-	var a := PilotConfiguration.new()
-	a.current_proficience[3] = 0.7
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X

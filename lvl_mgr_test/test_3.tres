@@ -5,5 +5,14 @@
 [resource]
 script = ExtResource( 1 )
 scene_path = "res://more_test_scenes/test-3.tscn"
-preload_list = PoolStringArray(  )
 loading_scene_path = "res://more_test_scenes/FakeLoadingBar.tscn"
+preload_list = PoolStringArray(  )
+singletons_list = [ {
+"is_oneshot": true,
+"name": "ProcessorsSwarm",
+"path": "res://addons/Processors/processors_swarm.gd"
+}, {
+"is_oneshot": true,
+"name": "CombatServer",
+"path": "res://addons/EpicDogfight/singletons/CombatServer.gd"
+} ]

@@ -234,6 +234,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/team_controller/SquadronController.gd"
 }, {
+"base": "HierachialController",
+"class": "TeamController",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/team_controller/TeamController.gd"
+}, {
 "base": "Processor",
 "class": "TestProcessor1",
 "language": "GDScript",
@@ -315,6 +320,7 @@ _global_script_class_icons={
 "SkillBranch": "",
 "SkillTree": "",
 "SquadronController": "",
+"TeamController": "",
 "TestProcessor1": "",
 "TreeEditorFileDialog": "",
 "VTOLController": "",
