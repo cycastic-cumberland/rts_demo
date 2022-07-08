@@ -123,9 +123,7 @@ func _ready():
 func _exit_tree():
 #	for f in fighterList1:
 #		fighterList1[f].free()
-	for c in get_children():
-		c.free()
-	queue_free()
+	pass
 
 func set_paths():
 	var p: PoolVector3Array =\
@@ -198,9 +196,7 @@ func _fire_test(_delta: float):
 
 func _lead_test(delta: float):
 	if Input.is_action_just_pressed("ui_accept"):
-		if cluster != null:
-			cluster.decommission()
-			cluster = null
+		pass
 #		verify_leading = not verify_leading
 #		if verify_leading:
 #			actual_loc = Vector3()
