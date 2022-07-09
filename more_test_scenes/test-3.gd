@@ -55,6 +55,7 @@ func setup_w_profile() -> WeaponConfiguration:
 	profile.homingRange = 1000.0
 	profile.proximity = 100.0
 	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.DELAYED
+	profile.projectile = bullet
 	var new_profile := AircraftConfiguration.new()
 	new_profile.acceleration = 64.0
 	new_profile.turnRate = 0.05
@@ -71,14 +72,13 @@ func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
 #	profile = WeaponConfiguration.new()
 #	profile = profile.load_res(cfg_path, profile)
 	handler.profile = profile
-	handler.projectile = bullet
 	handler.compensation = 0.7
 #	handler.pgm_target = Vector3(-153, 0, 231)
 	var f: Spatial = curr_fighter
 	handler.carrier = f
-	handler.set_hardpoints(3, [f.get_node("Hardpoint1"),\
-							   f.get_node("Hardpoint2"),\
-							   f.get_node("Hardpoint3")])
+	handler.set_hardpoints([f.get_node("Hardpoints/Hardpoint1"),\
+							f.get_node("Hardpoints/Hardpoint2"),\
+							f.get_node("Hardpoints/Hardpoint3")])
 	handler.target = launcher
 #	handler.set_hardpoints(1, [launcher])
 #	handler.target = f
@@ -119,6 +119,7 @@ func _ready():
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
+	Out.print_debug("Is it debug?: " + str(OS.is_debug_build()))
 
 func _exit_tree():
 #	for f in fighterList1:
