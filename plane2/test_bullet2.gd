@@ -43,7 +43,7 @@ func arm_launched(guidance: WeaponGuidance):
 		smoke.emitting = true
 
 func arm_arrived(_guidance: WeaponGuidance):
-	var current_scene := get_tree().current_scene
+	var current_scene := LevelManager.template.peripherals_pool
 	var particle_parents: Node = exhaust.get_parent()
 	var loc = exhaust.global_transform.origin
 	var sd := self_destruct.new()

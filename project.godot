@@ -154,6 +154,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/GameFramework/level_config.gd"
 }, {
+"base": "Node",
+"class": "LevelTemplate",
+"language": "GDScript",
+"path": "res://addons/GameFramework/level_template/level_template.gd"
+}, {
 "base": "Resource",
 "class": "LineEquation",
 "language": "GDScript",
@@ -304,6 +309,7 @@ _global_script_class_icons={
 "HomingGuidance": "",
 "InRef": "",
 "LevelConfiguration": "res://addons/GameFramework/icons/level_res_icon.png",
+"LevelTemplate": "",
 "LineEquation": "",
 "ModifiedFuncRef": "",
 "PilotConfiguration": "",
@@ -334,6 +340,7 @@ _global_script_class_icons={
 
 config/name="RTS_test"
 run/main_scene="res://lvl_mgr_test/load_mitigator.tscn"
+boot_splash/bg_color=Color( 0.156863, 0.164706, 0.211765, 1 )
 config/icon="res://icon.png"
 
 [autoload]
@@ -341,6 +348,7 @@ config/icon="res://icon.png"
 SingletonManager="*res://addons/utils/singletons/singleton_manager.gd"
 Out="*res://addons/utils/singletons/error_handler.gd"
 IRM="*res://addons/utils/singletons/inref_manager.gd"
+LevelManager="*res://addons/GameFramework/level_manager.gd"
 
 [debug]
 

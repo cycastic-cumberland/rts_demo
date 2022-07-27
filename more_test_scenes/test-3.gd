@@ -66,7 +66,7 @@ func setup_w_profile() -> WeaponConfiguration:
 
 func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
 	var handler := WeaponHandler.new()
-	get_tree().get_current_scene().add_child(handler)
+	LevelManager.template.add_peripheral(handler)
 	var profile
 	profile = setup_w_profile()
 #	profile = WeaponConfiguration.new()
