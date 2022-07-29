@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/pause_menu_exp/scenes/Triangle_half.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/pause_menu_exp/scenes/Triangle.tscn" type="PackedScene" id=2]
+
+[node name="triangles" type="Node2D"]
+
+[node name="Triangle" parent="." instance=ExtResource( 2 )]
+position = Vector2( 4, 320 )
+
+[node name="Triangle2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 395, 489 )
+
+[node name="Triangle3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 298, 319 )
+
+[node name="Triangle4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 200, 151 )

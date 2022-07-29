@@ -1,6 +1,7 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
+[ext_resource path="res://cool_shaders/static_shader.gdshader" type="Shader" id=2]
 [ext_resource path="res://addons/Vehicular/squadrons/Squadron-WildWeasel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://camera/CameraController.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/Vehicular/misc/Spinner.gd" type="Script" id=5]
@@ -10,6 +11,7 @@
 [ext_resource path="res://addons/EpicDogfight/misc/dc_scene.tscn" type="PackedScene" id=9]
 [ext_resource path="res://plane2/test_bullet2.tscn" type="PackedScene" id=10]
 [ext_resource path="res://more_test_scenes/ricardo.jpg" type="Texture" id=11]
+[ext_resource path="res://ui/pause_menu_exp/scenes/Main.tscn" type="PackedScene" id=12]
 [ext_resource path="res://cool_shaders/ScreenSpaceChromaAberration.tscn" type="PackedScene" id=13]
 [ext_resource path="res://cool_shaders/chroma_noise.tres" type="Texture" id=14]
 [ext_resource path="res://cool_shaders/fog_noise_bump.tres" type="Texture" id=15]
@@ -104,6 +106,20 @@ shader_param/second_scroll_mod = 1.0
 shader_param/bump_scale = 2.0
 shader_param/ramp = SubResource( 19 )
 shader_param/bump_map = ExtResource( 15 )
+
+[sub_resource type="ShaderMaterial" id=23]
+shader = ExtResource( 2 )
+shader_param/screen_height = 2000.0
+shader_param/amplitude = 0.075
+shader_param/frequency = 10.0
+shader_param/speed = 2.0
+shader_param/amplitude_vertical = 1.0
+shader_param/frequency_vertical = 1.0
+shader_param/speed_vertical = 1.0
+shader_param/scroll_direction = Vector2( 0, 0 )
+shader_param/scrolling_speed = 1.0
+shader_param/enable_palette_cycling = false
+shader_param/palette_speed = 0.1
 
 [node name="test-3" type="Spatial"]
 script = ExtResource( 1 )
@@ -219,3 +235,15 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 mesh = SubResource( 17 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 21 )
+
+[node name="Main" parent="." instance=ExtResource( 12 )]
+
+[node name="Control" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+material = SubResource( 23 )
+anchor_right = 1.0
+anchor_bottom = 1.0

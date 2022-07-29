@@ -102,11 +102,14 @@ func derived_test(a: ProcessorsCluster):
 	Out.print_debug("Done!")
 	a.commission()
 
+func steam_init():
+	var steam_status := Steam.steamInit()
+	Out.print_steamstat(steam_status["verbal"])
+#	if steam_status["status"] != 1:
+#		Out.print_fatal("Failed to initialize Steam, exiting")
+#		get_tree().quit(0)
+
 func _ready():
-#	cluster = SingletonManager.fetch("ProcessorsSwarm")\
-#		.add_cluster()
-#	cluster.add_nopr(TestProcessor1.new())
-#	derived_test(cluster)
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X
@@ -120,6 +123,7 @@ func _ready():
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
 	Out.print_debug("Is it debug?: " + str(OS.is_debug_build()))
+	Out.print_debug("Stack test", get_stack())
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -195,25 +199,13 @@ func _fire_test(_delta: float):
 		weapon_handler.fire_once()
 		weapon_handler2.fire_once()
 
+onready var org_size := get_viewport().size
+var ssaa_scaling := 1.0
+
 func _lead_test(delta: float):
 	if Input.is_action_just_pressed("ui_accept"):
-		pass
-#		verify_leading = not verify_leading
-#		if verify_leading:
-#			actual_loc = Vector3()
-#			actual_dir = dc.last_direction
-#			predicted_loc = dc.global_transform.origin
-#			margin = 0.0
-#			timer = 0.0
-#			deviation = 0.0
-#	if verify_leading:
-#		if timer + delta >= dc.leading:
-#			actual_loc = fighterList1["P0"].global_transform.origin
-#			margin = predicted_loc.distance_to(actual_loc)
-#			deviation = rad2deg(actual_dir.angle_to(dc.last_direction))
-#			verify_leading = false
-#		else:
-#			timer += delta
+		ssaa_scaling = wrapf(ssaa_scaling + 0.1, 1.0, 2.0)
+		get_viewport().size = org_size * ssaa_scaling
 
 func _process(delta):
 	loggit()
@@ -245,6 +237,7 @@ func loggit():
 		"accelaration":  dc.acceleration,
 		"speed_loss": fighterList1["P0"].realSpeedLoss,
 		"missiles_left": weapon_handler.reserve,
+		"ssaa_scaling": ssaa_scaling,
 	}
 
 func _input(event):

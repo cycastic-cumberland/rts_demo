@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/pause_menu_exp/shaders/triangle_shader.gdshader" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/poly_count = 3
+shader_param/width = 0.3
+shader_param/offset = 0.0
+shader_param/random_time = 0.0
+shader_param/base_color = Color( 0.164, 0.41, 0.41, 1 )
+shader_param/base_color_dim_percentage = 0.3
+shader_param/dim_speed = 0.5
+shader_param/solid = false
+
+[node name="Triangle" type="Node2D"]
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+material = SubResource( 2 )
+margin_left = 199.0
+margin_top = 171.0
+margin_right = 399.0
+margin_bottom = 371.0
+rect_rotation = 180.0

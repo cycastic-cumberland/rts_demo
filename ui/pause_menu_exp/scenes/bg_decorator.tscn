@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ui/pause_menu_exp/scenes/triangles3.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/pause_menu_exp/scenes/triangles2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/pause_menu_exp/scenes/triangles.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/pause_menu_exp/scenes/bg_decorator.gd" type="Script" id=4]
+
+[node name="Control" type="Control"]
+margin_right = 600.0
+margin_bottom = 700.0
+rect_min_size = Vector2( 600, 700 )
+script = ExtResource( 4 )
+
+[node name="triangles" parent="." instance=ExtResource( 3 )]
+position = Vector2( 10, 0 )
+
+[node name="triangles2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 10, 0 )
+
+[node name="triangles3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 10, 0 )

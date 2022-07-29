@@ -1,0 +1,173 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ui/pause_menu_exp/shaders/solid_rotatable.gdshader" type="Shader" id=1]
+[ext_resource path="res://ui/pause_menu_exp/mat/DimmedBg.tres" type="Material" id=2]
+[ext_resource path="res://ui/pause_menu_exp/shaders/triangle_shader.gdshader" type="Shader" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/uv_scale = 1.0
+shader_param/threshold = 0.5
+shader_param/rotation_degree = 252.2
+shader_param/base_color = Color( 0.0901961, 0.0901961, 0.0901961, 0.352941 )
+shader_param/uv_view_mode = false
+shader_param/uv_albedo_mode = false
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 3 )
+shader_param/poly_count = 4
+shader_param/width = 1.0
+shader_param/offset = 0.0
+shader_param/random_time = 0.0
+shader_param/base_color = Color( 0.0901961, 0.0901961, 0.0901961, 0.352941 )
+shader_param/base_color_dim_percentage = 0.0
+shader_param/dim_speed = 1.0
+shader_param/solid = true
+
+[node name="DimmedBg" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Control" type="Control" parent="."]
+margin_left = 600.0
+margin_top = 337.0
+margin_right = 600.0
+margin_bottom = 337.0
+
+[node name="Node2D" type="Node2D" parent="Control"]
+position = Vector2( -600, -337 )
+
+[node name="Panel" type="Panel" parent="Control/Node2D"]
+material = SubResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1200.0
+margin_bottom = 675.0
+
+[node name="Panel2" type="Panel" parent="Control/Node2D"]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2130.0
+margin_top = 1.0
+margin_bottom = 676.0
+
+[node name="Triangle" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 394.0
+margin_top = -45.0
+margin_right = 794.0
+margin_bottom = 355.0
+rect_min_size = Vector2( 400, 400 )
+
+[node name="Triangle3" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 1091.0
+margin_top = -47.0
+margin_right = 1491.0
+margin_bottom = 353.0
+rect_min_size = Vector2( 400, 400 )
+
+[node name="Triangle2" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 655.0
+margin_top = 406.0
+margin_right = 1055.0
+margin_bottom = 806.0
+rect_min_size = Vector2( 400, 400 )
+
+[node name="TriangleHalf" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 581.0
+margin_top = 280.0
+margin_right = 781.0
+margin_bottom = 480.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf6" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 669.0
+margin_top = 129.0
+margin_right = 869.0
+margin_bottom = 329.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf9" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 756.0
+margin_top = -21.0
+margin_right = 956.0
+margin_bottom = 179.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf10" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 930.0
+margin_top = -22.0
+margin_right = 1130.0
+margin_bottom = 178.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf7" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 843.0
+margin_top = 129.0
+margin_right = 1043.0
+margin_bottom = 329.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf8" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 1017.0
+margin_top = 129.0
+margin_right = 1217.0
+margin_bottom = 329.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf3" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 755.0
+margin_top = 280.0
+margin_right = 955.0
+margin_bottom = 480.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf4" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 929.0
+margin_top = 280.0
+margin_right = 1129.0
+margin_bottom = 480.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf5" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 1104.0
+margin_top = 280.0
+margin_right = 1304.0
+margin_bottom = 480.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf11" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 1016.0
+margin_top = 429.0
+margin_right = 1216.0
+margin_bottom = 629.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf12" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 927.0
+margin_top = 581.0
+margin_right = 1127.0
+margin_bottom = 781.0
+rect_min_size = Vector2( 200, 200 )
+
+[node name="TriangleHalf2" type="Panel" parent="Control/Node2D"]
+material = ExtResource( 2 )
+margin_left = 843.0
+margin_top = 730.0
+margin_right = 1043.0
+margin_bottom = 930.0
+rect_min_size = Vector2( 200, 200 )
