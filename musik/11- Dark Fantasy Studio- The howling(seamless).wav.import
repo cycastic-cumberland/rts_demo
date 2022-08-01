@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/11- Dark Fantasy Studio- The howling(seamless).wav-49d18af73c2c3744a582b06b44cf797d.sample"
+
+[deps]
+
+source_file="res://musik/11- Dark Fantasy Studio- The howling(seamless).wav"
+dest_files=[ "res://.import/11- Dark Fantasy Studio- The howling(seamless).wav-49d18af73c2c3744a582b06b44cf797d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

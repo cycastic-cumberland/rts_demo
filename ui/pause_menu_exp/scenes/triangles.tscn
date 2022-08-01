@@ -12,7 +12,7 @@ position = Vector2( 4, 320 )
 position = Vector2( 395, 489 )
 
 [node name="Triangle3" parent="." instance=ExtResource( 1 )]
-position = Vector2( 298, 319 )
+position = Vector2( 296, 321 )
 
 [node name="Triangle4" parent="." instance=ExtResource( 1 )]
-position = Vector2( 200, 151 )
+position = Vector2( 199, 154 )

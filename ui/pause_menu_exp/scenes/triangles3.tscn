@@ -5,29 +5,29 @@
 
 [node name="triangles3" type="Node2D"]
 
-[node name="Triangle" type="Node2D" parent="." instance=ExtResource( 2 )]
-position = Vector2( 780, 321 )
+[node name="Triangle" parent="." instance=ExtResource( 2 )]
+position = Vector2( 779, 321 )
 
-[node name="Triangle2" type="Node2D" parent="." instance=ExtResource( 1 )]
+[node name="Triangle2" parent="." instance=ExtResource( 1 )]
 position = Vector2( 445, 408 )
 rotation = -2.09439
 
-[node name="Triangle3" type="Node2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 544, 574 )
+[node name="Triangle3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 543, 575 )
 rotation = -2.0944
 
-[node name="Triangle4" type="Node2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 641, 744 )
+[node name="Triangle4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 642, 745 )
 rotation = -2.0944
 
-[node name="Triangle5" type="Node2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 832, 410 )
+[node name="Triangle5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 833, 410 )
 rotation = -2.0944
 
-[node name="Triangle6" type="Node2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 739, 578 )
+[node name="Triangle6" parent="." instance=ExtResource( 1 )]
+position = Vector2( 738, 575 )
 rotation = -2.0944
 
-[node name="Triangle7" type="Node2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 642, 407 )
+[node name="Triangle7" parent="." instance=ExtResource( 1 )]
+position = Vector2( 641, 409 )
 rotation = -2.0944

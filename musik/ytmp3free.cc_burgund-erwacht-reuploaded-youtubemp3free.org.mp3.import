@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/ytmp3free.cc_burgund-erwacht-reuploaded-youtubemp3free.org.mp3-4f3107c30ea5fa15141a9c3c7b8c5226.mp3str"
+
+[deps]
+
+source_file="res://musik/ytmp3free.cc_burgund-erwacht-reuploaded-youtubemp3free.org.mp3"
+dest_files=[ "res://.import/ytmp3free.cc_burgund-erwacht-reuploaded-youtubemp3free.org.mp3-4f3107c30ea5fa15141a9c3c7b8c5226.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

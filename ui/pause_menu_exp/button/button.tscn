@@ -6,7 +6,8 @@
 [node name="Control" type="Button"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -874.0
-margin_bottom = -623.0
+margin_right = -829.0
+margin_bottom = -560.0
+rect_min_size = Vector2( 200, 40 )
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
