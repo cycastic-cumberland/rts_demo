@@ -49,7 +49,7 @@ func setup_w_profile() -> WeaponConfiguration:
 	profile.weaponFireMode = WeaponConfiguration.FIRE_MODE.BARRAGE
 	profile.rounds = 100
 	profile.loadingTime = 1.0
-	profile.seekingAngle = deg2rad(90.0)
+	profile.seekingAngle = deg2rad(30.0)
 	profile.travelSpeed = 3000.0
 	profile.travelTime = 5.0
 	profile.homingRange = 1000.0
@@ -102,9 +102,9 @@ func derived_test(a: ProcessorsCluster):
 	Out.print_debug("Done!")
 	a.commission()
 
-func steam_init():
-	var steam_status := Steam.steamInit()
-	Out.print_steamstat(steam_status["verbal"])
+#func steam_init():
+#	var steam_status := Steam.steamInit()
+#	Out.print_steamstat(steam_status["verbal"])
 #	if steam_status["status"] != 1:
 #		Out.print_fatal("Failed to initialize Steam, exiting")
 #		get_tree().quit(0)
@@ -121,9 +121,17 @@ func _ready():
 	addAllFlag(squadron)
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+#	var profile := weapon_handler.profile
+#	var cfg_server = SingletonManager.static_services["ConfigSerializer"]
+#	var serialized = cfg_server.serialize(profile)
+#	pass
+#	var deserialized = cfg_server.deserialize(serialized)
+#	weapon_handler.profile = deserialized
+#	weapon_handler2.profile = deserialized
 	pc_count()
 	Out.print_debug("Is it debug?: " + str(OS.is_debug_build()))
 	Out.print_debug("Stack test", get_stack())
+	pass
 
 func _exit_tree():
 #	for f in fighterList1:

@@ -230,7 +230,7 @@ _global_script_classes=[ {
 "path": "res://addons/Processors/processors_cluster.gd"
 }, {
 "base": "Reference",
-"class": "RefTest",
+"class": "SceneSerializer",
 "language": "GDScript",
 "path": "res://addons/GameFramework/com/scene_serializer.gd"
 }, {
@@ -344,7 +344,7 @@ _global_script_class_icons={
 "ProcessEnforcer": "",
 "Processor": "",
 "ProcessorsCluster": "",
-"RefTest": "",
+"SceneSerializer": "",
 "SerializableStorage": "",
 "SimpleFlightComputer": "",
 "SkillBranch": "",
