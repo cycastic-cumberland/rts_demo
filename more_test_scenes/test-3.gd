@@ -131,7 +131,6 @@ func _ready():
 	pc_count()
 	Out.print_debug("Is it debug?: " + str(OS.is_debug_build()))
 	Out.print_debug("Stack test", get_stack())
-	pass
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -207,13 +206,14 @@ func _fire_test(_delta: float):
 		weapon_handler.fire_once()
 		weapon_handler2.fire_once()
 
-onready var org_size := get_viewport().size
+#onready var org_size := Vector2(1920, 1080)
 var ssaa_scaling := 1.0
 
 func _lead_test(delta: float):
-	if Input.is_action_just_pressed("ui_accept"):
-		ssaa_scaling = wrapf(ssaa_scaling + 0.1, 1.0, 2.0)
-		get_viewport().size = org_size * ssaa_scaling
+#	if Input.is_action_just_pressed("ui_accept"):
+#		ssaa_scaling = wrapf(ssaa_scaling + 0.1, 1.0, 2.0)
+#		get_viewport().size = org_size * ssaa_scaling
+	pass
 
 func _process(delta):
 	loggit()

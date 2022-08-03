@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://addons/Vehicular/configs/aircraft_config.gd"
 }, {
 "base": "Reference",
+"class": "AlarmClock",
+"language": "GDScript",
+"path": "res://addons/utils/alarm_clock.gd"
+}, {
+"base": "Reference",
 "class": "AssetsPreloader",
 "language": "GDScript",
 "path": "res://addons/GameFramework/com/assets_preloader.gd"
@@ -179,6 +184,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/utils/mod_funcref.gd"
 }, {
+"base": "Spatial",
+"class": "MunitionController",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/munition/munition_controller.gd"
+}, {
 "base": "Control",
 "class": "PauseMenuUI",
 "language": "GDScript",
@@ -303,6 +313,7 @@ _global_script_class_icons={
 "AirCombatant": "",
 "AirInstrument": "",
 "AircraftConfiguration": "",
+"AlarmClock": "",
 "AssetsPreloader": "",
 "BTBaseClass": "",
 "BTGraphNode": "",
@@ -334,6 +345,7 @@ _global_script_class_icons={
 "MCMaintainer": "",
 "MenuComponent": "",
 "ModifiedFuncRef": "",
+"MunitionController": "",
 "PauseMenuUI": "",
 "PilotConfiguration": "",
 "PilotController": "",

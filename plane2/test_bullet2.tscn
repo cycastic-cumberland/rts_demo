@@ -25,11 +25,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.08685 )
 
 [node name="WarheadCollider" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.97527 )
+collision_layer = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="WarheadCollider"]
 shape = SubResource( 1 )
 
 [node name="DamageZone" type="Area" parent="."]
+collision_layer = 2
 
 [node name="CollisionShape2" type="CollisionShape" parent="DamageZone"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -154.507 )

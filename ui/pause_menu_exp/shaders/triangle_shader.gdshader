@@ -7,6 +7,7 @@ uniform float random_time = 0.0;
 uniform vec4 base_color: hint_color = vec4(1.0);
 uniform float base_color_dim_percentage: hint_range(0, 1) = 0.0;
 uniform float dim_speed: hint_range(0, 5) = 1.0;
+uniform float alpha: hint_range(0, 1) = 1.0;
 uniform bool solid = false;
 uniform sampler2D albedo: hint_albedo;
 
@@ -41,5 +42,6 @@ void fragment(){
 	else
 		color = mix(mixed_color, mixed_color * base_color_dim_percentage, cos((TIME + random_time) * dim_speed));
 	color.a = min(filter, color.a);
+	color.a *= alpha;
 	COLOR = color;
 }

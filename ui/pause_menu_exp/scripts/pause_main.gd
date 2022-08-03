@@ -15,26 +15,36 @@ func _setup():
 	musik.volume_db = min_bgm
 	musik.playing = true
 	var _ignore = main_ui.connect("return_to_game", self, "return_game_handler")
-	_ignore = main_ui.connect("settings_menu", self, "main_menu_handler")
+	_ignore = main_ui.connect("settings_menu", self, "settings_menu_handler")
+
+func stack_action(reversed := false):
+	if not reversed:
+		bgm_tween.interpolate_property(musik, "volume_db", min_bgm, max_bgm, bgm_fade,\
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	else:
+		bgm_tween.interpolate_property(musik, "volume_db", max_bgm, min_bgm, bgm_fade,\
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	main_ui.visible = not reversed
+	bgm_tween.start()
 
 func _self_pushed():
-	bgm_tween.interpolate_property(musik, "volume_db", min_bgm, max_bgm, bgm_fade,\
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	bgm_tween.start()
-	main_ui.visible = true
+	._self_pushed()
+	stack_action()
 
 func _non_self_pushed():
 	main_ui.visible = false
 
 func _self_popped():
-	bgm_tween.interpolate_property(musik, "volume_db", max_bgm, min_bgm, bgm_fade,\
-			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	bgm_tween.start()
-	main_ui.visible = false
+	._self_popped()
+	stack_action(true)
+
+func _non_self_popped():
+	if focus:
+		main_ui.visible = true
 
 func return_game_handler():
 	if focus:
 		uicm.pop_state()
 
-func main_menu_handler():
-	uicm.push_with_key("MainMenu")
+func settings_menu_handler():
+	uicm.push_with_key("SettingsMenu")

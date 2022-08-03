@@ -50,14 +50,16 @@ func arm_arrived(_guidance: WeaponGuidance):
 	
 	sd.objects.append(exhaust)
 	particle_parents.remove_child(exhaust)
-	current_scene.add_child(exhaust)
+#	current_scene.add_child(exhaust)
+	current_scene.add_peripheral(exhaust, smoke.lifetime)
 	exhaust.translation = loc
 	afterburner.emitting = false
 	smoke.emitting = false
-	
 #	var ex := explosion.instance()
 	var ex := explosion2.instance()
-	current_scene.add_child(ex)
+#	current_scene.add_child(ex)
+	current_scene.add_peripheral(ex, -1.0)
+	yield(get_tree(), "idle_frame")
 	ex.translation = loc
 	ex.look_at(ex.global_transform.origin - \
 		guide._projectile.global_transform.basis.z, Vector3.UP)
@@ -68,13 +70,13 @@ func arm_arrived(_guidance: WeaponGuidance):
 		else:
 			ex.z_offset(0.0)
 	ex.play()
-	sd.destruct(smoke.lifetime, get_tree())
+#	sd.destruct(smoke.lifetime, get_tree())
 
 func _on_WarheadCollider_area_entered(area):
 	if not is_instance_valid(guide):
 		return
-	elif area.get_parent().has_method("__is_projectile"):
-		return
+#	elif area.get_parent().has_method("__is_projectile"):
+#		return
 	elif not guide._armed:
 		# WARNING: EXPLOITABLE
 		return

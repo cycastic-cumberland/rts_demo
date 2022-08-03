@@ -175,10 +175,10 @@ material/0 = null
 [node name="Spinner2" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -137.158, -7.62939e-06, 238.699 )
 script = ExtResource( 5 )
-speed = 4.0
+speed = 5.0
 
 [node name="Ricardo" type="MeshInstance" parent="Spinner2"]
-transform = Transform( 3.49108, 0, 3.57944, 0, 5, 0, -3.57944, 0, 3.49108, 0, 0, 0 )
+transform = Transform( 3.49108, 0, 3.57944, 0, 5, 0, -3.57944, 0, 3.49108, 0, 0, 200 )
 mesh = SubResource( 13 )
 skeleton = NodePath("../../DistanceCompensator")
 material/0 = null
