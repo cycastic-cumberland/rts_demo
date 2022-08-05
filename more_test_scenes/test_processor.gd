@@ -19,7 +19,7 @@ func _boot():
 
 func derived_boot():
 	while not terminated:
-		yield(host.get_tree().create_timer(3.0), "timeout")
+		yield(host.get_tree().create_timer(3.0, false), "timeout")
 		Out.print_debug("It's been 3 seconds")
 
 func _termination_handler(_proc):

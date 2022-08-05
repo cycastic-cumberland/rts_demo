@@ -294,6 +294,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Vehicular/vtol_fighter.gd"
 }, {
+"base": "Spatial",
+"class": "WarheadController",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/munition/warhead_controller.gd"
+}, {
 "base": "Configuration",
 "class": "WeaponConfiguration",
 "language": "GDScript",
@@ -367,6 +372,7 @@ _global_script_class_icons={
 "TreeEditorFileDialog": "",
 "VTOLController": "",
 "VTOLFighterBrain": "",
+"WarheadController": "",
 "WeaponConfiguration": "",
 "WeaponGuidance": "",
 "WeaponHandler": ""

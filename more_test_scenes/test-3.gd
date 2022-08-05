@@ -110,6 +110,9 @@ func derived_test(a: ProcessorsCluster):
 #		get_tree().quit(0)
 
 func _ready():
+	var a := get_viewport().get_signal_connection_list("size_changed")
+	for c in a:
+		print(c)
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X
@@ -212,8 +215,8 @@ var ssaa_scaling := 1.0
 func _lead_test(delta: float):
 #	if Input.is_action_just_pressed("ui_accept"):
 #		ssaa_scaling = wrapf(ssaa_scaling + 0.1, 1.0, 2.0)
-#		get_viewport().size = org_size * ssaa_scaling
-	pass
+#		LevelManager.template.scenes_holder.size = get_viewport().size * ssaa_scaling
+		pass
 
 func _process(delta):
 	loggit()

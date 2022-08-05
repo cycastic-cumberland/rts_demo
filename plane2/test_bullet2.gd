@@ -19,6 +19,7 @@ func arm_launched(guidance: WeaponGuidance):
 	if guidance._armed or is_instance_valid(guide):
 		return
 	elif guidance is HomingGuidance:
+		guidance.autofree_projectile = false
 		guide = guidance
 		var vtol = guidance.vtol
 		var turnRate = vtol._vehicle_config.turnRate
@@ -31,7 +32,7 @@ func arm_launched(guidance: WeaponGuidance):
 		vtol.enableGravity = true
 		afterburner.emitting = false
 		smoke.emitting = false
-		yield(get_tree().create_timer(guidance._arm_time), "timeout")
+		yield(get_tree().create_timer(guidance._arm_time, false), "timeout")
 		guidance._armed = true
 		guidance._damage_zone = damage_zone
 		guidance.emit_signal("__armmament_armed", guidance)
@@ -47,6 +48,9 @@ func arm_arrived(_guidance: WeaponGuidance):
 	var particle_parents: Node = exhaust.get_parent()
 	var loc = exhaust.global_transform.origin
 	var sd := self_destruct.new()
+	var vtol_ref = guide.vtol
+	var projectile_fwd: Vector3 = guide._projectile.global_transform.basis.z
+	var proximity_mode: int = guide.proximity_mode
 	
 	sd.objects.append(exhaust)
 	particle_parents.remove_child(exhaust)
@@ -62,14 +66,15 @@ func arm_arrived(_guidance: WeaponGuidance):
 	yield(get_tree(), "idle_frame")
 	ex.translation = loc
 	ex.look_at(ex.global_transform.origin - \
-		guide._projectile.global_transform.basis.z, Vector3.UP)
+		projectile_fwd, Vector3.UP)
 	
-	if guide is HomingGuidance:
-		if guide.proximity_mode != WeaponConfiguration.PROXIMITY_MODE.DELAYED:
-			ex.z_offset(1.0)
-		else:
-			ex.z_offset(0.0)
+	if proximity_mode != WeaponConfiguration.PROXIMITY_MODE.DELAYED:
+		ex.z_offset(1.0)
+	else:
+		ex.z_offset(0.0)
 	ex.play()
+	queue_free()
+	vtol_ref.queue_free()
 #	sd.destruct(smoke.lifetime, get_tree())
 
 func _on_WarheadCollider_area_entered(area):
