@@ -62,6 +62,8 @@ func _input(event):
 
 func setCameraRenderingDistance(distance: float):
 	renderDistance = distance
+	if not is_instance_valid(camera):
+		return
 	camera.setRenderDistance(renderDistance)
 
 func getCameraRenderingDistance():

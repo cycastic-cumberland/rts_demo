@@ -18,7 +18,7 @@ onready var squadron2 = $Squadron2
 onready var camera = $CameraController
 onready var light = $DirectionalLight
 
-onready var paths = [
+onready var paths: Array = [
 	$des1, $des2, $des3, $des4
 ]
 
@@ -110,9 +110,6 @@ func derived_test(a: ProcessorsCluster):
 #		get_tree().quit(0)
 
 func _ready():
-	var a := get_viewport().get_signal_connection_list("size_changed")
-	for c in a:
-		print(c)
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X
@@ -132,8 +129,6 @@ func _ready():
 #	weapon_handler.profile = deserialized
 #	weapon_handler2.profile = deserialized
 	pc_count()
-	Out.print_debug("Is it debug?: " + str(OS.is_debug_build()))
-	Out.print_debug("Stack test", get_stack())
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -150,7 +145,7 @@ func set_paths():
 		fighterList1[f].set_course(p)
 
 func initAll(squad):
-	for m in squad.memberList:
+	for m in squad.member_list:
 		fighterList1[m] = null
 		fighterList2[m] = null
 		flagList[m] = null
@@ -159,7 +154,7 @@ func addAllFighters(squad, fl):
 	for m in fl:
 		fl[m] = fighter.instance()
 		add_child(fl[m])
-		fl[m].translation = squad.memberList[m].global_transform.origin
+		fl[m].translation = squad.member_list[m].global_transform.origin
 		#---------------------------------------
 		fl[m]._vehicle_config.maxSpeed = 800.0
 		fl[m]._vehicle_config.deccelaration = -32.0
@@ -184,13 +179,13 @@ func addAllFlag(squad):
 		flagList[m].get_node("icon").fadeDistanceEnd = 180
 		add_child(flagList[m])
 		flagList[m].translation =\
-			squad.memberList[m].global_transform.origin
+			squad.member_list[m].global_transform.origin
 
 func guideAllFighter(squad):
 	for m in fighterList1:
 		if fighterList1[m] != null:
 			fighterList1[m].\
-				set_course(squad.memberList[m].global_transform.origin)
+				set_course(squad.member_list[m].global_transform.origin)
 
 func squadronTracking():
 	for m in fighterList1:
@@ -202,7 +197,7 @@ func relocateAllFlag(squad):
 	for m in flagList:
 		if flagList[m] != null:
 			flagList[m].translation =\
-				squad.memberList[m].global_transform.origin
+				squad.member_list[m].global_transform.origin
 
 func _fire_test(_delta: float):
 	if Input.is_action_just_pressed("ui_select"):
@@ -211,12 +206,29 @@ func _fire_test(_delta: float):
 
 #onready var org_size := Vector2(1920, 1080)
 var ssaa_scaling := 1.0
+var borderless_fullscreen := false
+var normal_windows_size := Vector2.ZERO
+var normal_windows_pos  := Vector2.ZERO
 
-func _lead_test(delta: float):
-#	if Input.is_action_just_pressed("ui_accept"):
-#		ssaa_scaling = wrapf(ssaa_scaling + 0.1, 1.0, 2.0)
-#		LevelManager.template.scenes_holder.size = get_viewport().size * ssaa_scaling
-		pass
+func _lead_test(_delta: float):
+	if Input.is_action_just_pressed("ui_accept"):
+#		var vec := PoolVector3Array([
+#			paths[0].global_transform.origin,
+#			paths[1].global_transform.origin,
+#			paths[2].global_transform.origin,
+#			paths[3].global_transform.origin
+#		])
+#		var first: VTOLFighterBrain = fighterList1[fighterList1.keys().front()]
+#		first.set_multides(vec)
+		borderless_fullscreen = not borderless_fullscreen
+		if borderless_fullscreen:
+			normal_windows_size = OS.window_size
+			normal_windows_pos  = OS.window_position
+		OS.window_borderless = borderless_fullscreen
+		OS.window_maximized = borderless_fullscreen
+		if not borderless_fullscreen:
+			OS.window_size = normal_windows_size
+			OS.window_position = normal_windows_pos
 
 func _process(delta):
 	loggit()
@@ -239,9 +251,19 @@ func loggit():
 	var f_loc: Vector3 = -fighterList1["P0"].global_transform.basis.z
 	var angle := f_loc.angle_to(l_loc)
 	di.table = {
+		"debug_build": str(OS.is_debug_build()),
+		"processor_name": OS.get_processor_name(),
+		"processor_count": OS.get_processor_count(),
+		"graphics_device_name": VisualServer.get_video_adapter_name(),
+		"graphics_device_vendor": VisualServer.get_video_adapter_vendor(),
+		"memory_static_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)),
+		"memory_dynamic_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)),
 		"delta": dT,
 		"physics_calls": physics_calls,
+		"borderless_fullscreen": borderless_fullscreen,
 		"angle": rad2deg(angle),
+		"throttle": fighterList1["P0"].throttle,
+		"distance": fighterList1["P0"].distance,
 		"last_location": dc.last_location,
 		"last_velocity": dc.last_velocity,
 		"last_direction": dc.last_direction,

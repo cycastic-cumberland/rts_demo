@@ -99,6 +99,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/configs/damage_modifiers_config.gd"
 }, {
+"base": "Reference",
+"class": "DataBridge",
+"language": "GDScript",
+"path": "res://addons/utils/data_bridge.gd"
+}, {
+"base": "Reference",
+"class": "DataBridgeStandalone",
+"language": "GDScript",
+"path": "res://addons/utils/data_bridge_standalone.gd"
+}, {
 "base": "Spatial",
 "class": "DistanceCompensator",
 "language": "GDScript",
@@ -264,10 +274,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/utils/skill_tree.gd"
 }, {
+"base": "Configuration",
+"class": "SquadronConfiguration",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/configs/squadron_config.gd"
+}, {
 "base": "HierachialController",
 "class": "SquadronController",
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/team_controller/SquadronController.gd"
+}, {
+"base": "Spatial",
+"class": "SquadronFormation",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/formations/squadron_formation.gd"
+}, {
+"base": "Configuration",
+"class": "TeamConfiguration",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/configs/team_config.gd"
 }, {
 "base": "HierachialController",
 "class": "TeamController",
@@ -333,6 +358,8 @@ _global_script_class_icons={
 "CombatantController": "",
 "Configuration": "",
 "DamageModifiersConfiguration": "",
+"DataBridge": "",
+"DataBridgeStandalone": "",
 "DistanceCompensator": "",
 "DistanceCompensatorV2": "",
 "DumbGuidance": "",
@@ -366,7 +393,10 @@ _global_script_class_icons={
 "SimpleFlightComputer": "",
 "SkillBranch": "",
 "SkillTree": "",
+"SquadronConfiguration": "",
 "SquadronController": "",
+"SquadronFormation": "",
+"TeamConfiguration": "",
 "TeamController": "",
 "TestProcessor1": "",
 "TreeEditorFileDialog": "",
@@ -391,10 +421,6 @@ SingletonManager="*res://addons/utils/singletons/singleton_manager.gd"
 Out="*res://addons/utils/singletons/error_handler.gd"
 IRM="*res://addons/utils/singletons/inref_manager.gd"
 LevelManager="*res://addons/GameFramework/level_manager.gd"
-
-[debug]
-
-settings/fps/force_fps=120
 
 [display]
 
@@ -481,8 +507,10 @@ game_pause={
 
 common/physics_fps=120
 common/enable_pause_aware_picking=true
+common/physics_interpolation=true
 
 [rendering]
 
 quality/directional_shadow/size=8192
+gles3/shaders/shader_compilation_mode=2
 environment/default_environment="res://default_env.tres"

@@ -128,7 +128,7 @@ operator = 2
 
 [resource]
 code = "shader_type spatial;
-render_mode specular_schlick_ggx;
+render_mode specular_schlick_ggx, async_visible;
 
 uniform float scrollSpeed;
 uniform sampler2D noise_x5;

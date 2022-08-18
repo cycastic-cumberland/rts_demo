@@ -1,8 +1,8 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
 [ext_resource path="res://cool_shaders/static_shader.gdshader" type="Shader" id=2]
-[ext_resource path="res://addons/Vehicular/squadrons/Squadron-WildWeasel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/EpicDogfight/formations/Squadron-WildWeasel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://camera/CameraController.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/Vehicular/misc/Spinner.gd" type="Script" id=5]
 [ext_resource path="res://FormidonisStella/formidonis_stella.tscn" type="PackedScene" id=6]
@@ -17,14 +17,54 @@
 [ext_resource path="res://cool_shaders/fog_noise_bump.tres" type="Texture" id=15]
 [ext_resource path="res://addons/uic/debug_info/DebugInfo.tscn" type="PackedScene" id=16]
 [ext_resource path="res://cool_shaders/fog_shader_unshaded.gdshader" type="Shader" id=17]
+[ext_resource path="res://cool_shaders/scrolling_cloud_shader.gdshader" type="Shader" id=19]
 
-[sub_resource type="CubeMesh" id=1]
-size = Vector3( 9, 9, 9 )
+[sub_resource type="PlaneMesh" id=25]
+size = Vector2( 2000, 2000 )
+subdivide_width = 100
+subdivide_depth = 100
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="OpenSimplexNoise" id=26]
 
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 900, 1, 900 )
+[sub_resource type="NoiseTexture" id=4]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource( 26 )
+
+[sub_resource type="OpenSimplexNoise" id=27]
+
+[sub_resource type="NoiseTexture" id=6]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource( 27 )
+
+[sub_resource type="OpenSimplexNoise" id=29]
+
+[sub_resource type="NoiseTexture" id=30]
+seamless = true
+noise = SubResource( 29 )
+
+[sub_resource type="ShaderMaterial" id=28]
+shader = ExtResource( 19 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/specular = 0.5
+shader_param/metallic = 0.0
+shader_param/roughness = 1.0
+shader_param/point_size = 1.0
+shader_param/uv1_scale = Vector3( 1, 1, 1 )
+shader_param/uv1_offset = Vector3( 0, 0, 0 )
+shader_param/uv2_scale = Vector3( 1, 1, 1 )
+shader_param/uv2_offset = Vector3( 0, 0, 0 )
+shader_param/depth_strength = 100.0
+shader_param/vdisp_modifier = 40.0
+shader_param/vdisp_height = -70.0
+shader_param/vdisp_flow_speed = 0.05
+shader_param/vdisp_flow_dir = Vector2( 1, 1 )
+shader_param/vertex_displacement = SubResource( 6 )
+shader_param/vertex_flowmap = SubResource( 30 )
+shader_param/albedo_noise = SubResource( 4 )
 
 [sub_resource type="SpatialMaterial" id=10]
 flags_unshaded = true
@@ -121,11 +161,18 @@ shader_param/scrolling_speed = 1.0
 shader_param/enable_palette_cycling = false
 shader_param/palette_speed = 0.1
 
+[sub_resource type="BoxShape" id=24]
+
 [node name="test-3" type="Spatial"]
 script = ExtResource( 1 )
 bullet = ExtResource( 10 )
 
+[node name="FlowmapCloud" type="MeshInstance" parent="."]
+mesh = SubResource( 25 )
+material/0 = SubResource( 28 )
+
 [node name="CameraController" parent="." instance=ExtResource( 4 )]
+renderDistance = 1000.0
 cameraRotationSpeed = 100.0
 defaultCameraExtension = 300.0
 usePhysicsProcess = false
@@ -136,19 +183,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -262.291, 20, -261.93 )
 [node name="Squadron2" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.009, 20, 222.14 )
 
-[node name="StaticBody" type="StaticBody" parent="."]
-
-[node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
-transform = Transform( 300, 0, 0, 0, 1, 0, 0, 0, 300, 0, 0, 0 )
-visible = false
-mesh = SubResource( 1 )
-material/0 = SubResource( 6 )
-
-[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 3 )
-
 [node name="DebugInfo" parent="." instance=ExtResource( 16 )]
+separator_character_count = 80
+separators = PoolStringArray( "memory_usage" )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.819152, 0.573577, 0, -0.573577, -0.819152, -279.141, 44.3293, -60.2457 )
@@ -170,7 +207,6 @@ offset_texture = ExtResource( 14 )
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0 )
 visible = false
 mesh = SubResource( 11 )
-material/0 = null
 
 [node name="Spinner2" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -137.158, -7.62939e-06, 238.699 )
@@ -181,14 +217,12 @@ speed = 5.0
 transform = Transform( 3.49108, 0, 3.57944, 0, 5, 0, -3.57944, 0, 3.49108, 0, 0, 200 )
 mesh = SubResource( 13 )
 skeleton = NodePath("../../DistanceCompensator")
-material/0 = null
 
 [node name="Sphere" type="MeshInstance" parent="."]
 transform = Transform( 18.0473, 0, 18.504, 0, 25.8477, 0, -18.504, 0, 18.0473, -316.587, -7.62939e-06, 101.92 )
 use_in_baked_light = true
 mesh = SubResource( 15 )
 skeleton = NodePath("../DistanceCompensator")
-material/0 = null
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Sphere"]
 extents = Vector3( 300, 100, 300 )
@@ -199,10 +233,13 @@ box_projection = true
 [node name="CollisionShape" type="CollisionShape" parent="Sphere/Area"]
 shape = SubResource( 16 )
 
-[node name="Shippy" type="Spatial" parent="."]
+[node name="Shippy" type="StaticBody" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 
 [node name="formidonis_stella" parent="Shippy" instance=ExtResource( 6 )]
+
+[node name="CollisionShape" type="CollisionShape" parent="Shippy"]
+shape = SubResource( 22 )
 
 [node name="Area" type="Area" parent="Shippy"]
 
@@ -247,3 +284,9 @@ anchor_bottom = 1.0
 material = SubResource( 23 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="TheFloor" type="StaticBody" parent="."]
+transform = Transform( 10000, 0, 0, 0, 1, 0, 0, 0, 10000, 0, 0, -0.5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="TheFloor"]
+shape = SubResource( 24 )
