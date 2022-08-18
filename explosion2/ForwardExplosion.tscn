@@ -71,4 +71,3 @@ draw_pass_1 = SubResource( 8 )
 transform = Transform( 2, 0, 0, 0, -1.22392e-07, -2, 0, 2.8, -8.74228e-08, 0, 0, -2.79204 )
 visible = false
 mesh = ExtResource( 3 )
-material/0 = null

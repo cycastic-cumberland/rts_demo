@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Processors/instruments/combat_instrument.gd"
 }, {
+"base": "Node",
+"class": "CombatServer",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/singletons/CombatServer.gd"
+}, {
 "base": "KinematicBody",
 "class": "Combatant",
 "language": "GDScript",
@@ -98,6 +103,11 @@ _global_script_classes=[ {
 "class": "DamageModifiersConfiguration",
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/configs/damage_modifiers_config.gd"
+}, {
+"base": "Reference",
+"class": "DamageRequest",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/misc/damage_request.gd"
 }, {
 "base": "Reference",
 "class": "DataBridge",
@@ -158,6 +168,11 @@ _global_script_classes=[ {
 "class": "HomingGuidance",
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/guidances/homing.gd"
+}, {
+"base": "Configuration",
+"class": "HullProfile",
+"language": "GDScript",
+"path": "res://addons/Vehicular/configs/hull_profile.gd"
 }, {
 "base": "Reference",
 "class": "InRef",
@@ -304,6 +319,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://more_test_scenes/test_processor.gd"
 }, {
+"base": "Reference",
+"class": "Toolkits",
+"language": "GDScript",
+"path": "res://addons/utils/general_tools.gd"
+}, {
 "base": "EditorFileDialog",
 "class": "TreeEditorFileDialog",
 "language": "GDScript",
@@ -354,10 +374,12 @@ _global_script_class_icons={
 "ChainOfCommand": "",
 "CombatComputer": "",
 "CombatInstrument": "",
+"CombatServer": "",
 "Combatant": "",
 "CombatantController": "",
 "Configuration": "",
 "DamageModifiersConfiguration": "",
+"DamageRequest": "",
 "DataBridge": "",
 "DataBridgeStandalone": "",
 "DistanceCompensator": "",
@@ -370,6 +392,7 @@ _global_script_class_icons={
 "GeometryMf": "",
 "HierachialController": "",
 "HomingGuidance": "",
+"HullProfile": "",
 "InRef": "",
 "LevelConfiguration": "res://addons/GameFramework/icons/level_res_icon.png",
 "LevelTemplate": "",
@@ -399,6 +422,7 @@ _global_script_class_icons={
 "TeamConfiguration": "",
 "TeamController": "",
 "TestProcessor1": "",
+"Toolkits": "",
 "TreeEditorFileDialog": "",
 "VTOLController": "",
 "VTOLFighterBrain": "",

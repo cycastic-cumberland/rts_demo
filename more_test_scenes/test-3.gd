@@ -121,6 +121,9 @@ func _ready():
 	addAllFlag(squadron)
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+	
+#	var fighter2: VTOLFighterBrain = fighterList1["P1"]
+#	DataBridge.try_set(fighter2, "_vehicle_config.maxSpeed", 300.0)
 #	var profile := weapon_handler.profile
 #	var cfg_server = SingletonManager.static_services["ConfigSerializer"]
 #	var serialized = cfg_server.serialize(profile)
