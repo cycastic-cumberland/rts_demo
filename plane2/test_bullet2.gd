@@ -32,7 +32,7 @@ func arm_launched(guidance: WeaponGuidance):
 		vtol.enableGravity = true
 		afterburner.emitting = false
 		smoke.emitting = false
-		yield(get_tree().create_timer(guidance._arm_time, false), "timeout")
+		yield(Out.timer(guidance._arm_time), "timeout")
 		guidance._armed = true
 		guidance._damage_zone = damage_zone
 		guidance.emit_signal("__armmament_armed", guidance)

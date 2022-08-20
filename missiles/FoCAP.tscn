@@ -4,7 +4,7 @@
 [ext_resource path="res://explosion2/ForwardExplosion.tscn" type="PackedScene" id=2]
 [ext_resource path="res://plane2/jdam.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/EpicDogfight/munition/warhead_controller.gd" type="Script" id=4]
-[ext_resource path="res://addons/EpicDogfight/munition/munition_controller.gd" type="Script" id=5]
+[ext_resource path="res://missiles/delayed_launch_missile.gd" type="Script" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.3, 0.3, 0.3 )
@@ -18,6 +18,7 @@ particles_holder = NodePath("EngineExhaust")
 script = ExtResource( 4 )
 explosion = NodePath("ForwardExplosion")
 warhead_collider = NodePath("WarheadCollider")
+explosion_lifetime = 3.0
 
 [node name="ForwardExplosion" parent="Warhead" instance=ExtResource( 2 )]
 

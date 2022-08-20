@@ -63,10 +63,6 @@ explosiveness = 1.0
 process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 8 )
 
-[node name="FP" type="Tween" parent="Exp"]
-
-[node name="Emission" type="Tween" parent="Exp"]
-
 [node name="CollisionShape" type="MeshInstance" parent="."]
 transform = Transform( 2, 0, 0, 0, -1.22392e-07, -2, 0, 2.8, -8.74228e-08, 0, 0, -2.79204 )
 visible = false
