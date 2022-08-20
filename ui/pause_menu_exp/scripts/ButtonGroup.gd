@@ -11,4 +11,5 @@ func add_defered(button: Button, bellow: Node):
 		call_deferred("add_child_below_node", button, bellow)
 	else:
 		call_deferred("add_child", button)
+		button.set_deferred("owner", self)
 	button.owner = owner

@@ -19,6 +19,9 @@ const E_PATH :=  "material_override:shader_param/emission_strength"
 func z_offset(amount: float):
 	$Exp.translation = Vector3(0.0, 0.0, amount)
 
+func make_kaboom():
+	play()
+
 func play():
 	explosion1.emitting = true
 	explosion1.lifetime = ani_lifetime

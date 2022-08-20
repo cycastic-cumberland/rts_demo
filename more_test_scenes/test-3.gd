@@ -95,21 +95,23 @@ func pc_count():
 
 var cluster: ProcessorsCluster
 
-func derived_test(a: ProcessorsCluster):
-	while not a.is_ready:
-		Out.print_debug("Waiting for godot...")
-		yield(get_tree(), "idle_frame")
-	Out.print_debug("Done!")
-	a.commission()
+var ownerless := []
 
-#func steam_init():
-#	var steam_status := Steam.steamInit()
-#	Out.print_steamstat(steam_status["verbal"])
-#	if steam_status["status"] != 1:
-#		Out.print_fatal("Failed to initialize Steam, exiting")
-#		get_tree().quit(0)
+func find_ownerless(start_at: Node):
+	var children := start_at.get_children()
+	for child in children:
+		if child.owner == null or not is_instance_valid(child.owner):
+			ownerless.append(child)
+		find_ownerless(child)
+
+func print_ownerless():
+	find_ownerless(LevelManager.template)
+	print("Ownerless:")
+	for node in ownerless:
+		print(node.get_path())
 
 func _ready():
+	# owner = get_parent()
 	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().fxaa = true
 	get_viewport().msaa = Viewport.MSAA_16X
@@ -121,17 +123,11 @@ func _ready():
 	addAllFlag(squadron)
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
-	
-#	var fighter2: VTOLFighterBrain = fighterList1["P1"]
-#	DataBridge.try_set(fighter2, "_vehicle_config.maxSpeed", 300.0)
-#	var profile := weapon_handler.profile
-#	var cfg_server = SingletonManager.static_services["ConfigSerializer"]
-#	var serialized = cfg_server.serialize(profile)
-#	pass
-#	var deserialized = cfg_server.deserialize(serialized)
-#	weapon_handler.profile = deserialized
-#	weapon_handler2.profile = deserialized
 	pc_count()
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+	# print_ownerless()
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -157,6 +153,7 @@ func addAllFighters(squad, fl):
 	for m in fl:
 		fl[m] = fighter.instance()
 		add_child(fl[m])
+		fl[m].owner = self
 		fl[m].translation = squad.member_list[m].global_transform.origin
 		#---------------------------------------
 		fl[m]._vehicle_config.maxSpeed = 800.0
@@ -170,6 +167,7 @@ func addAllFighters(squad, fl):
 		if m == "P0" and playMusik:
 			var audio_player = AudioStreamPlayer3D.new()
 			fl[m].add_child(audio_player)
+			audio_player.owner = fl[m]
 			audio_player.stream = musik
 			audio_player.unit_db = 80.0
 			audio_player.autoplay = true
@@ -181,6 +179,7 @@ func addAllFlag(squad):
 		flagList[m].get_node("icon").fadeDistanceStart = 100
 		flagList[m].get_node("icon").fadeDistanceEnd = 180
 		add_child(flagList[m])
+		flagList[m].owner = self
 		flagList[m].translation =\
 			squad.member_list[m].global_transform.origin
 
@@ -265,6 +264,7 @@ func loggit():
 		"physics_calls": physics_calls,
 		"borderless_fullscreen": borderless_fullscreen,
 		"angle": rad2deg(angle),
+		"suggested": (fighterList1["P0"] as VTOLFighterBrain).accbs.suggested_direction,
 		"throttle": fighterList1["P0"].throttle,
 		"distance": fighterList1["P0"].distance,
 		"last_location": dc.last_location,
