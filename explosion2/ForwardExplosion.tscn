@@ -53,6 +53,8 @@ color_ramp = SubResource( 2 )
 [node name="ForwardExplosion" type="Spatial"]
 transform = Transform( 50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0 )
 script = ExtResource( 1 )
+progress_percentile = 0.133
+emission_percentile = 0.233
 
 [node name="Exp" type="Particles" parent="."]
 material_override = ExtResource( 2 )

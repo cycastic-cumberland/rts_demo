@@ -113,9 +113,9 @@ func print_ownerless():
 func _ready():
 	# owner = get_parent()
 	get_viewport().usage = Viewport.USAGE_3D
-#	get_viewport().fxaa = true
-	get_viewport().msaa = Viewport.MSAA_16X
+	get_viewport().fxaa = true
 	get_viewport().sharpen_intensity = 0.5
+#	get_viewport().msaa = Viewport.MSAA_16X
 	lastPos = squadron.global_transform.origin
 	light.directional_shadow_max_distance = 1000.0
 	initAll(squadron)
@@ -124,9 +124,6 @@ func _ready():
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
-	yield(get_tree(), "idle_frame")
-	yield(get_tree(), "idle_frame")
-	yield(get_tree(), "idle_frame")
 	# print_ownerless()
 
 func _exit_tree():
@@ -238,10 +235,36 @@ func _process(delta):
 	_fire_test(delta)
 	_lead_test(delta)
 
+var vg_save_path := "res://vg_graph.tres"
+var vg_res := Curve.new()
+var vg_timer := 0.0
+var vg_interval := 0.25
+var vg_started := false
+
+
+func graph_plot():
+	var seconds := vg_interval
+	var fighter := (fighterList1["P0"] as VTOLFighterBrain)
+	while fighter.isMoving:
+		yield(get_tree(), "physics_frame")
+		vg_timer += SingletonManager.fetch("UtilsSettings").fixed_delta
+		if vg_timer >= seconds:
+			seconds += vg_interval
+			vg_res.add_point(Vector2(vg_timer, fighter.currentSpeed))
+	# Save now
+	vg_res.add_point(Vector2(vg_timer, 0.0))
+	ResourceSaver.save(vg_save_path, vg_res)
+
+func velocity_graph():
+	if not vg_started and (fighterList1["P0"] as VTOLFighterBrain).isMoving:
+		vg_started = true
+		vg_res.max_value = 3000.0
+#		graph_plot()
+
 func _physics_process(_delta):
 	# _lead_test(delta)
 	pcalls_count += 1
-	pass
+	velocity_graph()
 
 onready var di := $DebugInfo
 
@@ -261,6 +284,8 @@ func loggit():
 		"memory_static_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)),
 		"memory_dynamic_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)),
 		"delta": dT,
+		"is_moving_1": (fighterList1["P0"] as VTOLFighterBrain).isMoving,
+		"is_moving_2": (fighterList1["P1"] as VTOLFighterBrain).isMoving,
 		"physics_calls": physics_calls,
 		"borderless_fullscreen": borderless_fullscreen,
 		"angle": rad2deg(angle),

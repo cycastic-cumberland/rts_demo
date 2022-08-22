@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
 [ext_resource path="res://cool_shaders/static_shader.gdshader" type="Shader" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://cool_shaders/fog_noise_bump.tres" type="Texture" id=15]
 [ext_resource path="res://addons/uic/debug_info/DebugInfo.tscn" type="PackedScene" id=16]
 [ext_resource path="res://cool_shaders/fog_shader_unshaded.gdshader" type="Shader" id=17]
+[ext_resource path="res://more_test_scenes/Ricardo.gd" type="Script" id=18]
 [ext_resource path="res://cool_shaders/scrolling_cloud_shader.gdshader" type="Shader" id=19]
 
 [sub_resource type="PlaneMesh" id=25]
@@ -82,6 +83,9 @@ uv1_triplanar = true
 [sub_resource type="CubeMesh" id=13]
 material = SubResource( 12 )
 size = Vector3( 10, 10, 10 )
+
+[sub_resource type="BoxShape" id=31]
+extents = Vector3( 25, 25, 25 )
 
 [sub_resource type="SpatialMaterial" id=14]
 metallic = 1.0
@@ -173,7 +177,7 @@ mesh = SubResource( 25 )
 material/0 = SubResource( 28 )
 
 [node name="CameraController" parent="." instance=ExtResource( 4 )]
-renderDistance = 1000.0
+renderDistance = 1500.0
 cameraRotationSpeed = 100.0
 defaultCameraExtension = 300.0
 usePhysicsProcess = false
@@ -212,12 +216,19 @@ mesh = SubResource( 11 )
 [node name="Spinner2" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -137.158, -7.62939e-06, 238.699 )
 script = ExtResource( 5 )
-speed = 0.0
+speed = 5.0
 
-[node name="Ricardo" type="MeshInstance" parent="Spinner2"]
-transform = Transform( 3.49108, 0, 3.57944, 0, 5, 0, -3.57944, 0, 3.49108, 0, 0, 200 )
+[node name="Ricardo" type="KinematicBody" parent="Spinner2"]
+transform = Transform( 0.698216, 0, 0.715888, 0, 1, 0, -0.715888, 0, 0.698216, 0, 0, 200 )
+script = ExtResource( 18 )
+
+[node name="Realcardo" type="MeshInstance" parent="Spinner2/Ricardo"]
+transform = Transform( 5, 0, -1.49012e-07, 0, 5, 0, 1.49012e-07, 0, 5, 0, 0, 0 )
 mesh = SubResource( 13 )
-skeleton = NodePath("../../DistanceCompensator")
+skeleton = NodePath("../../../DistanceCompensator")
+
+[node name="CollisionShape" type="CollisionShape" parent="Spinner2/Ricardo"]
+shape = SubResource( 31 )
 
 [node name="Sphere" type="MeshInstance" parent="."]
 transform = Transform( 18.0473, 0, 18.504, 0, 25.8477, 0, -18.504, 0, 18.0473, -316.587, -7.62939e-06, 101.92 )

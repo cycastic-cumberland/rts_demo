@@ -27,6 +27,7 @@ void vertex() {
 	vec2 uv_flow = UV;
 	uv_flow += (vdisp_flow_speed * TIME) * normalize(vdisp_flow_dir);
 	uv_flow *= texture(vertex_flowmap, UV).r;
+
 	float disp = (texture(vertex_displacement, uv_flow).r * vdisp_modifier) + vdisp_height;
 	VERTEX.y = disp;
 }
