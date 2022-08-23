@@ -270,11 +270,12 @@ onready var di := $DebugInfo
 
 func loggit():
 	var l_loc: Vector3
-	l_loc = fighterList1["P0"].global_transform.origin.direction_to(
-		launcher.global_transform.origin
-	)
-	var f_loc: Vector3 = -fighterList1["P0"].global_transform.basis.z
-	var angle := f_loc.angle_to(l_loc)
+	var fighter_loc: Vector3 = fighterList1["P0"].global_transform.origin
+	var angle := 0.0
+	if is_instance_valid(launcher):
+		l_loc = fighter_loc.direction_to(launcher.global_transform.origin)
+		var f_loc: Vector3 = -fighterList1["P0"].global_transform.basis.z
+		angle = f_loc.angle_to(l_loc)
 	di.table = {
 		"debug_build": str(OS.is_debug_build()),
 		"processor_name": OS.get_processor_name(),
@@ -289,7 +290,8 @@ func loggit():
 		"physics_calls": physics_calls,
 		"borderless_fullscreen": borderless_fullscreen,
 		"angle": rad2deg(angle),
-		"suggested": (fighterList1["P0"] as VTOLFighterBrain).accbs.suggested_direction,
+		"forward": -fighterList1["P0"].global_transform.basis.z,
+		"min_ray_delta": (fighterList1["P0"] as VTOLFighterBrain).accbs.raw_sensor_data.length(),
 		"throttle": fighterList1["P0"].throttle,
 		"distance": fighterList1["P0"].distance,
 		"last_location": dc.last_location,

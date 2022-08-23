@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "AirCombatant",
+"class": "AdvancedFighterBrain",
+"language": "GDScript",
+"path": "res://addons/Vehicular/afb.gd"
+}, {
 "base": "Node",
 "class": "AirComCBS",
 "language": "GDScript",
@@ -375,6 +380,7 @@ _global_script_classes=[ {
 "path": "res://addons/EpicDogfight/misc/WeaponHandler.gd"
 } ]
 _global_script_class_icons={
+"AdvancedFighterBrain": "",
 "AirComCBS": "",
 "AirCombatant": "",
 "AirInstrument": "",

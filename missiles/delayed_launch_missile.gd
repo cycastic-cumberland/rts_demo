@@ -2,9 +2,9 @@ extends MunitionController
 
 const SPEED_LIMIT_PERCENTILE := 0.9
 
-func premature_detonation_handler(_area):
+func premature_detonation_handler(area):
 	if guidance._armed:
-		guidance._finalize()
+		.premature_detonation_handler(area)
 	else:
 		Toolkits.TrialTools.try_set(warhead_ref, "wc_ref.monitoring", false)
 		guidance.vtol.trackingTarget = null
@@ -23,7 +23,7 @@ func _start():
 	vtol._vehicle_config.turnRate = 0.0
 	vtol._vehicle_config.maxTurnRate = 0.0
 	# Simulate drag by making the deliver slower than the carrier
-	vtol._vehicle_config.maxSpeed = vtol.inheritedSpeed\
+	vtol._vehicle_config.maxSpeed = vtol.inheritedSpeed \
 		* SPEED_LIMIT_PERCENTILE
 	vtol.enableGravity = true
 	set_particle_emit(false)

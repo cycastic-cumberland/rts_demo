@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
 [ext_resource path="res://cool_shaders/static_shader.gdshader" type="Shader" id=2]
@@ -9,14 +9,12 @@
 [ext_resource path="res://env/procedural_sky.tres" type="Environment" id=7]
 [ext_resource path="res://FPSCounter/FPSCounter.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/EpicDogfight/misc/dc_scene.tscn" type="PackedScene" id=9]
-[ext_resource path="res://missiles/FoCAP.tscn" type="PackedScene" id=10]
+[ext_resource path="res://missiles/FoCAP_exp.tscn" type="PackedScene" id=10]
 [ext_resource path="res://more_test_scenes/ricardo.jpg" type="Texture" id=11]
 [ext_resource path="res://ui/pause_menu_exp/scenes/pause_menu.tscn" type="PackedScene" id=12]
 [ext_resource path="res://cool_shaders/ScreenSpaceChromaAberration.tscn" type="PackedScene" id=13]
 [ext_resource path="res://cool_shaders/chroma_noise.tres" type="Texture" id=14]
-[ext_resource path="res://cool_shaders/fog_noise_bump.tres" type="Texture" id=15]
 [ext_resource path="res://addons/uic/debug_info/DebugInfo.tscn" type="PackedScene" id=16]
-[ext_resource path="res://cool_shaders/fog_shader_unshaded.gdshader" type="Shader" id=17]
 [ext_resource path="res://more_test_scenes/Ricardo.gd" type="Script" id=18]
 [ext_resource path="res://cool_shaders/scrolling_cloud_shader.gdshader" type="Shader" id=19]
 
@@ -99,58 +97,6 @@ material = SubResource( 14 )
 [sub_resource type="BoxShape" id=22]
 extents = Vector3( 115.847, 115, 1000 )
 
-[sub_resource type="PlaneMesh" id=17]
-size = Vector2( 10000, 10000 )
-
-[sub_resource type="Gradient" id=18]
-colors = PoolColorArray( 0, 0, 0, 1, 0.0263672, 0.0179729, 0.0095787, 1 )
-
-[sub_resource type="GradientTexture" id=19]
-gradient = SubResource( 18 )
-
-[sub_resource type="ShaderMaterial" id=20]
-shader = ExtResource( 17 )
-shader_param/strength = 1.0
-shader_param/inverted = false
-shader_param/use_ramp = true
-shader_param/use_depth_as_uv = true
-shader_param/albedo_modifier = 2.0
-shader_param/intersection_color = Color( 1, 1, 1, 1 )
-shader_param/intersection_blend = 0.0
-shader_param/blend_alpha = false
-shader_param/alpha_override = 0.0
-shader_param/use_surface_scrolling = true
-shader_param/use_bump_map = true
-shader_param/bump_map_noise = true
-shader_param/scroll_direction = Vector2( 1, 1 )
-shader_param/scroll_speed = 0.02
-shader_param/second_scroll_mod = 1.338
-shader_param/bump_scale = 2.0
-shader_param/ramp = SubResource( 19 )
-shader_param/bump_map = ExtResource( 15 )
-shader_param/noise_no1 = ExtResource( 15 )
-
-[sub_resource type="ShaderMaterial" id=21]
-shader = ExtResource( 17 )
-shader_param/strength = 476.924
-shader_param/inverted = true
-shader_param/use_ramp = true
-shader_param/use_depth_as_uv = true
-shader_param/albedo_modifier = 2.0
-shader_param/intersection_color = Color( 0.31, 0.31, 0.31, 1 )
-shader_param/intersection_blend = 0.176
-shader_param/blend_alpha = false
-shader_param/alpha_override = 0.0
-shader_param/use_surface_scrolling = true
-shader_param/use_bump_map = true
-shader_param/bump_map_noise = false
-shader_param/scroll_direction = Vector2( 1, 1 )
-shader_param/scroll_speed = 0.04
-shader_param/second_scroll_mod = 1.0
-shader_param/bump_scale = 2.0
-shader_param/ramp = SubResource( 19 )
-shader_param/bump_map = ExtResource( 15 )
-
 [sub_resource type="ShaderMaterial" id=23]
 shader = ExtResource( 2 )
 shader_param/screen_height = 2000.0
@@ -183,7 +129,7 @@ defaultCameraExtension = 300.0
 usePhysicsProcess = false
 
 [node name="Squadron-WildWeasel" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -262.291, 20, -261.93 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -486.367, 20, 16.1668 )
 
 [node name="Squadron2" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.009, 20, 222.14 )
@@ -241,12 +187,14 @@ extents = Vector3( 300, 100, 300 )
 box_projection = true
 
 [node name="Area" type="Area" parent="Sphere"]
+collision_layer = 8
 
 [node name="CollisionShape" type="CollisionShape" parent="Sphere/Area"]
 shape = SubResource( 16 )
 
 [node name="Shippy" type="StaticBody" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+collision_layer = 8
 
 [node name="formidonis_stella" parent="Shippy" instance=ExtResource( 6 )]
 
@@ -269,21 +217,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -345.659, 20, 273.46 )
 
 [node name="des4" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -542.539, 20, 269.818 )
-
-[node name="BottomFog" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -34.8262, 0 )
-visible = false
-
-[node name="Fog" type="MeshInstance" parent="BottomFog"]
-mesh = SubResource( 17 )
-skeleton = NodePath("../..")
-material/0 = SubResource( 20 )
-
-[node name="FogUpper" type="MeshInstance" parent="BottomFog"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-mesh = SubResource( 17 )
-skeleton = NodePath("../..")
-material/0 = SubResource( 21 )
 
 [node name="PauseMenu" parent="." instance=ExtResource( 12 )]
 

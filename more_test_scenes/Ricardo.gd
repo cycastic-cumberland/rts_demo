@@ -10,7 +10,8 @@ func _init():
 func oof():
 	no_hp = true
 	Out.print_debug("Oopsie doopsie")
-	visible = false
+#	visible = false
+	queue_free()
 
 func hp_update(_hull, curr: float, amount: float):
 	Out.print_debug("Current amount: {c}, delta: ({d})"\
