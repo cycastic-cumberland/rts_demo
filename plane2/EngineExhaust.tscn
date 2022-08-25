@@ -90,6 +90,6 @@ material_override = SubResource( 8 )
 cast_shadow = 0
 amount = 200
 lifetime = 2.0
-visibility_aabb = AABB( 10, -4, -4, -20, 8, 50 )
+visibility_aabb = AABB( -500, 0, -500, 1000, 20, 1000 )
 local_coords = false
 process_material = SubResource( 9 )

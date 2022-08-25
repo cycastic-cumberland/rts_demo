@@ -110,6 +110,43 @@ func print_ownerless():
 	for node in ownerless:
 		print(node.get_path())
 
+func state_machine_test():
+	var swarm = SingletonManager.fetch("ProcessorsSwarm")
+	if swarm == null:
+		return
+	var cluster1 := (swarm as ProcessorsSwarm).add_cluster("TestStateMachine")
+	while not cluster1.get_parent():
+		yield(get_tree(), "idle_frame")
+	Out.print_debug("Cluster ready")
+	var state_machine := StateMachine.new()
+	var test_state1 := TestState.new()
+	test_state1.state_name = "TestInterval1"
+	var test_state2 := TestState.new()
+	test_state2.state_name = "TestInterval2"
+	var test_state3 := TestState.new()
+	test_state3.state_name = "TestInterval3"
+	cluster1.add_nopr(state_machine)
+	cluster1.commission()
+
+	test_state1.interval = 3.2
+	test_state2.interval = 1.4
+	test_state3.interval = 1.2
+	test_state3.exclusive = true
+	
+	test_state1.is_yield_test = true
+	state_machine.add_state(test_state1)
+#	state_machine.add_state(test_state2)
+#	state_machine.insert_state(test_state3, "TestInterval1")
+#	yield(Out.timer(4.0), "timeout")
+#	Out.print_debug("WOOP WOOP")
+#	test_state3.pop()
+#	yield(Out.timer(3.0), "timeout")
+#	Out.print_debug("WOOP WOOP")
+#	state_machine.is_paused = true
+#	yield(Out.timer(2.0), "timeout")
+#	Out.print_debug("WOOP WOOP")
+#	state_machine.is_paused = false
+
 func _ready():
 	# owner = get_parent()
 	get_viewport().usage = Viewport.USAGE_3D
@@ -124,6 +161,7 @@ func _ready():
 	weapon_handler = setup_w_handler()
 	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	pc_count()
+#	state_machine_test()
 	# print_ownerless()
 
 func _exit_tree():
@@ -244,13 +282,13 @@ var vg_started := false
 
 func graph_plot():
 	var seconds := vg_interval
-	var fighter := (fighterList1["P0"] as VTOLFighterBrain)
-	while fighter.isMoving:
+	var f := (fighterList1["P0"] as VTOLFighterBrain)
+	while f.isMoving:
 		yield(get_tree(), "physics_frame")
 		vg_timer += SingletonManager.fetch("UtilsSettings").fixed_delta
 		if vg_timer >= seconds:
 			seconds += vg_interval
-			vg_res.add_point(Vector2(vg_timer, fighter.currentSpeed))
+			vg_res.add_point(Vector2(vg_timer, f.currentSpeed))
 	# Save now
 	vg_res.add_point(Vector2(vg_timer, 0.0))
 	ResourceSaver.save(vg_save_path, vg_res)
