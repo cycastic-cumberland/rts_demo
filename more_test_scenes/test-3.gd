@@ -125,7 +125,7 @@ func state_machine_test():
 	test_state2.state_name = "TestInterval2"
 	var test_state3 := TestState.new()
 	test_state3.state_name = "TestInterval3"
-	cluster1.add_nopr(state_machine)
+	cluster1.add_processor_no_boot(state_machine)
 	cluster1.commission()
 
 	test_state1.interval = 3.2
@@ -133,16 +133,19 @@ func state_machine_test():
 	test_state3.interval = 1.2
 	test_state3.exclusive = true
 	
-	test_state1.is_yield_test = true
 	state_machine.add_state(test_state1)
-#	state_machine.add_state(test_state2)
-#	state_machine.insert_state(test_state3, "TestInterval1")
-#	yield(Out.timer(4.0), "timeout")
-#	Out.print_debug("WOOP WOOP")
-#	test_state3.pop()
-#	yield(Out.timer(3.0), "timeout")
-#	Out.print_debug("WOOP WOOP")
+	state_machine.add_state(test_state2)
+	state_machine.add_state_prioritized(test_state3)
 #	state_machine.is_paused = true
+#	yield(Out.timer(14.0), "timeout")
+#	yield()
+#	state_machine.is_paused = false
+	yield(Out.timer(4.0), "timeout")
+	Out.print_debug("WOOP WOOP")
+	test_state3.pop()
+	yield(Out.timer(3.0), "timeout")
+	Out.print_debug("WOOP WOOP")
+	state_machine.is_paused = true
 #	yield(Out.timer(2.0), "timeout")
 #	Out.print_debug("WOOP WOOP")
 #	state_machine.is_paused = false
