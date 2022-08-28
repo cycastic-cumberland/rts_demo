@@ -369,15 +369,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Processors/state_machine/states/test_state.gd"
 }, {
-"base": "Reference",
-"class": "Toolkits",
-"language": "GDScript",
-"path": "res://addons/utils/general_tools.gd"
-}, {
 "base": "EditorFileDialog",
 "class": "TreeEditorFileDialog",
 "language": "GDScript",
 "path": "res://addons/BehaviorTree/ui/tree_editor_fd.gd"
+}, {
+"base": "Reference",
+"class": "Utilities",
+"language": "GDScript",
+"path": "res://addons/utils/general_tools.gd"
 }, {
 "base": "CombatantController",
 "class": "VTOLController",
@@ -413,6 +413,11 @@ _global_script_classes=[ {
 "class": "WeaponHandler",
 "language": "GDScript",
 "path": "res://addons/EpicDogfight/misc/WeaponHandler.gd"
+}, {
+"base": "StateMachine",
+"class": "WorkerStateMachine",
+"language": "GDScript",
+"path": "res://addons/Processors/state_machine/machines/worker_state_machine.gd"
 } ]
 _global_script_class_icons={
 "AdvancedFighterBrain": "",
@@ -487,15 +492,16 @@ _global_script_class_icons={
 "TeamController": "",
 "TestProcessor1": "",
 "TestState": "",
-"Toolkits": "",
 "TreeEditorFileDialog": "",
+"Utilities": "",
 "VTOLController": "",
 "VTOLFighterBrain": "",
 "WarheadConfiguration": "",
 "WarheadController": "",
 "WeaponConfiguration": "",
 "WeaponGuidance": "",
-"WeaponHandler": ""
+"WeaponHandler": "",
+"WorkerStateMachine": ""
 }
 
 [application]
