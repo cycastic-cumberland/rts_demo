@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://addons/Vehicular/vtol_fighter.gd" type="Script" id=1]
 [ext_resource path="res://plane2/mesh2/VF-17b.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=7]
 [ext_resource path="res://plane2/swooshing_mat.tres" type="Material" id=8]
 [ext_resource path="res://plane_icon/swoosh.png" type="Texture" id=9]
+[ext_resource path="res://addons/EpicDogfight/misc/WeaponHandler.gd" type="Script" id=10]
 
 [sub_resource type="BoxShape" id=15]
 extents = Vector3( 3.17149, 1.28468, 7.53039 )
@@ -84,7 +85,7 @@ colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 0.0705882, 1, 0, 0, 0, 1 )
 
 [node name="VTOLFighter2" type="KinematicBody"]
 script = ExtResource( 1 )
-hardpoints_holder_primary = NodePath("Hardpoints")
+fire_control = NodePath("FireControl")
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 15 )
@@ -92,15 +93,16 @@ disabled = true
 
 [node name="cobra" parent="." instance=ExtResource( 2 )]
 
-[node name="Hardpoints" type="Spatial" parent="."]
+[node name="FireControl" type="Spatial" parent="."]
+script = ExtResource( 10 )
 
-[node name="Hardpoint1" type="Spatial" parent="Hardpoints"]
+[node name="Hardpoint1" type="Spatial" parent="FireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.04153, -6.19751 )
 
-[node name="Hardpoint2" type="Spatial" parent="Hardpoints"]
+[node name="Hardpoint2" type="Spatial" parent="FireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.15629, -1.04153, 2.01451 )
 
-[node name="Hardpoint3" type="Spatial" parent="Hardpoints"]
+[node name="Hardpoint3" type="Spatial" parent="FireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.18981, -1.04153, 2.01451 )
 
 [node name="Heat1" type="MeshInstance" parent="."]

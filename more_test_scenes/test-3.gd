@@ -93,8 +93,6 @@ func pc_count():
 		physics_calls = pcalls_count
 		pcalls_count = 0
 
-var cluster: ProcessorsCluster
-
 var ownerless := []
 
 func find_ownerless(start_at: Node):
@@ -110,46 +108,6 @@ func print_ownerless():
 	for node in ownerless:
 		print(node.get_path())
 
-func state_machine_test():
-	var swarm = SingletonManager.fetch("ProcessorsSwarm")
-	if swarm == null:
-		return
-	var cluster1 := (swarm as ProcessorsSwarm).add_cluster("TestStateMachine")
-	while not cluster1.get_parent():
-		yield(get_tree(), "idle_frame")
-	Out.print_debug("Cluster ready")
-	var state_machine := StateMachine.new()
-	var test_state1 := TestState.new()
-	test_state1.state_name = "TestInterval1"
-	var test_state2 := TestState.new()
-	test_state2.state_name = "TestInterval2"
-	var test_state3 := TestState.new()
-	test_state3.state_name = "TestInterval3"
-	cluster1.add_processor_no_boot(state_machine)
-	cluster1.commission()
-
-	test_state1.interval = 3.2
-	test_state2.interval = 1.4
-	test_state3.interval = 1.2
-	test_state3.exclusive = true
-	
-	state_machine.add_state(test_state1)
-	state_machine.add_state(test_state2)
-	state_machine.add_state_prioritized(test_state3)
-#	state_machine.is_paused = true
-#	yield(Out.timer(14.0), "timeout")
-#	yield()
-#	state_machine.is_paused = false
-	yield(Out.timer(4.0), "timeout")
-	Out.print_debug("WOOP WOOP")
-	test_state3.pop()
-	yield(Out.timer(3.0), "timeout")
-	Out.print_debug("WOOP WOOP")
-	state_machine.is_paused = true
-#	yield(Out.timer(2.0), "timeout")
-#	Out.print_debug("WOOP WOOP")
-#	state_machine.is_paused = false
-
 func _ready():
 	# owner = get_parent()
 	get_viewport().usage = Viewport.USAGE_3D
@@ -161,8 +119,17 @@ func _ready():
 	initAll(squadron)
 	addAllFighters(squadron, fighterList1)
 	addAllFlag(squadron)
-	weapon_handler = setup_w_handler()
-	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+#	weapon_handler = setup_w_handler()
+#	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+	var profile := setup_w_profile()
+	var fighter_0 := fighterList1["P0"] as VTOLFighterBrain
+	var fighter_1 := fighterList1["P1"] as VTOLFighterBrain
+	weapon_handler = fighter_0.get_fire_control()
+	weapon_handler2 = fighter_1.get_fire_control()
+	weapon_handler.profile = profile
+	weapon_handler2.profile = profile
+	weapon_handler.target = launcher
+	weapon_handler2.target = launcher
 	pc_count()
 #	state_machine_test()
 	# print_ownerless()
