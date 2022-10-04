@@ -122,14 +122,24 @@ func _ready():
 #	weapon_handler = setup_w_handler()
 #	weapon_handler2 = setup_w_handler(fighterList1["P1"])
 	var profile := setup_w_profile()
-	var fighter_0 := fighterList1["P0"] as VTOLFighterBrain
-	var fighter_1 := fighterList1["P1"] as VTOLFighterBrain
+	var fighter_0 = fighterList1["P0"]
+	var fighter_1 = fighterList1["P1"]
 	weapon_handler = fighter_0.get_fire_control()
 	weapon_handler2 = fighter_1.get_fire_control()
 	weapon_handler.profile = profile
 	weapon_handler2.profile = profile
 	weapon_handler.target = launcher
 	weapon_handler2.target = launcher
+	# --------------------------------------
+	var time := 3.0
+	var area := (fighter_0._vehicle_config as AFBConfiguration)\
+		.get_area_deccel(0.0, time)
+	var height := (fighter_0._vehicle_config as AFBConfiguration)\
+		.sample_deccel(time)
+	var block_area := height * time
+	var remain := block_area - area
+	print(remain)
+	# --------------------------------------
 	pc_count()
 #	state_machine_test()
 	# print_ownerless()
@@ -162,11 +172,15 @@ func addAllFighters(squad, fl):
 		fl[m].translation = squad.member_list[m].global_transform.origin
 		#---------------------------------------
 		fl[m]._vehicle_config.maxSpeed = 800.0
-		fl[m]._vehicle_config.deccelaration = -32.0
-		fl[m]._vehicle_config.slowingTime = 0.14
-		fl[m]._vehicle_config.acceleration = 4.0
+		fl[m]._vehicle_config.acceleration = 8.0
+		fl[m]._vehicle_config.decceleration = -0.0
+		fl[m]._vehicle_config.slowingTime = 2.0
+#		fl[m]._vehicle_config.acceleration = 4.0
+#		fl[m]._vehicle_config.decceleration = -32.0
+#		fl[m]._vehicle_config.slowingTime = 0.405
 		fl[m]._vehicle_config.turnRate = 0.05
 		fl[m]._vehicle_config.maxTurnRate = 0.1
+		Utilities.TrialTools.try_call(fl[m], "update_states")
 		if m == "P0":
 			dc.set_target(fl[m])
 		if m == "P0" and playMusik:
@@ -252,7 +266,7 @@ var vg_started := false
 
 func graph_plot():
 	var seconds := vg_interval
-	var f := (fighterList1["P0"] as VTOLFighterBrain)
+	var f = (fighterList1["P0"])
 	while f.isMoving:
 		yield(get_tree(), "physics_frame")
 		vg_timer += SingletonManager.fetch("UtilsSettings").fixed_delta
@@ -264,7 +278,7 @@ func graph_plot():
 	ResourceSaver.save(vg_save_path, vg_res)
 
 func velocity_graph():
-	if not vg_started and (fighterList1["P0"] as VTOLFighterBrain).isMoving:
+	if not vg_started and (fighterList1["P0"]).isMoving:
 		vg_started = true
 		vg_res.max_value = 3000.0
 #		graph_plot()
@@ -293,20 +307,23 @@ func loggit():
 		"memory_static_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)),
 		"memory_dynamic_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)),
 		"delta": dT,
-		"is_moving_1": (fighterList1["P0"] as VTOLFighterBrain).isMoving,
-		"is_moving_2": (fighterList1["P1"] as VTOLFighterBrain).isMoving,
+		"is_moving_1": (fighterList1["P0"]).isMoving,
+		"is_moving_2": (fighterList1["P1"]).isMoving,
 		"physics_calls": physics_calls,
 		"borderless_fullscreen": borderless_fullscreen,
 		"angle": rad2deg(angle),
 		"forward": -fighterList1["P0"].global_transform.basis.z,
-		"min_ray_delta": (fighterList1["P0"] as VTOLFighterBrain).accbs.raw_sensor_data.length(),
+#		"min_ray_delta": (fighterList1["P0"]).accbs.raw_sensor_data.length(),
 		"throttle": fighterList1["P0"].throttle,
 		"distance": fighterList1["P0"].distance,
+		"allowed_turn": fighterList1["P0"].states["AFBSM_Steer"].allowed,
+		"states_physics_call": fighterList1["P0"].states["AFBSM_Steer"].physics_call,
 		"last_location": dc.last_location,
 		"last_velocity": dc.last_velocity,
 		"last_direction": dc.last_direction,
 		"accelaration":  dc.acceleration,
-		"speed_loss": fighterList1["P0"].realSpeedLoss,
+		"max_accel":  dc.max_accel,
+#		"speed_loss": fighterList1["P0"].realSpeedLoss,
 		"missiles_left": weapon_handler.reserve,
 		"ssaa_scaling": ssaa_scaling,
 	}
