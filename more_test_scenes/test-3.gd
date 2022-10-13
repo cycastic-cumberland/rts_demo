@@ -13,8 +13,8 @@ const USE_PLANE_EQUATION = true
 
 onready var launcher = $Spinner2/Ricardo
 onready var dc = $DistanceCompensator
-onready var squadron = $"Squadron-WildWeasel"
-onready var squadron2 = $Squadron2
+#onready var squadron = $"Squadron-WildWeasel"
+onready var squadron = $"Squadron-Db40"
 onready var camera = $CameraController
 onready var light = $DirectionalLight
 
@@ -76,9 +76,9 @@ func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
 #	handler.pgm_target = Vector3(-153, 0, 231)
 	var f: Spatial = curr_fighter
 	handler.carrier = f
-	handler.set_hardpoints([f.get_node("Hardpoints/Hardpoint1"),\
-							f.get_node("Hardpoints/Hardpoint2"),\
-							f.get_node("Hardpoints/Hardpoint3")])
+#	handler.set_hardpoints([f.get_node("Hardpoints/Hardpoint1"),\
+#							f.get_node("Hardpoints/Hardpoint2"),\
+#							f.get_node("Hardpoints/Hardpoint3")])
 	handler.target = launcher
 #	handler.set_hardpoints(1, [launcher])
 #	handler.target = f
@@ -102,14 +102,51 @@ func find_ownerless(start_at: Node):
 			ownerless.append(child)
 		find_ownerless(child)
 
+func create_weapon_propfile():
+	var profile := setup_w_profile()
+	weapon_handler = setup_w_handler()
+#	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+	for f in fighterList1:
+		fighterList1[f].get_fire_control().profile = profile
+
+func set_ownership(start_at: Node, current_iter: Node = null):
+	if current_iter == null:
+		current_iter = start_at
+	var children := current_iter.get_children()
+	for child in children:
+		child.owner = start_at
+		set_ownership(start_at, child)
+
 func print_ownerless():
 	find_ownerless(LevelManager.template)
 	print("Ownerless:")
 	for node in ownerless:
 		print(node.get_path())
 
+func serialization_v2_test():
+	var server := SingletonManager.fetch("ConfigSerializer") as SerializationServer
+#	var a := CombatantConfiguration.new()
+#	var result := server.serialize(a, 1)
+#	print(result)
+	var a := Serializable.new()
+	var b := Serializable.new()
+	a.debug_test_value = b
+	b.debug_test_value = a
+	var result := var2str(server.serialize(a, 1))
+	print(result)
+
+#func scpp_test():
+#	var a := SerializableCPP.new()
+#	a.set_dv1({"UwU": "OwO"})
+#	var b := SerializableCPP.new()
+#	b.copy(a)
+#	print(b.get_dv1())
+
 func _ready():
-	# owner = get_parent()
+#	Utilities.ProfilingTools.benchmark(funcref(self, "serialization_v2_test"), [], true)
+#	scpp_test()
+#	Hub.print_debug("Hello world", get_stack())
+
 	get_viewport().usage = Viewport.USAGE_3D
 	get_viewport().fxaa = true
 	get_viewport().sharpen_intensity = 0.5
@@ -119,30 +156,19 @@ func _ready():
 	initAll(squadron)
 	addAllFighters(squadron, fighterList1)
 	addAllFlag(squadron)
-#	weapon_handler = setup_w_handler()
-#	weapon_handler2 = setup_w_handler(fighterList1["P1"])
-	var profile := setup_w_profile()
-	var fighter_0 = fighterList1["P0"]
-	var fighter_1 = fighterList1["P1"]
-	weapon_handler = fighter_0.get_fire_control()
-	weapon_handler2 = fighter_1.get_fire_control()
-	weapon_handler.profile = profile
-	weapon_handler2.profile = profile
-	weapon_handler.target = launcher
-	weapon_handler2.target = launcher
-	# --------------------------------------
-	var time := 3.0
-	var area := (fighter_0._vehicle_config as AFBConfiguration)\
-		.get_area_deccel(0.0, time)
-	var height := (fighter_0._vehicle_config as AFBConfiguration)\
-		.sample_deccel(time)
-	var block_area := height * time
-	var remain := block_area - area
-	print(remain)
-	# --------------------------------------
-	pc_count()
-#	state_machine_test()
+	create_weapon_propfile()
+#	# --------------------------------------
+#	var time := 3.0
+#	var area := (fighter_0._vehicle_config as AFBConfiguration)\
+#		.get_area_deccel(0.0, time)
+#	var height := (fighter_0._vehicle_config as AFBConfiguration)\
+#		.sample_deccel(time)
+#	var block_area := height * time
+#	var remain := block_area - area
+#	print(remain)
+	# --------------------------------------=
 	# print_ownerless()
+	pc_count()
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -180,7 +206,7 @@ func addAllFighters(squad, fl):
 #		fl[m]._vehicle_config.slowingTime = 0.405
 		fl[m]._vehicle_config.turnRate = 0.05
 		fl[m]._vehicle_config.maxTurnRate = 0.1
-		Utilities.TrialTools.try_call(fl[m], "update_states")
+#		Utilities.TrialTools.try_call(fl[m], "update_states")
 		if m == "P0":
 			dc.set_target(fl[m])
 		if m == "P0" and playMusik:
@@ -220,10 +246,20 @@ func relocateAllFlag(squad):
 			flagList[m].translation =\
 				squad.member_list[m].global_transform.origin
 
+func fire_stuff():
+	for f in fighterList1:
+		fighterList1[f].get_fire_control().fire_once()
+
 func _fire_test(_delta: float):
 	if Input.is_action_just_pressed("ui_select"):
-		weapon_handler.fire_once()
-		weapon_handler2.fire_once()
+		fire_stuff()
+#		set_ownership(LevelManager.template)
+#		var serialized := LevelManager.serialize_level(LevelManager.template)
+#		print(serialized)
+#		LevelManager.deserialize_level_debug(serialized)
+#		var full_package := LevelManager.level2package(LevelManager.template)
+#		LevelManager.set_level_defered(full_package)
+		pass
 
 #onready var org_size := Vector2(1920, 1080)
 var ssaa_scaling := 1.0
@@ -316,8 +352,8 @@ func loggit():
 #		"min_ray_delta": (fighterList1["P0"]).accbs.raw_sensor_data.length(),
 		"throttle": fighterList1["P0"].throttle,
 		"distance": fighterList1["P0"].distance,
-		"allowed_turn": fighterList1["P0"].states["AFBSM_Steer"].allowed,
-		"states_physics_call": fighterList1["P0"].states["AFBSM_Steer"].physics_call,
+#		"allowed_turn": fighterList1["P0"].states["AFBSM_Steer"].allowed,
+#		"states_physics_call": fighterList1["P0"].states["AFBSM_Steer"].physics_call,
 		"last_location": dc.last_location,
 		"last_velocity": dc.last_velocity,
 		"last_direction": dc.last_direction,

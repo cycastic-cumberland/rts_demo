@@ -6,7 +6,7 @@ func premature_detonation_handler(area):
 	if guidance._armed:
 		.premature_detonation_handler(area)
 	else:
-		Utilities.TrialTools.try_set(warhead_ref, "wc_ref.monitoring", false)
+		Utilities.TrialTools.try_set(warhead_ref, "wc_ref.monitoring", false, true)
 		guidance.vtol.trackingTarget = null
 		guidance.vtol.isMoving = false
 		detonated = true

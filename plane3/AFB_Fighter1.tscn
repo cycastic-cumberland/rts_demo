@@ -1,14 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=1]
 [ext_resource path="res://addons/EpicDogfight/misc/WeaponHandler.gd" type="Script" id=2]
 [ext_resource path="res://plane2/new_noisetexture.tres" type="Texture" id=3]
 [ext_resource path="res://plane2/JetPlume.tscn" type="PackedScene" id=4]
 [ext_resource path="res://plane2/mesh2/VF-17b.tscn" type="PackedScene" id=5]
 [ext_resource path="res://plane2/downward_exhaust.gd" type="Script" id=6]
 [ext_resource path="res://plane2/heat_haze_shader.shader" type="Shader" id=7]
-[ext_resource path="res://plane_icon/swoosh.png" type="Texture" id=8]
-[ext_resource path="res://plane2/swooshing_mat.tres" type="Material" id=9]
 [ext_resource path="res://addons/Vehicular/afb.gd" type="Script" id=10]
 
 [sub_resource type="BoxShape" id=13]
@@ -39,49 +36,6 @@ shader_param/strength = 0.001
 shader_param/speed = 20.0
 shader_param/margin = 0.383
 shader_param/noise_texture = ExtResource( 3 )
-
-[sub_resource type="Gradient" id=18]
-resource_local_to_scene = true
-colors = PoolColorArray( 1, 1, 0.816406, 1, 0.757813, 0.757813, 0.361145, 1 )
-
-[sub_resource type="Shader" id=12]
-code = "shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_disabled,diffuse_toon,specular_disabled,shadows_disabled,ambient_light_disabled;
-uniform vec4 albedo : hint_color = vec4(1.0);
-uniform sampler2D texture_emission : hint_albedo;
-uniform float emission_energy = 1.0;
-uniform float alpha: hint_range(0, 1) = 1.0;
-
-void vertex() {
-	if (!OUTPUT_IS_SRGB) {
-		COLOR.rgb = mix( pow((COLOR.rgb + vec3(0.055)) * (1.0 / (1.0 + 0.055)), vec3(2.4)), COLOR.rgb* (1.0 / 12.92), lessThan(COLOR.rgb,vec3(0.04045)) );
-	}
-}
-
-
-void fragment() {
-	ALBEDO = albedo.rgb;
-	vec3 emission_tex = texture(texture_emission, UV).rgb;
-//	EMISSION = emission_tex * emission_energy * COLOR.rgb;
-	EMISSION = emission_energy * COLOR.rgb;
-//	ALPHA = emission_tex.r * COLOR.a * albedo.a;
-	ALPHA = emission_tex.r*COLOR.a*alpha;
-}
-"
-
-[sub_resource type="ShaderMaterial" id=19]
-resource_local_to_scene = true
-render_priority = 1
-shader = SubResource( 12 )
-shader_param/albedo = Color( 1, 1, 0.0705882, 1 )
-shader_param/emission_energy = 1.0
-shader_param/alpha = 1.0
-shader_param/texture_emission = ExtResource( 8 )
-
-[sub_resource type="Gradient" id=20]
-resource_local_to_scene = true
-offsets = PoolRealArray( 0, 0.232804, 1 )
-colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 0.0705882, 1, 0, 0, 0, 1 )
 
 [node name="AFB_Fighter1" type="KinematicBody"]
 script = ExtResource( 10 )
@@ -139,32 +93,3 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 intensity = 0.36
 extents = Vector3( 80, 40, 80 )
-
-[node name="TrailEmiter1" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.396, 0, 1.643 )
-
-[node name="Trail3D" type="ImmediateGeometry" parent="TrailEmiter1"]
-material_override = ExtResource( 9 )
-script = ExtResource( 1 )
-distance = 0.01
-lifetime = 0.2
-color_gradient = SubResource( 18 )
-
-[node name="TrailEmiter2" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.29887, 0, 1.64345 )
-
-[node name="Trail3D" type="ImmediateGeometry" parent="TrailEmiter2"]
-material_override = ExtResource( 9 )
-script = ExtResource( 1 )
-distance = 0.01
-lifetime = 0.2
-color_gradient = SubResource( 18 )
-
-[node name="TrailEmiter3" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075819, 0, 7.2022 )
-
-[node name="Trail3D" type="ImmediateGeometry" parent="TrailEmiter3"]
-material_override = SubResource( 19 )
-script = ExtResource( 1 )
-base_width = 3.0
-color_gradient = SubResource( 20 )

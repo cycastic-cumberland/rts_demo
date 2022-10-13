@@ -1,6 +1,6 @@
 extends Spatial
 
-const self_destruct := preload("res://addons/utils/self_destruct.gd")
+const self_destruct := preload("res://addons/utils/automation/self_destruct.gd")
 
 export(float, 0.01, 1.0) var progress_percentile := 0.16666
 export(float, 0.01, 1.0) var emission_percentile := 0.33333

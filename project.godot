@@ -42,17 +42,22 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "AlarmClock",
 "language": "GDScript",
-"path": "res://addons/utils/alarm_clock.gd"
+"path": "res://addons/utils/automation/alarm_clock.gd"
 }, {
 "base": "Reference",
 "class": "AssetsPreloader",
 "language": "GDScript",
 "path": "res://addons/GameFramework/com/assets_preloader.gd"
 }, {
+"base": "MaunalSnapShot",
+"class": "AutoSnapShot",
+"language": "GDScript",
+"path": "res://addons/utils/snapshot/auto_snapshot.gd"
+}, {
 "base": "Serializable",
 "class": "AutoSort",
 "language": "GDScript",
-"path": "res://addons/utils/auto_sort.gd"
+"path": "res://addons/utils/automation/auto_sort.gd"
 }, {
 "base": "BTDecorator",
 "class": "BTAlways",
@@ -207,12 +212,12 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "DataBridge",
 "language": "GDScript",
-"path": "res://addons/utils/data_bridge.gd"
+"path": "res://addons/utils/injectors/data_bridge.gd"
 }, {
 "base": "Reference",
 "class": "DataBridgeStandalone",
 "language": "GDScript",
-"path": "res://addons/utils/data_bridge_standalone.gd"
+"path": "res://addons/utils/injectors/data_bridge_standalone.gd"
 }, {
 "base": "Spatial",
 "class": "DistanceCompensator",
@@ -250,14 +255,24 @@ _global_script_classes=[ {
 "path": "res://addons/Processors/state_machine/machines/edicts_state_machine.gd"
 }, {
 "base": "Serializable",
+"class": "Effect",
+"language": "GDScript",
+"path": "res://addons/utils/effects/effect.gd"
+}, {
+"base": "Serializable",
 "class": "Effector",
 "language": "GDScript",
-"path": "res://addons/utils/effector.gd"
+"path": "res://addons/utils/effects/effector.gd"
 }, {
 "base": "CombatComputer",
 "class": "FlightComputer",
 "language": "GDScript",
 "path": "res://addons/Processors/computers/flight_computer.gd"
+}, {
+"base": "Effect",
+"class": "FloatEffect",
+"language": "GDScript",
+"path": "res://addons/utils/effects/float_effect.gd"
 }, {
 "base": "HomingGuidance",
 "class": "ForwardLookingGuidance",
@@ -292,7 +307,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "InRef",
 "language": "GDScript",
-"path": "res://addons/utils/inref.gd"
+"path": "res://addons/utils/automation/inref.gd"
 }, {
 "base": "Serializable",
 "class": "LevelConfiguration",
@@ -314,6 +329,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/uic/main_comp/mc_maintainer.gd"
 }, {
+"base": "Reference",
+"class": "MaunalSnapShot",
+"language": "GDScript",
+"path": "res://addons/utils/snapshot/manual_snapshot.gd"
+}, {
 "base": "Control",
 "class": "MenuComponent",
 "language": "GDScript",
@@ -322,7 +342,7 @@ _global_script_classes=[ {
 "base": "Serializable",
 "class": "ModifiedFuncRef",
 "language": "GDScript",
-"path": "res://addons/utils/mod_funcref.gd"
+"path": "res://addons/utils/injectors/mod_funcref.gd"
 }, {
 "base": "Spatial",
 "class": "MunitionController",
@@ -384,6 +404,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Processors/processors_swarm.gd"
 }, {
+"base": "Serializable",
+"class": "ReadonlyMask",
+"language": "GDScript",
+"path": "res://addons/utils/injectors/readonly_mask.gd"
+}, {
 "base": "Reference",
 "class": "SceneSerializer",
 "language": "GDScript",
@@ -399,6 +424,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/utils/serializable_storage.gd"
 }, {
+"base": "Node",
+"class": "SerializationServer",
+"language": "GDScript",
+"path": "res://addons/utils/singletons/cfg_serializer.gd"
+}, {
 "base": "FlightComputer",
 "class": "SimpleFlightComputer",
 "language": "GDScript",
@@ -407,12 +437,12 @@ _global_script_classes=[ {
 "base": "Serializable",
 "class": "SkillBranch",
 "language": "GDScript",
-"path": "res://addons/utils/skill_branch.gd"
+"path": "res://addons/utils/branching/skill_branch.gd"
 }, {
 "base": "Serializable",
 "class": "SkillTree",
 "language": "GDScript",
-"path": "res://addons/utils/skill_tree.gd"
+"path": "res://addons/utils/branching/skill_tree.gd"
 }, {
 "base": "Serializable",
 "class": "SquadronConfiguration",
@@ -513,6 +543,7 @@ _global_script_class_icons={
 "AircraftConfiguration": "",
 "AlarmClock": "",
 "AssetsPreloader": "",
+"AutoSnapShot": "",
 "AutoSort": "",
 "BTAlways": "res://addons/behavior_tree/icons/btalways.svg",
 "BTComposite": "res://addons/behavior_tree/icons/btcomposite.svg",
@@ -553,8 +584,10 @@ _global_script_class_icons={
 "EdictKOS": "",
 "Edicts": "",
 "EdictsStateMachine": "",
+"Effect": "",
 "Effector": "",
 "FlightComputer": "",
+"FloatEffect": "",
 "ForwardLookingGuidance": "",
 "GeneralAirInstrument": "",
 "GeometryMf": "",
@@ -566,6 +599,7 @@ _global_script_class_icons={
 "LevelTemplate": "",
 "LineEquation": "",
 "MCMaintainer": "",
+"MaunalSnapShot": "",
 "MenuComponent": "",
 "ModifiedFuncRef": "",
 "MunitionController": "",
@@ -580,9 +614,11 @@ _global_script_class_icons={
 "Processor": "",
 "ProcessorsCluster": "",
 "ProcessorsSwarm": "",
+"ReadonlyMask": "",
 "SceneSerializer": "",
 "Serializable": "",
 "SerializableStorage": "",
+"SerializationServer": "",
 "SimpleFlightComputer": "",
 "SkillBranch": "",
 "SkillTree": "",
@@ -633,7 +669,7 @@ main_run_args="--verbose"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/EpicDogfight/plugin.cfg", "res://addons/GameFramework/plugin.cfg", "res://addons/Processors/plugin.cfg", "res://addons/Trail/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/utils/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/EpicDogfight/plugin.cfg", "res://addons/GameFramework/plugin.cfg", "res://addons/Processors/plugin.cfg", "res://addons/Trail/plugin.cfg", "res://addons/behavior_tree/plugin.cfg" )
 
 [input]
 

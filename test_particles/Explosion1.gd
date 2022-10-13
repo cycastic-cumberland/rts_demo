@@ -1,6 +1,6 @@
 extends Spatial
 
-const self_destruct := preload("res://addons/utils/self_destruct.gd")
+const self_destruct := preload("res://addons/utils/automation/self_destruct.gd")
 
 const explosions_flipbook := [
 	preload("res://test_particles/Explosion00_5x5.png"),
