@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Vehicular/configs/afb_config.gd"
 }, {
+"base": "AircraftConfiguration",
+"class": "AFBNewConfiguration",
+"language": "GDScript",
+"path": "res://addons/Vehicular/configs/afbn_config.gd"
+}, {
+"base": "Node",
+"class": "AFB_Initializer",
+"language": "GDScript",
+"path": "res://addons/Vehicular/singletons/afb_init.gd"
+}, {
 "base": "AirCombatant",
 "class": "AdvancedFighterBrain",
 "language": "GDScript",
@@ -289,6 +299,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/GeometryM/GeometryMf.gd"
 }, {
+"base": "Reference",
+"class": "GutHookScript",
+"language": "GDScript",
+"path": "res://addons/gut/hook_script.gd"
+}, {
+"base": "Node",
+"class": "GutTest",
+"language": "GDScript",
+"path": "res://addons/gut/test.gd"
+}, {
 "base": "Node",
 "class": "HierachialController",
 "language": "GDScript",
@@ -536,6 +556,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AFBConfiguration": "",
+"AFBNewConfiguration": "",
+"AFB_Initializer": "",
 "AdvancedFighterBrain": "",
 "AirComCBS": "",
 "AirCombatant": "",
@@ -591,6 +613,8 @@ _global_script_class_icons={
 "ForwardLookingGuidance": "",
 "GeneralAirInstrument": "",
 "GeometryMf": "",
+"GutHookScript": "",
+"GutTest": "",
 "HierachialController": "",
 "HomingGuidance": "",
 "HullProfile": "",
@@ -663,13 +687,13 @@ window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep_height"
 
-[editor]
-
-main_run_args="--verbose"
-
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/EpicDogfight/plugin.cfg", "res://addons/GameFramework/plugin.cfg", "res://addons/Processors/plugin.cfg", "res://addons/Trail/plugin.cfg", "res://addons/behavior_tree/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/EpicDogfight/plugin.cfg", "res://addons/GameFramework/plugin.cfg", "res://addons/Processors/plugin.cfg", "res://addons/Trail/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/gut/plugin.cfg" )
+
+[game]
+
+use_threads_dispatcher=false
 
 [input]
 
@@ -745,10 +769,11 @@ game_pause={
 
 common/physics_fps=120
 common/enable_pause_aware_picking=true
-common/physics_interpolation=true
 
 [rendering]
 
+threads/thread_model=2
+threads/thread_safe_bvh=true
 quality/directional_shadow/size=8192
 gles3/shaders/shader_compilation_mode=2
 environment/default_environment="res://default_env.tres"

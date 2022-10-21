@@ -13,8 +13,9 @@ const USE_PLANE_EQUATION = true
 
 onready var launcher = $Spinner2/Ricardo
 onready var dc = $DistanceCompensator
+
 #onready var squadron = $"Squadron-WildWeasel"
-onready var squadron = $"Squadron-Db40"
+onready var squadron = $"Squadron-Db80"
 onready var camera = $CameraController
 onready var light = $DirectionalLight
 
@@ -123,30 +124,35 @@ func print_ownerless():
 	for node in ownerless:
 		print(node.get_path())
 
-func serialization_v2_test():
-	var server := SingletonManager.fetch("ConfigSerializer") as SerializationServer
-#	var a := CombatantConfiguration.new()
-#	var result := server.serialize(a, 1)
-#	print(result)
-	var a := Serializable.new()
-	var b := Serializable.new()
-	a.debug_test_value = b
-	b.debug_test_value = a
-	var result := var2str(server.serialize(a, 1))
-	print(result)
+func test_afbcfg():
+	var new_cfg := preload("res://addons/Vehicular/configs/default_afbncfg.tres")
+	var old_cfg := preload("res://addons/Vehicular/configs/default_afbcfg.tres")
+	for i in range(0, 5):
+		var start_new := Time.get_ticks_usec()
+		var _a := new_cfg.get_area_accel(0.0, 2.176)
+		var end_new := Time.get_ticks_usec()
+		print("Integral sampling (new method): {t} usec(s)".format({"t": end_new - start_new}))
+	for i in range(0, 5):
+		var start_new := Time.get_ticks_usec()
+		var _a := old_cfg.get_area_accel(0.0, 2.176)
+		var end_new := Time.get_ticks_usec()
+		print("Integral sampling (old method): {t} usec(s)".format({"t": end_new - start_new}))
 
-#func scpp_test():
-#	var a := SerializableCPP.new()
-#	a.set_dv1({"UwU": "OwO"})
-#	var b := SerializableCPP.new()
-#	b.copy(a)
-#	print(b.get_dv1())
+func test_afbcfg_2():
+	var new_cfg := preload("res://addons/Vehicular/configs/default_afbncfg.tres")
+	var start_new := Time.get_ticks_usec()
+	var _a := new_cfg.get_area_accel(0.0, 2.176)
+	var end_1 := Time.get_ticks_usec()
+	var _b := new_cfg.accel_graph.get_area_no_bake(0.0, 2.176, AdvancedCurve.AC_TRAPEZOID)
+	var end_2 := Time.get_ticks_usec()
+	print("Bake: " + str(end_1 - start_new))
+	print("On-the-fly: " + str(end_2 - end_1))
 
 func _ready():
-#	Utilities.ProfilingTools.benchmark(funcref(self, "serialization_v2_test"), [], true)
-#	scpp_test()
-#	Hub.print_debug("Hello world", get_stack())
-
+	get_tree().use_font_oversampling = true
+	if AdvancedFighterBrain.USE_MULTITHREADS:
+		var swarm: ProcessorsSwarm = SingletonManager.fetch("ProcessorsSwarm")
+		var cluster := swarm.add_cluster("AFB_cluster", true, true)
 	get_viewport().usage = Viewport.USAGE_3D
 	get_viewport().fxaa = true
 	get_viewport().sharpen_intensity = 0.5
@@ -157,22 +163,15 @@ func _ready():
 	addAllFighters(squadron, fighterList1)
 	addAllFlag(squadron)
 	create_weapon_propfile()
-#	# --------------------------------------
-#	var time := 3.0
-#	var area := (fighter_0._vehicle_config as AFBConfiguration)\
-#		.get_area_deccel(0.0, time)
-#	var height := (fighter_0._vehicle_config as AFBConfiguration)\
-#		.sample_deccel(time)
-#	var block_area := height * time
-#	var remain := block_area - area
-#	print(remain)
-	# --------------------------------------=
-	# print_ownerless()
 	pc_count()
+	test_afbcfg_2()
 
 func _exit_tree():
 #	for f in fighterList1:
 #		fighterList1[f].free()
+#	print("Count: " + str(test_instance.count))
+#	test_instance.free()
+#	test_instance2.free()
 	pass
 
 func set_paths():
@@ -364,29 +363,30 @@ func loggit():
 		"ssaa_scaling": ssaa_scaling,
 	}
 
-func _input(event):
-	if (event.is_class("InputEventMouseButton")\
-			and event.button_index == BUTTON_LEFT and event.pressed):
-		var cam = get_viewport().get_camera()
-		var from: Vector3= cam.project_ray_origin(event.position)
-		var to: Vector3 = from + cam.project_ray_normal(event.position) * 10000
-		var intersection: Vector3
-		if USE_PLANE_EQUATION:
-			var plane_equation := GeometryMf.pe_create_pc(0, 1, 0, 0)
-			var line_equation := GeometryMf.le_create_v(from, to)
-			intersection = line_equation.intersect(plane_equation)
-		else:
-			var space_state = get_world().direct_space_state
-			var result: Dictionary = space_state.intersect_ray(from, to)
-			if result.has("position"):
-				intersection = result["position"]
-		if intersection != Vector3.ZERO and intersection != null:
-			var des: Vector3 = intersection + Vector3(0.0, 20.0, 0.0)
-			var oldPos: Vector3 = fighterList1["P0"].global_transform.origin
-			mousePos = des
-			#--------------------------------------------------------
-			squadron.translation = des
-			var dir = (des - oldPos).normalized()
-			squadron.look_at(squadron.global_transform.origin + dir, Vector3.UP)
-			relocateAllFlag(squadron)
-			guideAllFighter(squadron)
+func _input(levent):
+	if not levent.is_class("InputEventMouseButton"): return
+	if not levent.button_index == BUTTON_LEFT: return
+	if not levent.pressed: return
+	var cam = get_viewport().get_camera()
+	var from: Vector3= cam.project_ray_origin(levent.position)
+	var to: Vector3 = from + cam.project_ray_normal(levent.position) * 10000
+	var intersection: Vector3
+	if USE_PLANE_EQUATION:
+		var plane_equation := GeometryMf.pe_create_pc(0, 1, 0, 0)
+		var line_equation := GeometryMf.le_create_v(from, to)
+		intersection = line_equation.intersect(plane_equation)
+	else:
+		var space_state = get_world().direct_space_state
+		var result: Dictionary = space_state.intersect_ray(from, to)
+		if result.has("position"):
+			intersection = result["position"]
+	if intersection != Vector3.ZERO and intersection != null:
+		var des: Vector3 = intersection + Vector3(0.0, 20.0, 0.0)
+		var oldPos: Vector3 = fighterList1["P0"].global_transform.origin
+		mousePos = des
+		#--------------------------------------------------------
+		squadron.translation = des
+		var dir = (des - oldPos).normalized()
+		squadron.look_at(squadron.global_transform.origin + dir, Vector3.UP)
+		relocateAllFlag(squadron)
+		guideAllFighter(squadron)

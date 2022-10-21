@@ -6,7 +6,7 @@
 [ext_resource path="res://camera/CameraController.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/Vehicular/misc/Spinner.gd" type="Script" id=5]
 [ext_resource path="res://FormidonisStella/formidonis_stella.tscn" type="PackedScene" id=6]
-[ext_resource path="res://env/procedural_sky.tres" type="Environment" id=7]
+[ext_resource path="res://addons/env/procedural_sky.tres" type="Environment" id=7]
 [ext_resource path="res://FPSCounter/FPSCounter.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/EpicDogfight/misc/dc_scene.tscn" type="PackedScene" id=9]
 [ext_resource path="res://missiles/FoCAP_exp.tscn" type="PackedScene" id=10]
@@ -14,7 +14,7 @@
 [ext_resource path="res://ui/pause_menu_exp/scenes/pause_menu.tscn" type="PackedScene" id=12]
 [ext_resource path="res://cool_shaders/ScreenSpaceChromaAberration.tscn" type="PackedScene" id=13]
 [ext_resource path="res://cool_shaders/chroma_noise.tres" type="Texture" id=14]
-[ext_resource path="res://addons/EpicDogfight/formations/Squadron-Db40.tscn" type="PackedScene" id=15]
+[ext_resource path="res://addons/EpicDogfight/formations/Squadron-Db80.tscn" type="PackedScene" id=15]
 [ext_resource path="res://addons/uic/debug_info/DebugInfo.tscn" type="PackedScene" id=16]
 [ext_resource path="res://plane3/AFB_Fighter1.tscn" type="PackedScene" id=17]
 [ext_resource path="res://more_test_scenes/Ricardo.gd" type="Script" id=18]
@@ -131,10 +131,10 @@ cameraRotationSpeed = 100.0
 defaultCameraExtension = 300.0
 usePhysicsProcess = false
 
+[node name="Squadron-Db80" parent="." instance=ExtResource( 15 )]
+
 [node name="Squadron-WildWeasel" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -486.367, 20, 16.1668 )
-
-[node name="Squadron-Db40" parent="." instance=ExtResource( 15 )]
 
 [node name="Squadron2" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.009, 20, 222.14 )
