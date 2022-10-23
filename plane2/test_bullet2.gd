@@ -24,10 +24,10 @@ func arm_launched(guidance: WeaponGuidance):
 		var vtol = guidance.vtol
 		var turnRate = vtol._vehicle_config.turnRate
 		var maxTurnRate = vtol._vehicle_config.maxTurnRate
-		var maxSpeed = vtol._vehicle_config.maxSpeed
+		var max_speed = vtol._vehicle_config.max_speed
 		vtol._vehicle_config.turnRate = 0.0
 		vtol._vehicle_config.maxTurnRate = 0.0
-		vtol._vehicle_config.maxSpeed = vtol.inheritedSpeed\
+		vtol._vehicle_config.max_speed = vtol.inheritedSpeed\
 			* speed_limit_percent
 		vtol.enableGravity = true
 		afterburner.emitting = false
@@ -39,7 +39,7 @@ func arm_launched(guidance: WeaponGuidance):
 		vtol.enableGravity = false
 		vtol._vehicle_config.turnRate = turnRate
 		vtol._vehicle_config.maxTurnRate = maxTurnRate
-		vtol._vehicle_config.maxSpeed = maxSpeed
+		vtol._vehicle_config.max_speed = max_speed
 		afterburner.emitting = true
 		smoke.emitting = true
 

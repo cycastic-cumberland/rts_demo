@@ -29,7 +29,7 @@ func selectPointer(s: int):
 
 func _ready():
 	get_viewport().msaa = Viewport.MSAA_16X
-	vtol.vehicleConfig["maxSpeed"] = 200.0
+	vtol.vehicleConfig["max_speed"] = 200.0
 	vtol.vehicleConfig["decceleration"] = -8.0
 	vtol.vehicleConfig["rollRate"] = 90.0
 	selectPointer(-1)

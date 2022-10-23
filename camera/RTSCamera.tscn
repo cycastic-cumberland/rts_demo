@@ -15,4 +15,4 @@ transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="CameraYaw/CameraMover/CameraPitch"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
-fov = 50.0
+fov = 86.1

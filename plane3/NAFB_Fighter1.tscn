@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://addons/Vehicular/afb.gd" type="Script" id=1]
+[ext_resource path="res://addons/Vehicular/nafb_standalone.gd" type="Script" id=1]
 [ext_resource path="res://addons/EpicDogfight/misc/WeaponHandler.gd" type="Script" id=2]
 [ext_resource path="res://plane2/new_noisetexture.tres" type="Texture" id=3]
 [ext_resource path="res://plane2/JetPlume.tscn" type="PackedScene" id=4]
@@ -45,8 +45,6 @@ fire_control = NodePath("MissileFireControl")
 shape = SubResource( 13 )
 disabled = true
 
-[node name="cobra" parent="." instance=ExtResource( 5 )]
-
 [node name="MissileFireControl" type="Spatial" parent="."]
 script = ExtResource( 2 )
 
@@ -59,37 +57,43 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.15629, -1.04153, 2.01451 )
 [node name="Hardpoint3" type="Spatial" parent="MissileFireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.18981, -1.04153, 2.01451 )
 
-[node name="Heat1" type="MeshInstance" parent="."]
+[node name="RollRoot" type="Spatial" parent="."]
+
+[node name="cobra" parent="RollRoot" instance=ExtResource( 5 )]
+
+[node name="Heat1" type="MeshInstance" parent="RollRoot"]
 transform = Transform( 0.5, 0, 0, 0, -7.43094e-08, -0.5, 0, 1.7, -2.18557e-08, -0.788059, -0.0693539, 9.77641 )
 mesh = SubResource( 14 )
+skeleton = NodePath("../..")
 material/0 = SubResource( 15 )
 
-[node name="Heat2" type="MeshInstance" parent="."]
+[node name="Heat2" type="MeshInstance" parent="RollRoot"]
 transform = Transform( 0.5, 0, 0, 0, -7.43094e-08, -0.5, 0, 1.7, -2.18557e-08, 0.81, 0, 9.776 )
 mesh = SubResource( 16 )
+skeleton = NodePath("../..")
 material/0 = SubResource( 17 )
 
-[node name="Exhaust" type="Spatial" parent="."]
+[node name="Exhaust" type="Spatial" parent="RollRoot"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.8, -6 )
 script = ExtResource( 6 )
 
-[node name="JetPlume" parent="Exhaust" instance=ExtResource( 4 )]
+[node name="JetPlume" parent="RollRoot/Exhaust" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, -1.06581e-14, 0, 1.06581e-14, 1, 0, 0, 0 )
 
-[node name="Exhaust2" type="Spatial" parent="."]
+[node name="Exhaust2" type="Spatial" parent="RollRoot"]
 transform = Transform( 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, 1.3, -0.7, 2.5 )
 script = ExtResource( 6 )
 
-[node name="JetPlume2" parent="Exhaust2" instance=ExtResource( 4 )]
+[node name="JetPlume2" parent="RollRoot/Exhaust2" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 
-[node name="Exhaust3" type="Spatial" parent="."]
+[node name="Exhaust3" type="Spatial" parent="RollRoot"]
 transform = Transform( 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, -1.3, -0.7, 2.5 )
 script = ExtResource( 6 )
 
-[node name="JetPlume3" parent="Exhaust3" instance=ExtResource( 4 )]
+[node name="JetPlume3" parent="RollRoot/Exhaust3" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 
-[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+[node name="ReflectionProbe" type="ReflectionProbe" parent="RollRoot"]
 intensity = 0.36
 extents = Vector3( 80, 40, 80 )

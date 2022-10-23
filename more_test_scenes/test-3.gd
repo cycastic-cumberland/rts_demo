@@ -61,7 +61,7 @@ func setup_w_profile() -> WeaponConfiguration:
 	new_profile.acceleration = 64.0
 	new_profile.turnRate = 0.05
 	new_profile.maxTurnRate = 0.08
-	new_profile.maxSpeed = 1500.0
+	new_profile.max_speed = 1500.0
 	profile.dvConfig = new_profile
 	return profile
 
@@ -149,6 +149,8 @@ func test_afbcfg_2():
 	print("On-the-fly: " + str(end_2 - end_1))
 
 func _ready():
+#	var def_res := preload("res://addons/Vehicular/configs/stdafbn_turn.tres")
+#	print(rad2deg(def_res.get_area(0.0, 5.0)))
 	get_tree().use_font_oversampling = true
 	if AdvancedFighterBrain.USE_MULTITHREADS:
 		var swarm: ProcessorsSwarm = SingletonManager.fetch("ProcessorsSwarm")
@@ -164,7 +166,7 @@ func _ready():
 	addAllFlag(squadron)
 	create_weapon_propfile()
 	pc_count()
-	test_afbcfg_2()
+#	test_afbcfg()
 
 func _exit_tree():
 #	for f in fighterList1:
@@ -196,7 +198,7 @@ func addAllFighters(squad, fl):
 		fl[m].owner = self
 		fl[m].translation = squad.member_list[m].global_transform.origin
 		#---------------------------------------
-		fl[m]._vehicle_config.maxSpeed = 800.0
+		fl[m]._vehicle_config.max_speed = 800.0
 		fl[m]._vehicle_config.acceleration = 8.0
 		fl[m]._vehicle_config.decceleration = -0.0
 		fl[m]._vehicle_config.slowingTime = 2.0
@@ -358,6 +360,7 @@ func loggit():
 		"last_direction": dc.last_direction,
 		"accelaration":  dc.acceleration,
 		"max_accel":  dc.max_accel,
+		"turn_timer": (fighterList1["P0"] as NAFB_Standalone).pda.get_state_by_name("NAFBSS_Steer").turn_timer,
 #		"speed_loss": fighterList1["P0"].realSpeedLoss,
 		"missiles_left": weapon_handler.reserve,
 		"ssaa_scaling": ssaa_scaling,

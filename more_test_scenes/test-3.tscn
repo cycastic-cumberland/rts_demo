@@ -16,7 +16,7 @@
 [ext_resource path="res://cool_shaders/chroma_noise.tres" type="Texture" id=14]
 [ext_resource path="res://addons/EpicDogfight/formations/Squadron-Db80.tscn" type="PackedScene" id=15]
 [ext_resource path="res://addons/uic/debug_info/DebugInfo.tscn" type="PackedScene" id=16]
-[ext_resource path="res://plane3/AFB_Fighter1.tscn" type="PackedScene" id=17]
+[ext_resource path="res://plane3/NAFB_Fighter1.tscn" type="PackedScene" id=17]
 [ext_resource path="res://more_test_scenes/Ricardo.gd" type="Script" id=18]
 [ext_resource path="res://cool_shaders/scrolling_cloud_shader.gdshader" type="Shader" id=19]
 

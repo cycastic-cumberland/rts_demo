@@ -18,7 +18,7 @@ class TestStateAtom2 extends State:
 	func _init():
 		state_name = "TestStateAtom2"
 
-	func _start(with: StateAutomaton):
+	func _start(_with: StateAutomaton):
 		pass
 
 	func _poll(with: StateAutomaton):
@@ -27,7 +27,7 @@ class TestStateAtom2 extends State:
 			return "__stop"
 		return "__next"
 
-	func _finalize(with: StateAutomaton):
+	func _finalize(_with: StateAutomaton):
 		pass
 
 class TestStateAtom3 extends State:
@@ -52,9 +52,10 @@ func initialization_test(which: String):
 func test_pda():
 	var ins: PushdownAutomaton = initialization_test("PushdownAutomaton")
 	if not ins: return
-	ins.add_state(TestStateAtom1.new())
-	ins.add_state(TestStateAtom2.new())
-	ins.add_state(TestStateAtom3.new())
+	var _a
+	_a = ins.add_state(TestStateAtom1.new())
+	_a = ins.add_state(TestStateAtom2.new())
+	_a = ins.add_state(TestStateAtom3.new())
 	assert_eq(ins.get_all_states().size(), 3, "Failed to initialize 3 unique states")
 
 func test_state():
@@ -67,14 +68,17 @@ func test_state_automaton():
 	var ins: StateAutomaton = initialization_test("StateAutomaton")
 	if not ins: return
 	var pda := PushdownAutomaton.new()
-	pda.add_state(TestStateAtom1.new())
-	pda.add_state(TestStateAtom2.new())
-	pda.add_state(TestStateAtom3.new())
+	var _a
+	_a = pda.add_state(TestStateAtom1.new())
+	_a = pda.add_state(TestStateAtom2.new())
+	_a = pda.add_state(TestStateAtom3.new())
 	ins.pda = pda
 	ins.client = []
 	ins.boot()
-	ins.poll(0.0)
+	ins.poll(PI)
 	ins.finalize()
 	assert_eq(ins.client.size(), 7, "Unexpected Array size")
+	assert_eq(pda.get_state_by_name("UnchaBucha"), null, "Unexpected state find value")
+	assert_eq(abs(ins.get_delta() - PI) < 0.0001, true, "Unexpected delta value")
 #	gut.p(str(ins.client))
 

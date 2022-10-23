@@ -18,12 +18,12 @@ func _start():
 	var vtol = guidance.vtol
 	var turnRate = vtol._vehicle_config.turnRate
 	var maxTurnRate = vtol._vehicle_config.maxTurnRate
-	var maxSpeed = vtol._vehicle_config.maxSpeed
+	var max_speed = vtol._vehicle_config.max_speed
 	# Prevent the deliver from rotating
 	vtol._vehicle_config.turnRate = 0.0
 	vtol._vehicle_config.maxTurnRate = 0.0
 	# Simulate drag by making the deliver slower than the carrier
-	vtol._vehicle_config.maxSpeed = vtol.inheritedSpeed \
+	vtol._vehicle_config.max_speed = vtol.inheritedSpeed \
 		* SPEED_LIMIT_PERCENTILE
 	vtol.enableGravity = true
 	set_particle_emit(false)
@@ -35,5 +35,5 @@ func _start():
 	set_particle_emit(true)
 	vtol._vehicle_config.turnRate = turnRate
 	vtol._vehicle_config.maxTurnRate = maxTurnRate
-	vtol._vehicle_config.maxSpeed = maxSpeed
+	vtol._vehicle_config.max_speed = max_speed
 	._start()
