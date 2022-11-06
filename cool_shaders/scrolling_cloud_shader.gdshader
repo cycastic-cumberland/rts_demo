@@ -13,8 +13,11 @@ uniform vec3 uv1_offset;
 uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
 
-uniform float depth_strength : hint_range(0.0001, 500.0) = 1.0;
-uniform float vdisp_modifier : hint_range(0, 50) = 1.0;
+uniform bool use_foam = true;
+uniform float foam_length : hint_range(0.001, 1.0) = 0.3;
+uniform vec4 foam_color : hint_color;
+uniform float depth_strength : hint_range(0.001, 500.0) = 1.0;
+uniform float vdisp_modifier : hint_range(0, 500) = 1.0;
 uniform float vdisp_height : hint_range(-200, 200) = 0.0;
 uniform highp float vdisp_flow_speed : hint_range(0, 10) = 1.0;
 uniform vec2 vdisp_flow_dir = vec2(1.0, 0.0);
@@ -36,12 +39,19 @@ void fragment() {
 	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r * 2.0 - 1.0;
 	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]) + VERTEX.z;
 	depth *= 1.0 / depth_strength;
+	depth =  clamp(depth, 0.0, 1.0);
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo,base_uv);
-	ALBEDO = albedo.rgb * albedo_tex.rgb * texture(albedo_noise, base_uv).rgb;
-	ALBEDO *= vec3(UV, 0.0);
-//	ALBEDO = vec3(UV, 0.0);
-	ALBEDO *= (depth);
+//	ALBEDO = albedo.rgb * albedo_tex.rgb * texture(albedo_noise, base_uv).rgb;
+//	ALBEDO *= vec3(depth);
+	vec3 main_col = albedo.rgb * albedo_tex.rgb * texture(albedo_noise, base_uv).rgb;
+	if (use_foam){
+		if (depth < foam_length) ALBEDO = mix(foam_color.xyz, main_col, depth / foam_length);
+		else ALBEDO = main_col * vec3(depth);
+	}
+	else {
+		 ALBEDO = main_col * vec3(depth);
+	}
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	SPECULAR = specular;

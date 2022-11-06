@@ -17,9 +17,9 @@ margin_right = 377.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 42.0
-margin_top = 224.0
+margin_top = 202.0
 margin_right = 335.0
-margin_bottom = 376.0
+margin_bottom = 398.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_right = 293.0
@@ -30,13 +30,13 @@ text = "Game Paused"
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_top = 68.0
 margin_right = 293.0
-margin_bottom = 152.0
+margin_bottom = 196.0
 alignment = 1
 
 [node name="ButtonGroup" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 margin_left = 6.0
 margin_right = 286.0
-margin_bottom = 84.0
+margin_bottom = 128.0
 rect_min_size = Vector2( 280, 0 )
 script = ExtResource( 3 )
 
@@ -57,3 +57,12 @@ margin_right = 280.0
 margin_bottom = 84.0
 text = "Settings"
 wire_signal = "settings_menu_handler"
+
+[node name="Quit" parent="CenterContainer/VBoxContainer/HBoxContainer/ButtonGroup" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 88.0
+margin_right = 280.0
+margin_bottom = 128.0
+text = "Quit game"
+wire_signal = "quit_handler"

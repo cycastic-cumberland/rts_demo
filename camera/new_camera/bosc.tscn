@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://camera/new_camera/bosc.gd" type="Script" id=1]
+
+[node name="BOSC" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Yaw" type="Spatial" parent="."]
+
+[node name="Mover" type="Spatial" parent="Yaw"]
+
+[node name="Pitch" type="Spatial" parent="Yaw/Mover"]
+
+[node name="SpringArm" type="SpringArm" parent="Yaw/Mover/Pitch"]
+collision_mask = 8
+margin = 0.1
+
+[node name="Camera" type="Camera" parent="Yaw/Mover/Pitch/SpringArm"]

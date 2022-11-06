@@ -169,6 +169,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/behavior_tree/src/blackboard.gd"
 }, {
+"base": "Spatial",
+"class": "BoudedOvertheShoulderCamera",
+"language": "GDScript",
+"path": "res://camera/new_camera/bosc.gd"
+}, {
 "base": "Processor",
 "class": "ChainOfCommand",
 "language": "GDScript",
@@ -329,6 +334,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/utils/automation/inref.gd"
 }, {
+"base": "WeaponGuidance",
+"class": "IntegratedHomingGuidance",
+"language": "GDScript",
+"path": "res://addons/EpicDogfight/guidances/ihg.gd"
+}, {
 "base": "Serializable",
 "class": "LevelConfiguration",
 "language": "GDScript",
@@ -458,6 +468,11 @@ _global_script_classes=[ {
 "class": "SimpleFlightComputer",
 "language": "GDScript",
 "path": "res://addons/Processors/computers/sfc.gd"
+}, {
+"base": "Reference",
+"class": "SimpleIntegratedMissilePerformer",
+"language": "GDScript",
+"path": "res://addons/Vehicular/simp.gd"
 }, {
 "base": "Serializable",
 "class": "SkillBranch",
@@ -592,6 +607,7 @@ _global_script_class_icons={
 "BehaviorTree": "res://addons/behavior_tree/icons/bt.svg",
 "Bidding": "",
 "Blackboard": "res://addons/behavior_tree/icons/blackboard.svg",
+"BoudedOvertheShoulderCamera": "",
 "ChainOfCommand": "",
 "CombatComputer": "",
 "CombatEdict": "",
@@ -624,6 +640,7 @@ _global_script_class_icons={
 "HomingGuidance": "",
 "HullProfile": "",
 "InRef": "",
+"IntegratedHomingGuidance": "",
 "LevelConfiguration": "res://addons/GameFramework/icons/level_res_icon.png",
 "LevelTemplate": "",
 "LineEquation": "",
@@ -650,6 +667,7 @@ _global_script_class_icons={
 "SerializableStorage": "",
 "SerializationServer": "",
 "SimpleFlightComputer": "",
+"SimpleIntegratedMissilePerformer": "",
 "SkillBranch": "",
 "SkillTree": "",
 "SquadronConfiguration": "",
@@ -702,8 +720,9 @@ enabled=PoolStringArray( "res://addons/EpicDogfight/plugin.cfg", "res://addons/G
 
 [game]
 
-use_threads_dispatcher=false
+use_threads_dispatcher=true
 standalone_state_automaton=true
+compute_delay=2
 
 [input]
 
@@ -774,6 +793,30 @@ game_pause={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+test_fire={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":3,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+db_1={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":44,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+db_2={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":46,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+db_3={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":47,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+2d_physics/layer_1="Static props"
 
 [physics]
 

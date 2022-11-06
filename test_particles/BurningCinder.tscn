@@ -2,24 +2,36 @@
 
 [ext_resource path="res://particles/PNG (Transparent)/circle_05.png" type="Texture" id=1]
 
-[sub_resource type="Gradient" id=25]
-offsets = PoolRealArray( 0, 0.0649351, 0.814935, 0.87013, 0.915584, 0.964286, 1 )
-colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0.196078, 1, 1, 1, 0.196078, 1, 1, 1, 0.784314, 1, 1, 1, 0.117647, 1, 1, 1, 0.784314, 1, 1, 1, 0 )
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.0528053, 0.567657, 0.663366, 0.712871, 0.759076, 0.811881, 0.851485, 0.894389, 0.937294, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 0.117647, 1, 1, 1, 0.117647, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0.807693, 0, 0, 0, 0 )
 
-[sub_resource type="GradientTexture" id=26]
-gradient = SubResource( 25 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=27]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 2
-emission_box_extents = Vector3( 5000, 100, 5000 )
+emission_box_extents = Vector3( 5000, 500, 5000 )
 direction = Vector3( 1, 1, 1 )
-spread = 180.0
-gravity = Vector3( 0, 1, 0 )
-initial_velocity = 0.3
+spread = 20.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 800.0
 initial_velocity_random = 1.0
-color_ramp = SubResource( 26 )
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+radial_accel = 100.0
+radial_accel_random = 1.0
+tangential_accel = 100.0
+damping = 100.0
+damping_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 1.7
+scale_random = 1.0
+color = Color( 0.984314, 0.356863, 0.254902, 1 )
+color_ramp = SubResource( 2 )
 
-[sub_resource type="Shader" id=30]
+[sub_resource type="Shader" id=4]
 code = "// NOTE: Shader automatically converted from Godot Engine 3.5.stable's SpatialMaterial.
 
 shader_type spatial;
@@ -73,14 +85,15 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=31]
-shader = SubResource( 30 )
+[sub_resource type="ShaderMaterial" id=5]
+render_priority = 1
+shader = SubResource( 4 )
 shader_param/albedo = Color( 1, 1, 1, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
 shader_param/roughness = 1.0
 shader_param/point_size = 1.0
-shader_param/emission_strength = 2.0
+shader_param/emission_strength = 50.0
 shader_param/particles_anim_h_frames = 1
 shader_param/particles_anim_v_frames = 1
 shader_param/particles_anim_loop = false
@@ -90,16 +103,13 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 1 )
 
-[sub_resource type="QuadMesh" id=29]
-material = SubResource( 31 )
-size = Vector2( 2, 2 )
+[sub_resource type="QuadMesh" id=6]
+material = SubResource( 5 )
+size = Vector2( 5, 5 )
 
-[node name="FloatingDust" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -68.2928, 0 )
-
-[node name="Particles" type="Particles" parent="."]
-amount = 10000
+[node name="BurningCinder" type="Particles"]
+amount = 50000
 lifetime = 4.0
-visibility_aabb = AABB( -2500, -50, -2500, 5000, 100, 5000 )
-process_material = SubResource( 27 )
-draw_pass_1 = SubResource( 29 )
+visibility_aabb = AABB( -2500, -250, -2500, 5000, 500, 5000 )
+process_material = SubResource( 3 )
+draw_pass_1 = SubResource( 6 )

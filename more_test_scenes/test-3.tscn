@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://more_test_scenes/test-3.gd" type="Script" id=1]
 [ext_resource path="res://cool_shaders/static_shader.gdshader" type="Shader" id=2]
@@ -9,7 +9,7 @@
 [ext_resource path="res://addons/env/procedural_sky.tres" type="Environment" id=7]
 [ext_resource path="res://FPSCounter/FPSCounter.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/EpicDogfight/misc/dc_scene.tscn" type="PackedScene" id=9]
-[ext_resource path="res://missiles/FoCAP_exp.tscn" type="PackedScene" id=10]
+[ext_resource path="res://missiles/FoCAP_ihg.tscn" type="PackedScene" id=10]
 [ext_resource path="res://more_test_scenes/ricardo.jpg" type="Texture" id=11]
 [ext_resource path="res://ui/pause_menu_exp/scenes/pause_menu.tscn" type="PackedScene" id=12]
 [ext_resource path="res://cool_shaders/ScreenSpaceChromaAberration.tscn" type="PackedScene" id=13]
@@ -19,11 +19,15 @@
 [ext_resource path="res://plane3/NAFB_Fighter1.tscn" type="PackedScene" id=17]
 [ext_resource path="res://more_test_scenes/Ricardo.gd" type="Script" id=18]
 [ext_resource path="res://cool_shaders/scrolling_cloud_shader.gdshader" type="Shader" id=19]
+[ext_resource path="res://camera/new_camera/bosc.tscn" type="PackedScene" id=20]
+[ext_resource path="res://more_test_scenes/FlowmapCloud.gd" type="Script" id=21]
+[ext_resource path="res://test_particles/BurningCinder.tscn" type="PackedScene" id=22]
+[ext_resource path="res://addons/EpicDogfight/formations/Squadron-Db40.tscn" type="PackedScene" id=23]
 
 [sub_resource type="PlaneMesh" id=25]
-size = Vector2( 2000, 2000 )
-subdivide_width = 100
-subdivide_depth = 100
+size = Vector2( 10000, 10000 )
+subdivide_width = 300
+subdivide_depth = 300
 
 [sub_resource type="OpenSimplexNoise" id=26]
 
@@ -49,7 +53,7 @@ noise = SubResource( 29 )
 
 [sub_resource type="ShaderMaterial" id=28]
 shader = ExtResource( 19 )
-shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/albedo = Color( 0.403922, 0.129412, 0.478431, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
 shader_param/roughness = 1.0
@@ -58,10 +62,13 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/depth_strength = 100.0
-shader_param/vdisp_modifier = 40.0
+shader_param/use_foam = true
+shader_param/foam_length = 0.241
+shader_param/foam_color = Color( 0.462485, 0.2907, 0.51, 1 )
+shader_param/depth_strength = 314.286
+shader_param/vdisp_modifier = 109.571
 shader_param/vdisp_height = -70.0
-shader_param/vdisp_flow_speed = 0.01
+shader_param/vdisp_flow_speed = 0.02
 shader_param/vdisp_flow_dir = Vector2( 1, 1 )
 shader_param/vertex_displacement = SubResource( 6 )
 shader_param/vertex_flowmap = SubResource( 30 )
@@ -120,31 +127,61 @@ script = ExtResource( 1 )
 fighter = ExtResource( 17 )
 bullet = ExtResource( 10 )
 
+[node name="BurningCinder" parent="." instance=ExtResource( 22 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 260, 0 )
+layers = 8
+cast_shadow = 0
+amount = 2000
+
 [node name="FlowmapCloud" type="MeshInstance" parent="."]
-visible = false
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.148285, 0 )
+use_in_baked_light = true
+lightmap_scale = 3
 mesh = SubResource( 25 )
 material/0 = SubResource( 28 )
+script = ExtResource( 21 )
+res_highest = 1024.0
+
+[node name="BOSC" parent="." instance=ExtResource( 20 )]
+camera_type = 1
+max_pitch = 70.0
+yaw_speed = 1.5
+pitch_speed = 2.0
+zoom_speed = 200.0
+min_zoom = 300.0
+render_distance = 4000.0
+camera_translation_speed = 4.0
+camera_extension = 600.0
+zoom_minimum_step = 5.0
+starting_rotation = Vector2( 14.022, -34.289 )
+starting_location = Vector3( -509.598, 0, 131.734 )
 
 [node name="CameraController" parent="." instance=ExtResource( 4 )]
+visible = false
 renderDistance = 4000.0
 cameraRotationSpeed = 100.0
 defaultCameraExtension = 300.0
 usePhysicsProcess = false
 
+[node name="Squadron-Db40" parent="." instance=ExtResource( 23 )]
+
 [node name="Squadron-Db80" parent="." instance=ExtResource( 15 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -521.881, 0, 270.675 )
 
 [node name="Squadron-WildWeasel" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -486.367, 20, 16.1668 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -486.367, 10, 16.167 )
 
 [node name="Squadron2" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.009, 20, 222.14 )
 
 [node name="DebugInfo" parent="." instance=ExtResource( 16 )]
+visible = false
 separator_character_count = 80
 separators = PoolStringArray( "memory_usage" )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.819152, 0.573577, 0, -0.573577, -0.819152, -279.141, 44.3293, -60.2457 )
+visible = false
 light_energy = 1.262
 light_indirect_energy = 6.115
 shadow_enabled = true
@@ -166,6 +203,7 @@ mesh = SubResource( 11 )
 
 [node name="Spinner2" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -137.158, -7.62939e-06, 238.699 )
+visible = false
 script = ExtResource( 5 )
 speed = 5.0
 
@@ -183,6 +221,7 @@ shape = SubResource( 31 )
 
 [node name="Sphere" type="MeshInstance" parent="."]
 transform = Transform( 18.0473, 0, 18.504, 0, 25.8477, 0, -18.504, 0, 18.0473, -316.587, -7.62939e-06, 101.92 )
+visible = false
 use_in_baked_light = true
 mesh = SubResource( 15 )
 skeleton = NodePath("../DistanceCompensator")
@@ -198,15 +237,18 @@ collision_layer = 8
 shape = SubResource( 16 )
 
 [node name="Shippy" type="StaticBody" parent="."]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+transform = Transform( 0.239815, 0.683952, 0.688984, -0.826313, 0.516337, -0.224951, -0.509604, -0.515369, 0.688984, 0, -39.2194, 0 )
 collision_layer = 8
 
 [node name="formidonis_stella" parent="Shippy" instance=ExtResource( 6 )]
+transform = Transform( 100, 0, -3.77627e-05, 0, 100, 0, 3.77627e-05, 0, 100, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Shippy"]
+transform = Transform( 1, 0, -3.89038e-07, 0, 1, 0, 3.89038e-07, 0, 1, 0, 0, 0 )
 shape = SubResource( 22 )
 
 [node name="Area" type="Area" parent="Shippy"]
+transform = Transform( 1, 0, -3.89038e-07, 0, 1, 0, 3.89038e-07, 0, 1, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Shippy/Area"]
 shape = SubResource( 22 )

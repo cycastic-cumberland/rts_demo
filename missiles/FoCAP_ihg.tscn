@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/EpicDogfight/munition/warhead_controller.gd" type="Script" id=1]
+[ext_resource path="res://explosion2/ForwardExplosion.tscn" type="PackedScene" id=2]
+[ext_resource path="res://missiles/dlm_ihg.gd" type="Script" id=3]
+[ext_resource path="res://plane2/EngineExhaust.tscn" type="PackedScene" id=4]
+[ext_resource path="res://plane2/jdam.tscn" type="PackedScene" id=5]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.3, 0.3, 0.3 )
+
+[sub_resource type="CapsuleShape" id=2]
+radius = 54.6544
+height = 176.718
+
+[node name="FoCAP_exp" type="Spatial"]
+script = ExtResource( 3 )
+warhead = NodePath("Warhead")
+particles_holder = NodePath("EngineExhaust")
+main_mesh = NodePath("jdam")
+
+[node name="Warhead" type="Spatial" parent="."]
+script = ExtResource( 1 )
+explosion = NodePath("ForwardExplosion")
+aoe_collider = NodePath("DamageZone")
+warhead_collider = NodePath("WarheadCollider")
+base_damage = 20.0
+impact_speed_reduction = 0.01
+explosion_lifetime = 3.0
+
+[node name="ForwardExplosion" parent="Warhead" instance=ExtResource( 2 )]
+
+[node name="WarheadCollider" type="Area" parent="Warhead"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.97527 )
+collision_layer = 2
+collision_mask = 9
+monitorable = false
+
+[node name="CollisionShape" type="CollisionShape" parent="Warhead/WarheadCollider"]
+shape = SubResource( 1 )
+
+[node name="DamageZone" type="Area" parent="Warhead"]
+collision_layer = 2
+collision_mask = 9
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2" type="CollisionShape" parent="Warhead/DamageZone"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -142.027 )
+shape = SubResource( 2 )
+
+[node name="jdam" parent="." instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+
+[node name="EngineExhaust" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.20266 )

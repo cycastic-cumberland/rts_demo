@@ -17,11 +17,14 @@ width = 10
 [sub_resource type="ShaderMaterial" id=9]
 resource_local_to_scene = true
 shader = ExtResource( 1 )
+shader_param/albedo_col = Color( 1, 1, 1, 1 )
 shader_param/alphaModifier = 1.0
 shader_param/blinking = false
 shader_param/blinkingSpeed = 5.0
 shader_param/billboardMode = true
 shader_param/billboardScale = 20.0
+shader_param/distance_fade_min = 5.0
+shader_param/distance_fade_max = 7.0
 shader_param/albedo = ExtResource( 2 )
 shader_param/color = SubResource( 3 )
 
@@ -34,12 +37,16 @@ width = 10
 
 [sub_resource type="ShaderMaterial" id=11]
 resource_local_to_scene = true
+render_priority = 1
 shader = ExtResource( 1 )
+shader_param/albedo_col = Color( 1, 1, 1, 1 )
 shader_param/alphaModifier = 1.0
 shader_param/blinking = false
 shader_param/blinkingSpeed = 5.0
 shader_param/billboardMode = true
 shader_param/billboardScale = 20.0
+shader_param/distance_fade_min = 5.0
+shader_param/distance_fade_max = 7.0
 shader_param/albedo = ExtResource( 3 )
 shader_param/color = SubResource( 6 )
 

@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui/menu_exp/shaders/backdrop.gdshader" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 1 )
+shader_param/albedo = Color( 0.129412, 0.129412, 0.129412, 0.980392 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 1 )
+shader_param/albedo = Color( 0.34902, 0.878431, 0.878431, 1 )
+
+[node name="IngameMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Backdrop" type="PanelContainer" parent="."]
+material = SubResource( 3 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Splitter" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Tabs" type="Control" parent="Splitter"]
+margin_right = 1024.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 70 )
+
+[node name="Backdrop" type="PanelContainer" parent="Splitter/Tabs"]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TabsSplitter" type="HBoxContainer" parent="Splitter/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="NavLeft" type="Control" parent="Splitter/Tabs"]
+anchor_bottom = 1.0
+rect_min_size = Vector2( 70, 0 )
+
+[node name="NavRight" type="Control" parent="Splitter/Tabs"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -70.0
+rect_min_size = Vector2( 70, 0 )

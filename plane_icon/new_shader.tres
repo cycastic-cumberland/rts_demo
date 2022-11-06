@@ -5,26 +5,34 @@ code = "shader_type spatial;
 render_mode unshaded;
 
 uniform sampler2D albedo;
+uniform vec4 albedo_col : hint_color = vec4(1.0);
 uniform sampler2D color;
 uniform float alphaModifier = 1.0;
 uniform bool blinking = false;
 uniform float blinkingSpeed = 10.0;
 uniform bool billboardMode = false;
 uniform float billboardScale = 1.0;
+uniform float distance_fade_min;
+uniform float distance_fade_max;
 
 void fragment(){
 	vec4 tex = texture(albedo, UV);
 	vec4 col = texture(color, UV);
-	ALBEDO = col.rgb;
-	if (!blinking)
+	ALBEDO = col.rgb * albedo_col.rgb;
+	if (!blinking) {
 		ALPHA = tex.a * alphaModifier;
+	}
 	else{
 		if (tex.a != 0.0)
+		{
 			ALPHA = ((cos(TIME * blinkingSpeed) + 1.0) / 2.0) * alphaModifier;
+		}
 		else
 			ALPHA = 0.0;
 	}
+	ALPHA*=clamp(smoothstep(distance_fade_min,distance_fade_max,-VERTEX.z),0.0,1.0);
 	EMISSION = col.rgb;
+	
 }
 
 void vertex(){

@@ -14,3 +14,6 @@ func return_handler():
 
 func settings_menu_handler():
 	emit_signal("settings_menu")
+
+func quit_handler():
+	get_tree().quit(0)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://musik/11- Dark Fantasy Studio- The howling(seamless).wav" type="AudioStream" id=1]
+[ext_resource path="res://musik/ytmp3free.cc_burgund-erwacht-reuploaded-youtubemp3free.org.mp3" type="AudioStream" id=1]
 [ext_resource path="res://ui/pause_menu_exp/scripts/pause_main.gd" type="Script" id=2]
 [ext_resource path="res://ui/pause_menu_exp/scenes/background.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ui/pause_menu_exp/scenes/pause_ui.tscn" type="PackedScene" id=5]

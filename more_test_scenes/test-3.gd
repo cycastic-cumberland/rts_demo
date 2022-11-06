@@ -15,7 +15,7 @@ onready var launcher = $Spinner2/Ricardo
 onready var dc = $DistanceCompensator
 
 #onready var squadron = $"Squadron-WildWeasel"
-onready var squadron = $"Squadron-Db80"
+onready var squadron = $"Squadron-Db40"
 onready var camera = $CameraController
 onready var light = $DirectionalLight
 
@@ -46,7 +46,7 @@ var cfg_path := "C:/Users/cycastic/Documents/testies_save.tres"
 func setup_w_profile() -> WeaponConfiguration:
 	var profile := WeaponConfiguration.new()
 	profile.weapon_name = "Hawkeye"
-	profile.weaponGuidance = WeaponConfiguration.GUIDANCE.FLG
+	profile.weaponGuidance = WeaponConfiguration.GUIDANCE.IHG
 	profile.weaponFireMode = WeaponConfiguration.FIRE_MODE.BARRAGE
 	profile.rounds = 100
 	profile.loadingTime = 1.0
@@ -58,7 +58,7 @@ func setup_w_profile() -> WeaponConfiguration:
 	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.DELAYED
 	profile.projectile = bullet
 	var new_profile := AircraftConfiguration.new()
-	new_profile.acceleration = 64.0
+	new_profile.acceleration = 6400.0
 	new_profile.turnRate = 0.05
 	new_profile.maxTurnRate = 0.08
 	new_profile.max_speed = 1500.0
@@ -105,10 +105,11 @@ func find_ownerless(start_at: Node):
 
 func create_weapon_propfile():
 	var profile := setup_w_profile()
-	weapon_handler = setup_w_handler()
-#	weapon_handler2 = setup_w_handler(fighterList1["P1"])
+	weapon_handler = fighterList1["P0"].get_fire_control()
 	for f in fighterList1:
-		fighterList1[f].get_fire_control().profile = profile
+		var fc := fighterList1[f].get_fire_control() as WeaponHandler
+		fc.profile = profile
+		fc.target = launcher
 
 func set_ownership(start_at: Node, current_iter: Node = null):
 	if current_iter == null:
@@ -124,47 +125,42 @@ func print_ownerless():
 	for node in ownerless:
 		print(node.get_path())
 
-func test_afbcfg():
-	var new_cfg := preload("res://addons/Vehicular/configs/default_afbncfg.tres")
-	var old_cfg := preload("res://addons/Vehicular/configs/default_afbcfg.tres")
-	for i in range(0, 5):
-		var start_new := Time.get_ticks_usec()
-		var _a := new_cfg.get_area_accel(0.0, 2.176)
-		var end_new := Time.get_ticks_usec()
-		print("Integral sampling (new method): {t} usec(s)".format({"t": end_new - start_new}))
-	for i in range(0, 5):
-		var start_new := Time.get_ticks_usec()
-		var _a := old_cfg.get_area_accel(0.0, 2.176)
-		var end_new := Time.get_ticks_usec()
-		print("Integral sampling (old method): {t} usec(s)".format({"t": end_new - start_new}))
+var shutdown := false
+var cf: Future = Future.new()
 
-func test_afbcfg_2():
-	var new_cfg := preload("res://addons/Vehicular/configs/default_afbncfg.tres")
-	var start_new := Time.get_ticks_usec()
-	var _a := new_cfg.get_area_accel(0.0, 2.176)
-	var end_1 := Time.get_ticks_usec()
-	var _b := new_cfg.accel_graph.get_area_no_bake(0.0, 2.176, AdvancedCurve.AC_TRAPEZOID)
-	var end_2 := Time.get_ticks_usec()
-	print("Bake: " + str(end_1 - start_new))
-	print("On-the-fly: " + str(end_2 - end_1))
+func test_future_pool(host, list: Dictionary, from: int, to: int):
+	var last_usec := Time.get_ticks_usec()
+	while not host.shutdown:
+		var delta := get_physics_process_delta_time()
+		var curr_usec := Time.get_ticks_usec()
+		if curr_usec - last_usec < delta: continue
+		last_usec = curr_usec
+		for i in range(from, to):
+			var key: String = list.keys()[i]
+			var afb: NAFB_Standalone = list[key]
+			afb.state_automaton.poll(delta)
 
 func _ready():
+#	get_viewport().debanding = true
+	SettingsServer.set_main_viewport(get_viewport())
+	SettingsServer.current_graphics_preset = SettingsServer.GRAPHICS_HIGH
 #	var def_res := preload("res://addons/Vehicular/configs/stdafbn_turn.tres")
 #	print(rad2deg(def_res.get_area(0.0, 5.0)))
 	get_tree().use_font_oversampling = true
 	if AdvancedFighterBrain.USE_MULTITHREADS:
 		var swarm: ProcessorsSwarm = SingletonManager.fetch("ProcessorsSwarm")
 		var cluster := swarm.add_cluster("AFB_cluster", true, true)
-	get_viewport().usage = Viewport.USAGE_3D
-	get_viewport().fxaa = true
-	get_viewport().sharpen_intensity = 0.5
+#	get_viewport().usage = Viewport.USAGE_3D
 #	get_viewport().msaa = Viewport.MSAA_16X
+#	get_viewport().fxaa = true
+#	get_viewport().sharpen_intensity = 0.5
 	lastPos = squadron.global_transform.origin
 	light.directional_shadow_max_distance = 1000.0
 	initAll(squadron)
 	addAllFighters(squadron, fighterList1)
 	addAllFlag(squadron)
 	create_weapon_propfile()
+#	cf = InstancePool.queue_job(funcref(self, "test_future_pool"), [self, fighterList1, 0, squadron.member_list.size()])
 	pc_count()
 #	test_afbcfg()
 
@@ -174,7 +170,11 @@ func _exit_tree():
 #	print("Count: " + str(test_instance.count))
 #	test_instance.free()
 #	test_instance2.free()
-	pass
+	if not cf.is_legit():
+		return
+	while not cf.is_available():
+		yield(Engine.get_main_loop(), "idle_frame")
+	return
 
 func set_paths():
 	var p: PoolVector3Array =\
@@ -224,6 +224,7 @@ func addAllFlag(squad):
 		flagList[m] = flag.instance()
 		flagList[m].get_node("icon").fadeDistanceStart = 100
 		flagList[m].get_node("icon").fadeDistanceEnd = 180
+		flagList[m].visible = false
 		add_child(flagList[m])
 		flagList[m].owner = self
 		flagList[m].translation =\
@@ -251,15 +252,36 @@ func fire_stuff():
 	for f in fighterList1:
 		fighterList1[f].get_fire_control().fire_once()
 
+func graphics_switch():
+	var curr: int = SettingsServer.current_graphics_preset
+	var new_gp := 0
+	if curr == SettingsServer.GRAPHICS_LOWEST:
+		new_gp = SettingsServer.GRAPHICS_LOW
+	elif curr == SettingsServer.GRAPHICS_LOW:
+		new_gp = SettingsServer.GRAPHICS_MEDIUM
+	elif curr == SettingsServer.GRAPHICS_MEDIUM:
+		new_gp = SettingsServer.GRAPHICS_HIGH
+	elif curr == SettingsServer.GRAPHICS_HIGH:
+		new_gp = SettingsServer.GRAPHICS_HIGHEST
+	elif curr == SettingsServer.GRAPHICS_HIGHEST:
+		new_gp = SettingsServer.GRAPHICS_LOWEST
+	else:
+		return
+	SettingsServer.current_graphics_preset = new_gp
+#	print("Old preset: " + str(curr))
+#	print("New preset: " + str(new_gp))
+
 func _fire_test(_delta: float):
 	if Input.is_action_just_pressed("ui_select"):
-		fire_stuff()
+#		fire_stuff()
 #		set_ownership(LevelManager.template)
 #		var serialized := LevelManager.serialize_level(LevelManager.template)
 #		print(serialized)
 #		LevelManager.deserialize_level_debug(serialized)
 #		var full_package := LevelManager.level2package(LevelManager.template)
 #		LevelManager.set_level_defered(full_package)
+
+		graphics_switch()
 		pass
 
 #onready var org_size := Vector2(1920, 1080)
@@ -268,31 +290,9 @@ var borderless_fullscreen := false
 var normal_windows_size := Vector2.ZERO
 var normal_windows_pos  := Vector2.ZERO
 
-func _lead_test(_delta: float):
-	if Input.is_action_just_pressed("ui_accept"):
-#		var vec := PoolVector3Array([
-#			paths[0].global_transform.origin,
-#			paths[1].global_transform.origin,
-#			paths[2].global_transform.origin,
-#			paths[3].global_transform.origin
-#		])
-#		var first: VTOLFighterBrain = fighterList1[fighterList1.keys().front()]
-#		first.set_multides(vec)
-		borderless_fullscreen = not borderless_fullscreen
-		if borderless_fullscreen:
-			normal_windows_size = OS.window_size
-			normal_windows_pos  = OS.window_position
-		OS.window_borderless = borderless_fullscreen
-		OS.window_maximized = borderless_fullscreen
-		if not borderless_fullscreen:
-			OS.window_size = normal_windows_size
-			OS.window_position = normal_windows_pos
-
 func _process(delta):
 	loggit()
 	dT = delta
-	_fire_test(delta)
-	_lead_test(delta)
 
 var vg_save_path := "res://vg_graph.tres"
 var vg_res := Curve.new()
@@ -321,13 +321,32 @@ func velocity_graph():
 #		graph_plot()
 
 func _physics_process(_delta):
-	# _lead_test(delta)
 	pcalls_count += 1
 	velocity_graph()
 
 onready var di := $DebugInfo
 
+static func int_to_gp(gp: int) -> String:
+	var re := ""
+	match gp:
+		SettingsServer.GRAPHICS_CUSTOM:			re = "GRAPHICS_CUSTOM"
+		SettingsServer.GRAPHICS_LOWEST:			re = "GRAPHICS_LOWEST"
+		SettingsServer.GRAPHICS_LOW:			re = "GRAPHICS_LOW"
+		SettingsServer.GRAPHICS_MEDIUM:			re = "GRAPHICS_MEDIUM"
+		SettingsServer.GRAPHICS_HIGH:			re = "GRAPHICS_HIGH"
+		SettingsServer.GRAPHICS_HIGHEST:		re = "GRAPHICS_HIGHEST"
+	return re
+
+static func int_to_dp(dp: int) -> String:
+	var re := ""
+	match dp:
+		SettingsServer.WINDOWED:				re = "WINDOWED"
+		SettingsServer.FULLSCREEN:				re = "FULLSCREEN"
+		SettingsServer.BORDERLESS_FULLSCREEN:	re = "BORDERLESS_FULLSCREEN"
+	return re
+
 func loggit():
+	NodeDispatcher
 	var l_loc: Vector3
 	var fighter_loc: Vector3 = fighterList1["P0"].global_transform.origin
 	var angle := 0.0
@@ -335,6 +354,8 @@ func loggit():
 		l_loc = fighter_loc.direction_to(launcher.global_transform.origin)
 		var f_loc: Vector3 = -fighterList1["P0"].global_transform.basis.z
 		angle = f_loc.angle_to(l_loc)
+	var curr_gp: int = SettingsServer.current_graphics_preset
+	var curr_dp: int = SettingsServer.current_display_preset
 	di.table = {
 		"debug_build": str(OS.is_debug_build()),
 		"processor_name": OS.get_processor_name(),
@@ -343,11 +364,21 @@ func loggit():
 		"graphics_device_vendor": VisualServer.get_video_adapter_vendor(),
 		"memory_static_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)),
 		"memory_dynamic_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)),
+		"graphics_preset": int_to_gp(curr_gp),
+		"display_preset": int_to_dp(curr_dp),
+		"res_preset_raw": SettingsServer.current_resolution_preset,
+		"current_resolution": SettingsServer.rs_to_vec2(SettingsServer.current_resolution_preset),
+		"actual_resolution": get_viewport().size,
+		"window_size": OS.window_size,
+		"default_res": SettingsServer.rs_to_vec2(SettingsServer.RES_DEFAULT),
+		"ssaa": SettingsServer.get_graphics_setting(SettingsServer.SSAA_LEVEL),
+		"ips": Engine.iterations_per_second,
 		"delta": dT,
 		"is_moving_1": (fighterList1["P0"]).isMoving,
 		"is_moving_2": (fighterList1["P1"]).isMoving,
 		"physics_calls": physics_calls,
-		"borderless_fullscreen": borderless_fullscreen,
+		"fullscreen": OS.window_fullscreen,
+		"borderless_fullscreen": OS.window_borderless,
 		"angle": rad2deg(angle),
 		"forward": -fighterList1["P0"].global_transform.basis.z,
 #		"min_ray_delta": (fighterList1["P0"]).accbs.raw_sensor_data.length(),
@@ -366,7 +397,47 @@ func loggit():
 		"ssaa_scaling": ssaa_scaling,
 	}
 
+func db_1_handler(_event: InputEvent):
+	if Input.is_action_just_pressed("db_1"):
+		var curr: int = SettingsServer.current_display_preset
+		if curr == SettingsServer.WINDOWED:
+			curr = SettingsServer.FULLSCREEN
+		elif curr == SettingsServer.FULLSCREEN:
+			curr = SettingsServer.BORDERLESS_FULLSCREEN
+		else:
+			curr = SettingsServer.WINDOWED
+		SettingsServer.current_display_preset = curr
+
+#		borderless_fullscreen = not borderless_fullscreen
+#		if borderless_fullscreen:
+#			normal_windows_size = OS.window_size
+#			normal_windows_pos  = OS.window_position
+#		OS.window_fullscreen = borderless_fullscreen
+#		OS.window_borderless = borderless_fullscreen
+#		OS.window_maximized = borderless_fullscreen
+#		if not borderless_fullscreen:
+#			OS.window_size = normal_windows_size
+#			OS.window_position = normal_windows_pos
+
+func db_2_handler(_event: InputEvent):
+	if Input.is_action_just_pressed("db_2"):
+		graphics_switch()
+
+func db_3_handler(_event: InputEvent):
+	if Input.is_action_just_pressed("db_3"):
+		var curr_ssaa: float = SettingsServer.get_graphics_setting(SettingsServer.SSAA_LEVEL)
+		curr_ssaa = wrapf(curr_ssaa + 0.1, 0.7, 2.0)
+		SettingsServer.set_graphics_setting(SettingsServer.SSAA_LEVEL, curr_ssaa)
+
+func test_fire_handler(_event: InputEvent):
+	if Input.is_action_just_pressed("test_fire"):
+		fire_stuff()
+
 func _input(levent):
+	test_fire_handler(levent)
+	db_1_handler(levent)
+	db_2_handler(levent)
+	db_3_handler(levent)
 	if not levent.is_class("InputEventMouseButton"): return
 	if not levent.button_index == BUTTON_LEFT: return
 	if not levent.pressed: return
@@ -384,7 +455,7 @@ func _input(levent):
 		if result.has("position"):
 			intersection = result["position"]
 	if intersection != Vector3.ZERO and intersection != null:
-		var des: Vector3 = intersection + Vector3(0.0, 20.0, 0.0)
+		var des: Vector3 = intersection + Vector3(0.0, 10.0, 0.0)
 		var oldPos: Vector3 = fighterList1["P0"].global_transform.origin
 		mousePos = des
 		#--------------------------------------------------------

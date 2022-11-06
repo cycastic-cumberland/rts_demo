@@ -13,6 +13,11 @@ func test_advanced_curve_general():
 	# Expect old result
 	var bake_res_y2 := new_ac.get_area_no_bake(0.0, 17.0, AdvancedCurve.AC_SIMPSON)
 	var general_result := 107.6
+	assert_eq(new_ac.is_class("Object"), true, "Unexpected class result")
+	assert_eq(new_ac.is_class("Reference"), true, "Unexpected class result")
+	assert_eq(new_ac.is_class("Resource"), true, "Unexpected class result")
+	assert_eq(new_ac.is_class("Curve"), true, "Unexpected class result")
+	assert_eq(new_ac.is_class("Curve2D"), false, "Unexpected class result")
 	assert_eq(abs(bake_res_a - general_result) < 0.1, true, "Bake test A failed")
 	assert_eq(abs(bake_res_b - general_result) < 0.1, true, "Bake test B failed")
 	assert_eq(bake_res_x1, 0.0, "Bake test X1 failed")

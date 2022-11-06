@@ -1,5 +1,5 @@
 {
- "background_color": "ff262626",
+ "background_color": "ff000000",
  "config_file": "res://.gutconfig.json",
  "dirs": [
   "res://tests"
@@ -37,7 +37,7 @@
   "font_size": 15,
   "hide_result_tree": false,
   "hide_output_text": false,
-  "hide_settings": false,
+  "hide_settings": true,
   "use_colors": false
  }
 }
