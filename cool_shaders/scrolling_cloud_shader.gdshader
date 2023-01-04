@@ -14,6 +14,7 @@ uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
 
 uniform bool use_foam = true;
+uniform bool use_depth = true;
 uniform float foam_length : hint_range(0.001, 1.0) = 0.3;
 uniform vec4 foam_color : hint_color;
 uniform float depth_strength : hint_range(0.001, 500.0) = 1.0;
@@ -23,7 +24,12 @@ uniform highp float vdisp_flow_speed : hint_range(0, 10) = 1.0;
 uniform vec2 vdisp_flow_dir = vec2(1.0, 0.0);
 uniform sampler2D vertex_displacement : hint_albedo;
 uniform sampler2D vertex_flowmap : hint_albedo;
-uniform sampler2D albedo_noise : hint_albedo;
+uniform highp float albedo_strength : hint_range(0.00001, 200.0) = 1.0;
+uniform highp float albedo_downscale : hint_range(0.00001, 200.0) = 1.0;
+uniform sampler2D visibility_map;
+uniform highp float visibility_scale : hint_range(0.001, 10.0) = 1.0;
+
+varying float displacement_y;
 
 void vertex() {
 	UV=UV*uv1_scale.xy+uv1_offset.xy;
@@ -32,6 +38,7 @@ void vertex() {
 	uv_flow += (texture(vertex_flowmap, UV).r * 2.0) - 1.0;
 
 	float disp = (texture(vertex_displacement, uv_flow).r * vdisp_modifier) + vdisp_height;
+	displacement_y = disp;
 	VERTEX.y = disp;
 }
 
@@ -42,16 +49,23 @@ void fragment() {
 	depth =  clamp(depth, 0.0, 1.0);
 	vec2 base_uv = UV;
 	vec4 albedo_tex = texture(texture_albedo,base_uv);
-//	ALBEDO = albedo.rgb * albedo_tex.rgb * texture(albedo_noise, base_uv).rgb;
-//	ALBEDO *= vec3(depth);
-	vec3 main_col = albedo.rgb * albedo_tex.rgb * texture(albedo_noise, base_uv).rgb;
-	if (use_foam){
-		if (depth < foam_length) ALBEDO = mix(foam_color.xyz, main_col, depth / foam_length);
-		else ALBEDO = main_col * vec3(depth);
+//	vec3 main_col = albedo.rgb * albedo_tex.rgb * texture(albedo_noise, base_uv).rgb * albedo_strength;
+	vec3 main_col = albedo.rgb * albedo_tex.rgb * (vec3(displacement_y + albedo_strength) / albedo_downscale);
+	if (use_depth){
+		if (use_foam){
+			if (depth < foam_length) ALBEDO = mix(foam_color.xyz, main_col, depth / foam_length);
+			else ALBEDO = main_col * vec3(depth);
+		}
+		else {
+			 ALBEDO = main_col * vec3(depth);
+		}
 	}
 	else {
-		 ALBEDO = main_col * vec3(depth);
+		ALBEDO = main_col;
 	}
+	
+	ALPHA = albedo.a * albedo_tex.a * texture(visibility_map, base_uv).r * visibility_scale;
+	ALPHA = clamp(ALPHA, 0.0, 1.0);
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	SPECULAR = specular;

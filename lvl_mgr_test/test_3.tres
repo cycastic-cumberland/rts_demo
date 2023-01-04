@@ -13,6 +13,6 @@ singletons_list = [ {
 "path": "res://addons/Processors/processors_swarm.gd"
 }, {
 "is_oneshot": true,
-"name": "CombatServer",
-"path": "res://addons/EpicDogfight/singletons/CombatServer.gd"
+"name": "CombatServerGDS",
+"path": "res://addons/EpicDogfight/singletons/CombatServerGDS.gd"
 } ]

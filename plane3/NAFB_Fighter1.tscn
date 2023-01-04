@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://addons/Vehicular/nafb_standalone.gd" type="Script" id=1]
 [ext_resource path="res://addons/EpicDogfight/misc/WeaponHandler.gd" type="Script" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://plane2/mesh2/VF-17b.tscn" type="PackedScene" id=5]
 [ext_resource path="res://plane2/downward_exhaust.gd" type="Script" id=6]
 [ext_resource path="res://plane2/heat_haze_shader.shader" type="Shader" id=7]
+[ext_resource path="res://particles/PNG (Transparent)/smoke_07.png" type="Texture" id=8]
+[ext_resource path="res://plane3/exhaust.gd" type="Script" id=9]
 
 [sub_resource type="BoxShape" id=13]
 extents = Vector3( 3.17149, 1.28468, 7.53039 )
@@ -36,6 +38,53 @@ shader_param/strength = 0.001
 shader_param/speed = 20.0
 shader_param/margin = 0.383
 shader_param/noise_texture = ExtResource( 3 )
+
+[sub_resource type="Gradient" id=23]
+offsets = PoolRealArray( 0, 0.0627063, 0.554455, 1 )
+colors = PoolColorArray( 0.82, 0.82, 0.82, 1, 1, 1, 1, 1, 1, 1, 1, 0.966997, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=24]
+gradient = SubResource( 23 )
+width = 100
+
+[sub_resource type="Curve" id=18]
+_data = [ Vector2( 0, 0.155682 ), 0.0, 0.0, 0, 0, Vector2( 0.0858896, 0.279545 ), 0.776191, 0.776191, 0, 0, Vector2( 1, 1 ), 1.06506, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=19]
+width = 100
+curve = SubResource( 18 )
+
+[sub_resource type="ParticlesMaterial" id=20]
+render_priority = 1
+lifetime_randomness = 1.0
+direction = Vector3( 0, 0, 1 )
+spread = 2.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 100.0
+initial_velocity_random = 1.0
+damping = 20.0
+damping_random = 1.0
+angle = 720.0
+angle_random = 0.51
+scale = 40.0
+scale_random = 1.0
+scale_curve = SubResource( 19 )
+color = Color( 0.71, 0.71, 0.71, 1 )
+color_ramp = SubResource( 24 )
+
+[sub_resource type="SpatialMaterial" id=21]
+render_priority = 1
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 8 )
+
+[sub_resource type="QuadMesh" id=22]
+material = SubResource( 21 )
 
 [node name="AFB_Fighter1" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -72,6 +121,17 @@ transform = Transform( 0.5, 0, 0, 0, -7.43094e-08, -0.5, 0, 1.7, -2.18557e-08, 0
 mesh = SubResource( 16 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 17 )
+
+[node name="MainExhaust" type="Particles" parent="RollRoot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103813, 0, 12.6012 )
+visible = false
+cast_shadow = 0
+amount = 500
+visibility_aabb = AABB( -2500, -250, -2500, 5000, 500, 5000 )
+local_coords = false
+process_material = SubResource( 20 )
+draw_pass_1 = SubResource( 22 )
+script = ExtResource( 9 )
 
 [node name="Exhaust" type="Spatial" parent="RollRoot"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.8, -6 )

@@ -16,7 +16,7 @@ onready var dc = $DistanceCompensator
 
 #onready var squadron = $"Squadron-WildWeasel"
 onready var squadron = $"Squadron-Db40"
-onready var camera = $CameraController
+#onready var camera = $CameraController
 onready var light = $DirectionalLight
 
 onready var paths: Array = [
@@ -140,9 +140,60 @@ func test_future_pool(host, list: Dictionary, from: int, to: int):
 			var afb: NAFB_Standalone = list[key]
 			afb.state_automaton.poll(delta)
 
+class TestChip extends RCSChip:
+	
+	func _boot():
+		print("Hello World to: " + str(get_host().get_id()))
+		print("Fetched: ", Sentrience.combatant_get_combined_transform(get_host()))
+	pass
+
+var crid: RID
+var srid: RID
+
+var engine_debug_enabled := false
+var debug_threaded := false
+var debug_loop_count = 5000
+var debug_loop_stage = 0
+var rcs_test := preload("res://tests/test_rcs.gd")
+
+func gut_test():
+	if engine_debug_enabled:
+		for i in range(0, debug_loop_count):
+			var test_chip := Node.new()
+			test_chip.set_script(rcs_test)
+			add_child(test_chip)
+			test_chip.test_team_affiliation()
+			test_chip.test_general()
+			test_chip.queue_free()
+			debug_loop_stage += 1
+			if not debug_threaded:
+				yield(get_tree(), "idle_frame")
+
+var my_watcher
+
 func _ready():
+#	print(preload("res://test_team_rel.tres").relationship == RCSUnilateralTeamProfile.TeamAllies)
+#	for a in get_property_list():
+#		if not (a['usage'] & 8192):
+#			continue
+#		print(a)
+	my_watcher = Sentrience.memcontext_create()
+	Sentrience.set_active(true)
+	var chip := TestChip.new()
+	var combatant := Sentrience.combatant_create()
+	var simulation := Sentrience.simulation_create()
+	crid = combatant
+	srid = simulation
+	print(launcher.transform)
+	assert(Sentrience.combatant_assert(combatant))
+	Sentrience.simulation_set_active(simulation, true)
+	Sentrience.combatant_set_local_transform(combatant, launcher.transform)
+	print(Sentrience.combatant_get_local_transform(combatant))
+	Sentrience.combatant_bind_chip(combatant, chip, true)
+	Sentrience.combatant_set_simulation(combatant, simulation)
+	var id := combatant.get_id()
 #	get_viewport().debanding = true
-	SettingsServer.set_main_viewport(get_viewport())
+#	SettingsServer.set_main_viewport(get_viewport())
 	SettingsServer.current_graphics_preset = SettingsServer.GRAPHICS_HIGH
 #	var def_res := preload("res://addons/Vehicular/configs/stdafbn_turn.tres")
 #	print(rad2deg(def_res.get_area(0.0, 5.0)))
@@ -160,8 +211,16 @@ func _ready():
 	addAllFighters(squadron, fighterList1)
 	addAllFlag(squadron)
 	create_weapon_propfile()
-#	cf = InstancePool.queue_job(funcref(self, "test_future_pool"), [self, fighterList1, 0, squadron.member_list.size()])
 	pc_count()
+	Sentrience.memcontext_remove()
+	var thread = Thread.new()
+	if debug_threaded:
+		thread.start(self, "gut_test")
+	else: gut_test()
+	if debug_threaded:
+		while thread.is_alive():
+			yield(get_tree(), "idle_frame")
+		thread.wait_to_finish()
 #	test_afbcfg()
 
 func _exit_tree():
@@ -170,6 +229,17 @@ func _exit_tree():
 #	print("Count: " + str(test_instance.count))
 #	test_instance.free()
 #	test_instance2.free()
+	var trans := Sentrience.combatant_get_combined_transform(crid)
+	print(trans)
+	Sentrience.memcontext_flush(my_watcher)
+	Sentrience.memcontext_remove()
+#	Sentrience.flush_instances_pool()
+#	Sentrience.free_rid(crid)
+#	Sentrience.free_rid(srid)
+#	Sentrience.free_all_instances()
+#	var t1 := Sentrience.team_create()
+#	var t2 := Sentrience.team_create()
+#	var link := Sentrience.team_create_link(t1, t2)
 	if not cf.is_legit():
 		return
 	while not cf.is_available():
@@ -198,15 +268,15 @@ func addAllFighters(squad, fl):
 		fl[m].owner = self
 		fl[m].translation = squad.member_list[m].global_transform.origin
 		#---------------------------------------
-		fl[m]._vehicle_config.max_speed = 800.0
-		fl[m]._vehicle_config.acceleration = 8.0
+		fl[m]._vehicle_config.max_speed = 500.0
+		fl[m]._vehicle_config.acceleration = 4.0
 		fl[m]._vehicle_config.decceleration = -0.0
 		fl[m]._vehicle_config.slowingTime = 2.0
 #		fl[m]._vehicle_config.acceleration = 4.0
 #		fl[m]._vehicle_config.decceleration = -32.0
 #		fl[m]._vehicle_config.slowingTime = 0.405
-		fl[m]._vehicle_config.turnRate = 0.05
-		fl[m]._vehicle_config.maxTurnRate = 0.1
+		fl[m]._vehicle_config.turnRate = 0.03
+		fl[m]._vehicle_config.maxTurnRate = 0.7
 #		Utilities.TrialTools.try_call(fl[m], "update_states")
 		if m == "P0":
 			dc.set_target(fl[m])
@@ -248,9 +318,22 @@ func relocateAllFlag(squad):
 			flagList[m].translation =\
 				squad.member_list[m].global_transform.origin
 
+var is_firing := false
+var volley_turn := 1
+var delay_time := 0.02
+
 func fire_stuff():
+	if is_firing: return
+	is_firing = true
+	var volley_count := 0
 	for f in fighterList1:
 		fighterList1[f].get_fire_control().fire_once()
+		volley_count += 1
+		if volley_count >= volley_turn:
+			volley_count = 0
+			yield(Out.timer(delay_time), "timeout")
+			continue
+	is_firing = false
 
 func graphics_switch():
 	var curr: int = SettingsServer.current_graphics_preset
@@ -289,6 +372,44 @@ var ssaa_scaling := 1.0
 var borderless_fullscreen := false
 var normal_windows_size := Vector2.ZERO
 var normal_windows_pos  := Vector2.ZERO
+
+onready var mesh := $TestMesh
+onready var mesh2 := $TestMesh2
+
+func balls():
+	var pos: Vector3 = Vector3.ZERO
+#	var x_axis := 0.0
+#	var y_axis := 0.0
+#	var z_axis := 0.0
+	var x_axis := Vector3()
+	var y_axis := Vector3()
+	var z_axis := Vector3()
+	var general_basis: Basis
+	for f in fighterList1:
+		var fighter: Spatial = fighterList1[f]
+		pos += fighter.global_transform.origin
+		x_axis += fighter.global_transform.basis.x
+		y_axis += fighter.global_transform.basis.y
+		z_axis += fighter.global_transform.basis.z
+#		x_axis += fighter.global_transform.basis.get_euler().x
+#		y_axis += fighter.global_transform.basis.get_euler().y
+#		z_axis += fighter.global_transform.basis.get_euler().z
+	pos /= fighterList1.size()
+	x_axis = x_axis.normalized()
+	y_axis = y_axis.normalized()
+	z_axis = z_axis.normalized()
+	general_basis = Basis(x_axis, y_axis, z_axis)
+#	x_axis /= fighterList1.size();
+#	y_axis /= fighterList1.size();
+#	z_axis /= fighterList1.size();
+#	var general_quat := Quat(Vector3(x_axis, y_axis, z_axis))
+#	general_basis = Basis(general_quat)
+	var new_transform := Transform(general_basis, pos)
+	mesh.global_transform = new_transform
+	mesh2.global_transform = new_transform
+	mesh.scale = Vector3(5.0, 5.0, 5.0)
+	mesh2.scale = Vector3(5.0, 5.0, 5.0)
+	mesh2.global_translate(-mesh2.global_transform.basis.z * 50.0)
 
 func _process(delta):
 	loggit()
@@ -346,7 +467,12 @@ static func int_to_dp(dp: int) -> String:
 	return re
 
 func loggit():
-	NodeDispatcher
+	di.table["Sentrience instances"] = String(Sentrience.get_instances_count())
+	di.table["Sentrience memory usage"] = Sentrience.get_memory_usage_humanized()
+	di.table["Debug loop"] = String(debug_loop_stage) + "/" + String(debug_loop_count)
+	di.table["Static memory"] = String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX))
+	di.table["Dynamic memory"] = String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX))
+	return
 	var l_loc: Vector3
 	var fighter_loc: Vector3 = fighterList1["P0"].global_transform.origin
 	var angle := 0.0
@@ -362,12 +488,15 @@ func loggit():
 		"processor_count": OS.get_processor_count(),
 		"graphics_device_name": VisualServer.get_video_adapter_name(),
 		"graphics_device_vendor": VisualServer.get_video_adapter_vendor(),
-		"memory_static_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)),
-		"memory_dynamic_max": String().humanize_size(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)),
+		"memory_static_max": String().\
+			humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)),
+		"memory_dynamic_max": String().\
+			humanize_size(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)),
 		"graphics_preset": int_to_gp(curr_gp),
 		"display_preset": int_to_dp(curr_dp),
 		"res_preset_raw": SettingsServer.current_resolution_preset,
-		"current_resolution": SettingsServer.rs_to_vec2(SettingsServer.current_resolution_preset),
+		"current_resolution": SettingsServer\
+			.rs_to_vec2(SettingsServer.current_resolution_preset),
 		"actual_resolution": get_viewport().size,
 		"window_size": OS.window_size,
 		"default_res": SettingsServer.rs_to_vec2(SettingsServer.RES_DEFAULT),
@@ -391,7 +520,8 @@ func loggit():
 		"last_direction": dc.last_direction,
 		"accelaration":  dc.acceleration,
 		"max_accel":  dc.max_accel,
-		"turn_timer": (fighterList1["P0"] as NAFB_Standalone).pda.get_state_by_name("NAFBSS_Steer").turn_timer,
+		"turn_timer": (fighterList1["P0"] \
+			as NAFB_Standalone).pda.get_state_by_name("NAFBSS_Steer").turn_timer,
 #		"speed_loss": fighterList1["P0"].realSpeedLoss,
 		"missiles_left": weapon_handler.reserve,
 		"ssaa_scaling": ssaa_scaling,
@@ -425,7 +555,8 @@ func db_2_handler(_event: InputEvent):
 
 func db_3_handler(_event: InputEvent):
 	if Input.is_action_just_pressed("db_3"):
-		var curr_ssaa: float = SettingsServer.get_graphics_setting(SettingsServer.SSAA_LEVEL)
+		var curr_ssaa: float = \
+			SettingsServer.get_graphics_setting(SettingsServer.SSAA_LEVEL)
 		curr_ssaa = wrapf(curr_ssaa + 0.1, 0.7, 2.0)
 		SettingsServer.set_graphics_setting(SettingsServer.SSAA_LEVEL, curr_ssaa)
 
@@ -443,7 +574,7 @@ func _input(levent):
 	if not levent.pressed: return
 	var cam = get_viewport().get_camera()
 	var from: Vector3= cam.project_ray_origin(levent.position)
-	var to: Vector3 = from + cam.project_ray_normal(levent.position) * 10000
+	var to: Vector3 = from + cam.project_ray_normal(levent.position) * 1000000.0
 	var intersection: Vector3
 	if USE_PLANE_EQUATION:
 		var plane_equation := GeometryMf.pe_create_pc(0, 1, 0, 0)

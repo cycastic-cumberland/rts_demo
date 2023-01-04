@@ -24,9 +24,8 @@ script = ExtResource( 1 )
 explosion = NodePath("ForwardExplosion")
 aoe_collider = NodePath("DamageZone")
 warhead_collider = NodePath("WarheadCollider")
-base_damage = 20.0
 impact_speed_reduction = 0.01
-explosion_lifetime = 3.0
+explosion_lifetime = 5.0
 
 [node name="ForwardExplosion" parent="Warhead" instance=ExtResource( 2 )]
 

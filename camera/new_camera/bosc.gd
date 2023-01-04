@@ -5,6 +5,7 @@ extends Spatial
 class_name BoudedOvertheShoulderCamera
 
 const QUAD_CIRCLE := (PI / 2.0)
+const ZOOM_SNAPPING := 0.1
 
 # Scene references
 onready var yaw			:= $Yaw
@@ -17,12 +18,19 @@ onready var camera		:= $Yaw/Mover/Pitch/SpringArm/Camera
 export(int, "Standard", "Interpolated") var camera_type := 0
 export(int, "Mouse", "Joystick") var axis_input_trigger := 0
 export(int, "Keyboard", "Joystick") var translation_input_trigger := 0
+export(Curve) var zoom_to_spped: Curve = null
 export(float, -90.0, 90.0, 0.1) var max_pitch := 90.0
 export(float, -90.0, 90.0, 0.1) var min_pitch := 0.0
 export(float, 0.1, 20.0, 0.1) var yaw_speed := 1.0
 export(float, 0.1, 20.0, 0.1) var pitch_speed := 1.0
-export(float, 0.0, 2000.0, 0.1) var zoom_speed := 100.0
-export(float, 0.1, 500.0, 0.1) var min_zoom := 10.0
+export(float, 10.0, 500.0, .1) var zoom_step := 100.0
+export(float, 0.001, 0.995, 0.001) var zoom_lerp_ration := 0.9
+export(float, 0.1, 10000.0, 0.1) var min_zoom := 10.0 \
+	setget set_min_zoom
+export(float, 10.0, 10000.0, 0.1) var max_zoom := 100.0 \
+	setget set_max_zoom
+export(float, 10.0, 10000.0, 0.1) var default_zoom := 100.0 \
+	setget set_default_zoom
 export(float, 0.1, 8192.0, 0.1) var render_distance := 100.0 \
 	setget set_render_distance
 export(float, 1.0, 179.0, 0.1) var fov := 70.0 \
@@ -31,8 +39,7 @@ export(float, 0.01, 1.0, 0.01) var accelaration_diminishment := 0.5
 export(float, 10.0, 1000.0, 0.1) var camera_panning_speed := 100.0
 export(float, 0.1, 1000.0, 0.1) var camera_translation_speed := 1.0
 export(float, 10.0, 800.0, 0.1) var camera_swiveling_speed := 50.0
-export(float, 10.0, 10000.0, 0.1) var camera_extension := 100.0 \
-	setget set_camera_extension
+
 export(float, 0.01, 5.0, 0.01) var translation_minimum_step := 0.5
 export(float, 0.01, 10.0, 0.01) var zoom_minimum_step := 1.0
 
@@ -40,6 +47,7 @@ export(Vector2) var starting_rotation		:= Vector2.ZERO
 export(Vector3) var starting_location		:= Vector3.ZERO
 
 export(bool)	var translation_enabled		:= true
+export(bool)	var zoom_enabled			:= true
 export(String)	var input_panning			:= "camera_pan"
 export(String)	var input_rotating			:= "camera_rotate"
 export(String)	var input_zoom_in			:= "camera_zoom_in"
@@ -59,13 +67,17 @@ var translation_modifier := 1.0
 
 var max_iterated_zoom := 0.0
 var current_zoom := 0.0
+var target_zoom := 0.0
 var zoom_timer := 0.0
 var zoom_modifier := 1.0
+var speed_modifier := 1.0
 
 # Boilerplate
 func _ready():
 	is_ready = true
-	set_camera_extension(camera_extension)
+	set_min_zoom(min_zoom)
+	set_max_zoom(max_zoom)
+	set_default_zoom(default_zoom)
 	set_render_distance(render_distance)
 	set_fov(fov)
 	# -------------------------------------
@@ -75,9 +87,22 @@ func _ready():
 	pitch.rotation.x = clamp(deg2rad(starting_rotation.y), lower, upper)
 	mover.rotation.y = deg2rad(starting_rotation.x)
 
-func set_camera_extension(ex: float):
-	camera_extension = ex
-	if is_ready: spring_arm.spring_length = camera_extension
+func set_min_zoom(ex: float):
+	min_zoom = min(ex, max_zoom - 0.1)
+	if is_ready: zoom2speed_handler()
+
+func set_max_zoom(ex: float):
+	max_zoom = ex
+	if is_ready: zoom2speed_handler()
+#	if is_ready: spring_arm.spring_length = max_zoom
+
+func set_default_zoom(ex: float):
+	default_zoom = ex
+	current_zoom = ex
+	target_zoom  = ex
+	if is_ready:
+		spring_arm.spring_length = default_zoom
+		zoom2speed_handler()
 
 func set_fov(new_fov: float):
 	fov = new_fov
@@ -98,7 +123,9 @@ func _input(event):
 		zoom_mod -= 1.0
 	if Input.is_action_pressed(input_zoom_out):
 		zoom_mod += 1.0
-	if zoom_mod != 0.0: zoom_handler(zoom_mod, get_physics_process_delta_time())
+	# if zoom_mod != 0.0: zoom_handler(zoom_mod, get_physics_process_delta_time())
+	target_zoom += zoom_mod * zoom_step
+	target_zoom = clamp(target_zoom, min_zoom, max_zoom)
 
 # Events handler
 func mouse_movement_handler(event: InputEvent):
@@ -120,22 +147,12 @@ func pan_handler():
 func pan_camera(_axis: Vector2):
 	pass
 
-func zoom_handler(dir: float, delta: float):
-	zoom_timer = clamp(zoom_timer - delta, 0.0, zoom_minimum_step)
-	if current_zoom != 0.0:
-		var change := smoothstep(0.0, max_iterated_zoom, zoom_timer / zoom_minimum_step)
-		if current_zoom < 0.0: current_zoom = -change
-		else: current_zoom = change
-		current_zoom = clamp(current_zoom, 0.0, INF)
-	elif dir == 0.0: return
-	else:
-		current_zoom = dir * zoom_modifier * zoom_speed
-		max_iterated_zoom = current_zoom
-	if current_zoom <= 0.001 and current_zoom >= -0.001:
-		zoom_timer = zoom_minimum_step
-		current_zoom = 0.0
-		return
-	spring_arm.spring_length = (clamp(spring_arm.spring_length + current_zoom, min_zoom, camera_extension))
+func zoom2speed_handler():
+	if zoom_to_spped == null: return
+	var curve_idx: float = spring_arm.spring_length
+	curve_idx = clamp(curve_idx, min_zoom, max_zoom)
+	curve_idx = (curve_idx - min_zoom) / (max_zoom - min_zoom)
+	speed_modifier = zoom_to_spped.interpolate_baked(curve_idx)
 
 func rotate_camera(axis: Vector2):
 	var delta := get_process_delta_time()
@@ -150,7 +167,7 @@ func rotate_camera(axis: Vector2):
 	# pitch.rotate_x(p_amount * delta)
 	mover.rotate_y(y_amount * delta * yaw_speed)
 
-func translate_camera(delta: float):
+func interpolated_translation(delta: float):
 	if current_translation == translation_queue and current_translation == Vector2.ZERO:
 		translation_timer = clamp(translation_timer - (translation_minimum_step * accelaration_diminishment * delta), 0.0, accelaration_diminishment)
 		return
@@ -169,15 +186,15 @@ func translate_camera(delta: float):
 	var cardinal_fwd := Vector3.FORWARD
 	var angle_to := cardinal_fwd.signed_angle_to(fwd_vec, Vector3.UP)
 	var composited_vector := Vector3(-current_translation.x, 0.0, current_translation.y).rotated(Vector3.UP, angle_to - QUAD_CIRCLE)
-	composited_vector *= camera_translation_speed
+	composited_vector *= camera_translation_speed * speed_modifier
 	mover.global_translate(composited_vector)
 
-func standard_translation(delta: float):
+func standard_translation(_delta: float):
 	var fwd_vec:  Vector3 = -mover.global_transform.basis.z
 	var cardinal_fwd := Vector3.FORWARD
 	var angle_to := cardinal_fwd.signed_angle_to(fwd_vec, Vector3.UP)
 	var composited_vector := Vector3(-translation_queue.x, 0.0, translation_queue.y).normalized().rotated(Vector3.UP, angle_to - QUAD_CIRCLE)
-	composited_vector *= camera_translation_speed
+	composited_vector *= camera_translation_speed * speed_modifier
 	mover.global_translate(composited_vector)
 	translation_queue = Vector2.ZERO
 
@@ -197,13 +214,31 @@ func movement_detection():
 		1:
 			pass
 		_: return
-	translation_queue += movement
+	translation_queue += movement.normalized()
 
 func central_logic(delta: float):
-#	translate_camera(delta)
-	standard_translation(delta)
+	if camera_type == 0:
+		standard_translation(delta)
+	elif camera_type == 1:
+		interpolated_translation(delta)
+
+func zoom_tweening(_delta: float):
+	var zoom_delta := abs(current_zoom - target_zoom)
+	if zoom_delta < ZOOM_SNAPPING:
+		current_zoom = target_zoom
+		return
+	# var dir := -1.0
+	# if current_zoom < target_zoom:
+		# dir = 1.0
+	current_zoom = lerp(current_zoom, target_zoom, zoom_lerp_ration)
+	spring_arm.spring_length = current_zoom
+	zoom2speed_handler()
+
+# func _process(delta):
+# 	zoom_tweening(delta)
 
 func _physics_process(delta):
 	if translation_enabled: movement_detection()
 	central_logic(delta)
-	zoom_handler(0.0, delta)
+	# zoom_handler(0.0, delta)
+	zoom_tweening(delta)

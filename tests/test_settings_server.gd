@@ -16,9 +16,10 @@ func test_preset_res():
 	assert_eq(SettingsServer.rs_to_vec2(SettingsServer.RES_2560_1440)	== Vector2(2560, 1440), true, "Unexpected resolution")
 	assert_eq(SettingsServer.rs_to_vec2(SettingsServer.RES_3840_2160)	== Vector2(3840, 2160), true, "Unexpected resolution")
 	assert_eq(SettingsServer.rs_to_vec2(SettingsServer.RES_4096_2160)	== Vector2(4096, 2160), true, "Unexpected resolution")
+	assert_eq(SettingsServer.rs_to_vec2(SettingsServer.RES_69420_69420)	== Vector2(69420, 69420), true, "Unexpected resolution")
 
 func test_settings_server():
-	SettingsServer.set_main_viewport(get_viewport())
+#	SettingsServer.set_main_viewport(get_viewport())
 	var ssaa := 1.5
 	var screen_count := OS.get_screen_count()
 	var curr_screen := OS.current_screen

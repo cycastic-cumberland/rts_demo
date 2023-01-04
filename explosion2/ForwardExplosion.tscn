@@ -5,11 +5,12 @@
 [ext_resource path="res://explosion2/meshes/CyCone.mesh" type="ArrayMesh" id=3]
 
 [sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0, 0.65641, 1 )
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+offsets = PoolRealArray( 0, 0.0693069, 0.138614, 0.719472, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.27451, 1, 1, 1, 0.27451, 1, 1, 1, 0 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
+width = 100
 
 [sub_resource type="Image" id=9]
 data = {
@@ -30,6 +31,7 @@ size = Vector2( 2048, 1 )
 _data = [ Vector2( 0, 0 ), 0.0, 4.03245, 0, 0, Vector2( 0.087156, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.963303, 0.759091 ), -0.965501, -0.965501, 0, 0, Vector2( 1, 0 ), -2.93144, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=6]
+width = 100
 curve = SubResource( 5 )
 
 [sub_resource type="ParticlesMaterial" id=7]

@@ -195,9 +195,9 @@ _global_script_classes=[ {
 "path": "res://addons/Processors/instruments/combat_instrument.gd"
 }, {
 "base": "Node",
-"class": "CombatServer",
+"class": "CombatServerGDS",
 "language": "GDScript",
-"path": "res://addons/EpicDogfight/singletons/CombatServer.gd"
+"path": "res://addons/EpicDogfight/singletons/CombatServerGDS.gd"
 }, {
 "base": "KinematicBody",
 "class": "Combatant",
@@ -612,7 +612,7 @@ _global_script_class_icons={
 "CombatComputer": "",
 "CombatEdict": "",
 "CombatInstrument": "",
-"CombatServer": "",
+"CombatServerGDS": "",
 "Combatant": "",
 "CombatantConfiguration": "",
 "CombatantController": "",
@@ -693,9 +693,11 @@ _global_script_class_icons={
 [application]
 
 config/name="RTS_test"
+config/ignore_project_settings_override=true
 run/main_scene="res://lvl_mgr_test/load_mitigator.tscn"
 boot_splash/bg_color=Color( 0.156863, 0.164706, 0.211765, 1 )
 config/icon="res://icon.png"
+config/load_pack_to_memfs=true
 
 [autoload]
 
@@ -710,13 +712,9 @@ window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep_height"
 
-[editor]
-
-main_run_args="--verbose"
-
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/EpicDogfight/plugin.cfg", "res://addons/GameFramework/plugin.cfg", "res://addons/Processors/plugin.cfg", "res://addons/Trail/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/gut/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/GameFramework/plugin.cfg", "res://addons/Processors/plugin.cfg", "res://addons/behavior_tree/plugin.cfg", "res://addons/gut/plugin.cfg" )
 
 [game]
 
@@ -829,4 +827,5 @@ threads/thread_model=2
 threads/thread_safe_bvh=true
 quality/directional_shadow/size=8192
 gles3/shaders/shader_compilation_mode=2
+quality/voxel_cone_tracing/high_quality=true
 environment/default_environment="res://default_env.tres"
