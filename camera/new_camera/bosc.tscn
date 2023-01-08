@@ -16,3 +16,4 @@ collision_mask = 8
 margin = 0.1
 
 [node name="Camera" type="Camera" parent="Yaw/Mover/Pitch/SpringArm"]
+doppler_tracking = 2

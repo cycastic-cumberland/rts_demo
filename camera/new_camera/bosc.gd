@@ -31,7 +31,7 @@ export(float, 10.0, 10000.0, 0.1) var max_zoom := 100.0 \
 	setget set_max_zoom
 export(float, 10.0, 10000.0, 0.1) var default_zoom := 100.0 \
 	setget set_default_zoom
-export(float, 0.1, 8192.0, 0.1) var render_distance := 100.0 \
+export(float, 0.1, 32768.0, 0.1) var render_distance := 100.0 \
 	setget set_render_distance
 export(float, 1.0, 179.0, 0.1) var fov := 70.0 \
 	setget set_fov

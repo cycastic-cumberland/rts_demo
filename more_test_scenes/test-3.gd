@@ -44,25 +44,30 @@ var dT := 0.0
 var cfg_path := "C:/Users/cycastic/Documents/testies_save.tres"
 
 func setup_w_profile() -> WeaponConfiguration:
-	var profile := WeaponConfiguration.new()
-	profile.weapon_name = "Hawkeye"
-	profile.weaponGuidance = WeaponConfiguration.GUIDANCE.IHG
-	profile.weaponFireMode = WeaponConfiguration.FIRE_MODE.BARRAGE
-	profile.rounds = 100
-	profile.loadingTime = 1.0
-	profile.seekingAngle = deg2rad(30.0)
-	profile.travelSpeed = 3000.0
-	profile.travelTime = 5.0
-	profile.homingRange = 1000.0
-	profile.proximity = 100.0
-	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.DELAYED
+#	var profile := WeaponConfiguration.new()
+#	profile.weapon_name = "Hawkeye"
+#	profile.weaponGuidance = WeaponConfiguration.GUIDANCE.IHG
+#	profile.weaponFireMode = WeaponConfiguration.FIRE_MODE.BARRAGE
+#	profile.rounds = 100
+#	profile.loadingTime = 1.0
+#	profile.weaponArmTime = 0.8
+#	profile.seekingAngle = deg2rad(40.0)
+#	profile.travelSpeed = 3000.0
+#	profile.travelTime = 5.0
+#	profile.homingRange = 2000.0
+#	profile.proximity = 100.0
+#	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.DELAYED
+#	profile.projectile = bullet
+	var profile: WeaponConfiguration = preload("res://addons/EpicDogfight" + \
+		"/profiles/default_weapon_config.tres").duplicate()
 	profile.projectile = bullet
-	var new_profile := AircraftConfiguration.new()
-	new_profile.acceleration = 6400.0
-	new_profile.turnRate = 0.05
-	new_profile.maxTurnRate = 0.08
-	new_profile.max_speed = 1500.0
-	profile.dvConfig = new_profile
+#	var new_profile := AircraftConfiguration.new()
+#	new_profile.climbRate = 300.0
+#	new_profile.acceleration = 6400.0
+#	new_profile.turnRate = 0.05
+#	new_profile.maxTurnRate = 0.08
+#	new_profile.max_speed = 1500.0
+#	profile.dvConfig = new_profile
 	return profile
 
 func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
@@ -206,7 +211,6 @@ func _ready():
 #	get_viewport().fxaa = true
 #	get_viewport().sharpen_intensity = 0.5
 	lastPos = squadron.global_transform.origin
-	light.directional_shadow_max_distance = 1000.0
 	initAll(squadron)
 	addAllFighters(squadron, fighterList1)
 	addAllFlag(squadron)
@@ -415,35 +419,8 @@ func _process(delta):
 	loggit()
 	dT = delta
 
-var vg_save_path := "res://vg_graph.tres"
-var vg_res := Curve.new()
-var vg_timer := 0.0
-var vg_interval := 0.25
-var vg_started := false
-
-
-func graph_plot():
-	var seconds := vg_interval
-	var f = (fighterList1["P0"])
-	while f.isMoving:
-		yield(get_tree(), "physics_frame")
-		vg_timer += SingletonManager.fetch("UtilsSettings").fixed_delta
-		if vg_timer >= seconds:
-			seconds += vg_interval
-			vg_res.add_point(Vector2(vg_timer, f.currentSpeed))
-	# Save now
-	vg_res.add_point(Vector2(vg_timer, 0.0))
-	ResourceSaver.save(vg_save_path, vg_res)
-
-func velocity_graph():
-	if not vg_started and (fighterList1["P0"]).isMoving:
-		vg_started = true
-		vg_res.max_value = 3000.0
-#		graph_plot()
-
 func _physics_process(_delta):
 	pcalls_count += 1
-	velocity_graph()
 
 onready var di := $DebugInfo
 
@@ -564,6 +541,8 @@ func test_fire_handler(_event: InputEvent):
 	if Input.is_action_just_pressed("test_fire"):
 		fire_stuff()
 
+const FORMATION_ELEVATION := 300.0
+
 func _input(levent):
 	test_fire_handler(levent)
 	db_1_handler(levent)
@@ -573,9 +552,9 @@ func _input(levent):
 	if not levent.button_index == BUTTON_LEFT: return
 	if not levent.pressed: return
 	var cam = get_viewport().get_camera()
-	var from: Vector3= cam.project_ray_origin(levent.position)
+	var from: Vector3 = cam.project_ray_origin(levent.position)
 	var to: Vector3 = from + cam.project_ray_normal(levent.position) * 1000000.0
-	var intersection: Vector3
+	var intersection := Vector3.ZERO
 	if USE_PLANE_EQUATION:
 		var plane_equation := GeometryMf.pe_create_pc(0, 1, 0, 0)
 		var line_equation := GeometryMf.le_create_v(from, to)
@@ -585,8 +564,8 @@ func _input(levent):
 		var result: Dictionary = space_state.intersect_ray(from, to)
 		if result.has("position"):
 			intersection = result["position"]
-	if intersection != Vector3.ZERO and intersection != null:
-		var des: Vector3 = intersection + Vector3(0.0, 10.0, 0.0)
+	if intersection != Vector3.ZERO:
+		var des: Vector3 = intersection + Vector3(0.0, FORMATION_ELEVATION, 0.0)
 		var oldPos: Vector3 = fighterList1["P0"].global_transform.origin
 		mousePos = des
 		#--------------------------------------------------------

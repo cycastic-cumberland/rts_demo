@@ -131,6 +131,7 @@ particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 albedo_texture = ExtResource( 2 )
+async_mode = 1
 
 [sub_resource type="Curve" id=10]
 max_value = 100.0

@@ -1,7 +1,7 @@
 // NOTE: Shader automatically converted from Godot Engine 3.5.stable's SpatialMaterial.
 
 shader_type spatial;
-render_mode async_visible,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx, unshaded;
+render_mode async_visible,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
 uniform vec4 albedo : hint_color;
 uniform sampler2D texture_albedo : hint_albedo;
 uniform float specular;
@@ -27,18 +27,22 @@ uniform sampler2D vertex_flowmap : hint_albedo;
 uniform highp float albedo_strength : hint_range(0.00001, 200.0) = 1.0;
 uniform highp float albedo_downscale : hint_range(0.00001, 200.0) = 1.0;
 uniform sampler2D visibility_map;
-uniform highp float visibility_scale : hint_range(0.001, 10.0) = 1.0;
+uniform float visibility_progress : hint_range(0, 1) = 0.0;
 
 varying float displacement_y;
-
+varying float visibility;
 void vertex() {
 	UV=UV*uv1_scale.xy+uv1_offset.xy;
 	vec2 uv_flow = UV;
 	uv_flow += (vdisp_flow_speed * TIME) * normalize(vdisp_flow_dir);
 	uv_flow += (texture(vertex_flowmap, UV).r * 2.0) - 1.0;
 
+	visibility = texture(visibility_map, UV).r;
+	visibility -= (visibility_progress - 0.5);
+	visibility = round(visibility);
+
 	float disp = (texture(vertex_displacement, uv_flow).r * vdisp_modifier) + vdisp_height;
-	displacement_y = disp;
+	displacement_y = disp * clamp(visibility, 0.0, 1.0);
 	VERTEX.y = disp;
 }
 
@@ -63,8 +67,7 @@ void fragment() {
 	else {
 		ALBEDO = main_col;
 	}
-	
-	ALPHA = albedo.a * albedo_tex.a * texture(visibility_map, base_uv).r * visibility_scale;
+	ALPHA = albedo.a * albedo_tex.a * visibility;
 	ALPHA = clamp(ALPHA, 0.0, 1.0);
 	METALLIC = metallic;
 	ROUGHNESS = roughness;

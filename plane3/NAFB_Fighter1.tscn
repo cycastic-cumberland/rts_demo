@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://addons/Vehicular/nafb_standalone.gd" type="Script" id=1]
 [ext_resource path="res://addons/EpicDogfight/misc/WeaponHandler.gd" type="Script" id=2]
@@ -9,6 +9,107 @@
 [ext_resource path="res://plane2/heat_haze_shader.shader" type="Shader" id=7]
 [ext_resource path="res://particles/PNG (Transparent)/smoke_07.png" type="Texture" id=8]
 [ext_resource path="res://plane3/exhaust.gd" type="Script" id=9]
+[ext_resource path="res://plane2/smoke_ex.tres" type="Texture" id=10]
+[ext_resource path="res://plane3/wiggle_anim.gd" type="Script" id=11]
+
+[sub_resource type="Animation" id=26]
+resource_name = "Idle Wiggle"
+length = 16.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("ElevRoot/RollRoot/WigglePoint:translation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.5, -3.88, 1.77043, -1.1, -8.53043, 1, 2.98957, -2.81648, -1, 11.8965, 0.9, -3.94352, -1.03756, -0.9, -7.16244, 0.8737, 5.50956, 0, -0.980202, 8.1008, 0.719798, -6.2992, -2.66912, -0.780202, -2.19008, 0.56552, 3.56992, 0.895075, -0.380202, 1.44572, 0.786536, -5.75427, 2.23174, -0.628467, -9.97094, 0.850313, 2.98906, 0, -0.449687, 2.3408, 0.340776, -9.1792 ),
+"times": PoolRealArray( 0, 2, 4, 6, 8, 10, 12.1, 14, 16 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("ElevRoot/RollRoot/WigglePoint:translation:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -2.05229, -0.25, 0, 0.25, 0, 0.697544, -0.25, 0, 0.25, 0, -2.08405, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, -1.22607, -0.25, 0, 0.25, 0, -1.52134, -0.25, 0, 0.25, 0, 0.840946, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 2, 4, 6, 8, 10, 12.1, 14, 16 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("ElevRoot/RollRoot/WigglePoint:rotation_degrees:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11.5, 12.1, 13, 13.5, 14, 14.7, 15.5, 16 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("ElevRoot/RollRoot/WigglePoint:rotation_degrees:z")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.3, -24.2328, 10.111, -0.6, -24.0242, 0.7, 17.254, 5.67818, -0.25, 0, 0.25, 0, -11.898, -0.6, 28.9434, 0.6, -7.17502, 8.39095, -0.25, 0, 0.25, 0, 3.43999, -0.5, -27.6728, 0.530973, 18.7652, 4.62575, -0.25, 0, 0.25, 0, 0, -0.269027, 32.5248, 0.25, 0, -7.982, -0.25, 0, 0.25, 0, -2.749, -0.25, 0, 0.25, 0, -5.905, -0.25, 0, 0.25, 0, 0.908001, -0.25, 0, 0.25, 0, 4.629, -0.25, 0, 0.25, 0, 8.505, -0.25, 0, 0.25, 0, 6.06, -0.25, 0, 0.25, 0, -12.012, -0.25, 0, 0.25, 0, -4.071, -0.25, 0, 0.25, 0, 4.595, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11.5, 12.1, 13, 13.5, 14, 14.7, 15.5, 16 )
+}
+
+[sub_resource type="Animation" id=27]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("ElevRoot/RollRoot/WigglePoint:transform")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 ) ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("ElevRoot/RollRoot/WigglePoint:translation:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 4.3903, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("ElevRoot/RollRoot/WigglePoint:translation:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( -3.63715, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("ElevRoot/RollRoot/WigglePoint:rotation_degrees:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("ElevRoot/RollRoot/WigglePoint:rotation_degrees:z")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 10.111, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
 [sub_resource type="BoxShape" id=13]
 extents = Vector3( 3.17149, 1.28468, 7.53039 )
@@ -39,38 +140,41 @@ shader_param/speed = 20.0
 shader_param/margin = 0.383
 shader_param/noise_texture = ExtResource( 3 )
 
-[sub_resource type="Gradient" id=23]
-offsets = PoolRealArray( 0, 0.0627063, 0.554455, 1 )
-colors = PoolColorArray( 0.82, 0.82, 0.82, 1, 1, 1, 1, 1, 1, 1, 1, 0.966997, 0, 0, 0, 0 )
+[sub_resource type="Gradient" id=24]
+offsets = PoolRealArray( 0, 0.0918919, 0.124324, 0.471947, 1 )
+colors = PoolColorArray( 0.270588, 0.262745, 0.262745, 0, 0.109804, 0.105882, 0.105882, 0.407843, 0.85, 0.85, 0.85, 1, 0.84, 0.84, 0.84, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=24]
-gradient = SubResource( 23 )
+[sub_resource type="GradientTexture" id=25]
+gradient = SubResource( 24 )
+width = 10
+
+[sub_resource type="Curve" id=10]
+max_value = 100.0
+_data = [ Vector2( 0, 1 ), 0.0, 105.329, 0, 0, Vector2( 1, 100 ), 433.961, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
 width = 100
+curve = SubResource( 10 )
 
-[sub_resource type="Curve" id=18]
-_data = [ Vector2( 0, 0.155682 ), 0.0, 0.0, 0, 0, Vector2( 0.0858896, 0.279545 ), 0.776191, 0.776191, 0, 0, Vector2( 1, 1 ), 1.06506, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=19]
-width = 100
-curve = SubResource( 18 )
-
-[sub_resource type="ParticlesMaterial" id=20]
+[sub_resource type="ParticlesMaterial" id=23]
 render_priority = 1
-lifetime_randomness = 1.0
 direction = Vector3( 0, 0, 1 )
 spread = 2.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 100.0
-initial_velocity_random = 1.0
-damping = 20.0
+gravity = Vector3( 0, -3, 0 )
+initial_velocity = 80.0
+initial_velocity_random = 0.3
+angular_velocity = 100.0
+angular_velocity_random = 1.0
+damping = 5.0
 damping_random = 1.0
+damping_curve = SubResource( 11 )
 angle = 720.0
-angle_random = 0.51
-scale = 40.0
+angle_random = 1.0
+scale = 60.0
 scale_random = 1.0
-scale_curve = SubResource( 19 )
-color = Color( 0.71, 0.71, 0.71, 1 )
-color_ramp = SubResource( 24 )
+scale_curve = ExtResource( 10 )
+color = Color( 1, 1, 1, 0.0588235 )
+color_ramp = SubResource( 25 )
 
 [sub_resource type="SpatialMaterial" id=21]
 render_priority = 1
@@ -88,72 +192,84 @@ material = SubResource( 21 )
 
 [node name="AFB_Fighter1" type="KinematicBody"]
 script = ExtResource( 1 )
-fire_control = NodePath("MissileFireControl")
+fire_control = NodePath("ElevRoot/RollRoot/WigglePoint/MissileFireControl")
+roll_point = NodePath("ElevRoot/RollRoot")
+elevation_point = NodePath("ElevRoot")
+translation_point = NodePath("ElevRoot/RollRoot/WigglePoint")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+"anims/Idle Wiggle" = SubResource( 26 )
+anims/RESET = SubResource( 27 )
+script = ExtResource( 11 )
+aircraft = NodePath("..")
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 13 )
 disabled = true
 
-[node name="MissileFireControl" type="Spatial" parent="."]
-script = ExtResource( 2 )
+[node name="ElevRoot" type="Spatial" parent="."]
 
-[node name="Hardpoint1" type="Spatial" parent="MissileFireControl"]
+[node name="RollRoot" type="Spatial" parent="ElevRoot"]
+
+[node name="WigglePoint" type="Spatial" parent="ElevRoot/RollRoot"]
+transform = Transform( 0.984469, -0.175556, 0, 0.175556, 0.984469, 0, 0, 0, 1, 4.3903, -3.63715, 0 )
+
+[node name="MissileFireControl" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint"]
+script = ExtResource( 2 )
+handling_fighter = NodePath("../../../..")
+
+[node name="Hardpoint1" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint/MissileFireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.04153, -6.19751 )
 
-[node name="Hardpoint2" type="Spatial" parent="MissileFireControl"]
+[node name="Hardpoint2" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint/MissileFireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.15629, -1.04153, 2.01451 )
 
-[node name="Hardpoint3" type="Spatial" parent="MissileFireControl"]
+[node name="Hardpoint3" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint/MissileFireControl"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.18981, -1.04153, 2.01451 )
 
-[node name="RollRoot" type="Spatial" parent="."]
+[node name="cobra" parent="ElevRoot/RollRoot/WigglePoint" instance=ExtResource( 5 )]
 
-[node name="cobra" parent="RollRoot" instance=ExtResource( 5 )]
-
-[node name="Heat1" type="MeshInstance" parent="RollRoot"]
+[node name="Heat1" type="MeshInstance" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 0.5, 0, 0, 0, -7.43094e-08, -0.5, 0, 1.7, -2.18557e-08, -0.788059, -0.0693539, 9.77641 )
 mesh = SubResource( 14 )
-skeleton = NodePath("../..")
+skeleton = NodePath("../../../..")
 material/0 = SubResource( 15 )
 
-[node name="Heat2" type="MeshInstance" parent="RollRoot"]
+[node name="Heat2" type="MeshInstance" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 0.5, 0, 0, 0, -7.43094e-08, -0.5, 0, 1.7, -2.18557e-08, 0.81, 0, 9.776 )
 mesh = SubResource( 16 )
-skeleton = NodePath("../..")
+skeleton = NodePath("../../../..")
 material/0 = SubResource( 17 )
 
-[node name="MainExhaust" type="Particles" parent="RollRoot"]
+[node name="MainExhaust" type="Particles" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103813, 0, 12.6012 )
-visible = false
 cast_shadow = 0
-amount = 500
+amount = 2000
+lifetime = 10.0
 visibility_aabb = AABB( -2500, -250, -2500, 5000, 500, 5000 )
 local_coords = false
-process_material = SubResource( 20 )
+process_material = SubResource( 23 )
 draw_pass_1 = SubResource( 22 )
 script = ExtResource( 9 )
+start_exhaustion_at = 0.8
 
-[node name="Exhaust" type="Spatial" parent="RollRoot"]
+[node name="Exhaust" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.8, -6 )
 script = ExtResource( 6 )
 
-[node name="JetPlume" parent="RollRoot/Exhaust" instance=ExtResource( 4 )]
+[node name="JetPlume" parent="ElevRoot/RollRoot/WigglePoint/Exhaust" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, -1.06581e-14, 0, 1.06581e-14, 1, 0, 0, 0 )
 
-[node name="Exhaust2" type="Spatial" parent="RollRoot"]
+[node name="Exhaust2" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, 1.3, -0.7, 2.5 )
 script = ExtResource( 6 )
 
-[node name="JetPlume2" parent="RollRoot/Exhaust2" instance=ExtResource( 4 )]
+[node name="JetPlume2" parent="ElevRoot/RollRoot/WigglePoint/Exhaust2" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 
-[node name="Exhaust3" type="Spatial" parent="RollRoot"]
+[node name="Exhaust3" type="Spatial" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, -1.3, -0.7, 2.5 )
 script = ExtResource( 6 )
 
-[node name="JetPlume3" parent="RollRoot/Exhaust3" instance=ExtResource( 4 )]
+[node name="JetPlume3" parent="ElevRoot/RollRoot/WigglePoint/Exhaust3" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="RollRoot"]
-intensity = 0.36
-extents = Vector3( 80, 40, 80 )

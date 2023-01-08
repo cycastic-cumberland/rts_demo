@@ -25,7 +25,7 @@ damping = 100.0
 damping_random = 1.0
 scale = 1.7
 scale_random = 0.73
-color = Color( 0.984314, 0.356863, 0.254902, 0.0784314 )
+color = Color( 0.984314, 0.356863, 0.254902, 0.117647 )
 color_ramp = SubResource( 2 )
 
 [sub_resource type="Shader" id=4]
