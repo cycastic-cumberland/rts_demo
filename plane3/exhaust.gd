@@ -5,8 +5,8 @@ onready var fighter: AirCombatant = owner
 export(float, 0.01, 0.9, 0.01) var start_exhaustion_at := 0.5
 
 func _ready():
-	set_process(visible)
 	emitting = false
+	set_process(visible)
 
 func _process(_delta):
 	if Engine.get_idle_frames() % 5 == 0:

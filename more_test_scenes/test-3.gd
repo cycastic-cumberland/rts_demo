@@ -176,12 +176,33 @@ func gut_test():
 
 var my_watcher
 
+func print_this():
+	for i in range(1000):
+		for j in range(1000):
+			pass
+	print("HELLO WORLD")
+	return 3
+
+func test_stuff():
+	var cq := ExecutionLoop.new()
+	cq.assign_instance(self)
+	var a = "print_this"
+	var epoch := Time.get_ticks_usec()
+	cq.call_dispatched(a)
+	var end := Time.get_ticks_usec()
+	print("Dispatch time: " + str(end - epoch))
+	cq.sync()
+	var finish := Time.get_ticks_usec()
+	print("Sync time: " + str(finish - end))
+	return 0
+
 func _ready():
 #	print(preload("res://test_team_rel.tres").relationship == RCSUnilateralTeamProfile.TeamAllies)
 #	for a in get_property_list():
 #		if not (a['usage'] & 8192):
 #			continue
 #		print(a)
+	test_stuff()
 	my_watcher = Sentrience.memcontext_create()
 	Sentrience.set_active(true)
 	var chip := TestChip.new()
@@ -449,6 +470,9 @@ func loggit():
 	di.table["Debug loop"] = String(debug_loop_stage) + "/" + String(debug_loop_count)
 	di.table["Static memory"] = String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX))
 	di.table["Dynamic memory"] = String().humanize_size(Performance.get_monitor(Performance.MEMORY_STATIC_MAX))
+	di.table["Quality"] = String(SettingsServer.current_graphics_preset)
+	di.table["Window mode"] = String(SettingsServer.current_display_preset)
+	di.table["SSAA level"] = String(SettingsServer.get_graphics_setting(SettingsServer.SSAA_LEVEL))
 	return
 	var l_loc: Vector3
 	var fighter_loc: Vector3 = fighterList1["P0"].global_transform.origin

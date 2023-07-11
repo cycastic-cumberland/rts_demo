@@ -243,6 +243,7 @@ material/0 = SubResource( 17 )
 
 [node name="MainExhaust" type="Particles" parent="ElevRoot/RollRoot/WigglePoint"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.103813, 0, 12.6012 )
+visible = false
 cast_shadow = 0
 amount = 2000
 lifetime = 10.0

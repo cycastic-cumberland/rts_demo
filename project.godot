@@ -712,6 +712,7 @@ Out="*res://addons/utils/singletons/error_handler.gd"
 IRM="*res://addons/utils/singletons/inref_manager.gd"
 LevelManager="*res://addons/GameFramework/level_manager.gd"
 GdsScheduler="*res://addons/utils/singletons/gds_scheduler.gd"
+NafbSwarmController="*res://addons/Vehicular/nafb_swarm_controller.gd"
 
 [display]
 
@@ -835,10 +836,6 @@ threads/thread_safe_bvh=true
 quality/directional_shadow/size=8192
 quality/shadow_atlas/size=8192
 quality/shadow_atlas/cubemap_size=2048
-quality/shadow_atlas/quadrant_0_subdiv=2
-quality/shadow_atlas/quadrant_1_subdiv=3
-quality/shadow_atlas/quadrant_2_subdiv=4
-quality/shadow_atlas/quadrant_3_subdiv=5
 gles3/shaders/shader_compilation_mode=2
 quality/voxel_cone_tracing/high_quality=true
 environment/default_environment="res://default_env.tres"
