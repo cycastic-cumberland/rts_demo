@@ -1,3 +1,3 @@
 [submodule "addons"]
 	path = addons
-	url = https://cycastic@dev.azure.com/cycastic/godot-core-addons-1/_git/godot-core-addons-1
+	url = https://github.com/UwUOwOUmUOmO/rts_demo_addons_kit.git
