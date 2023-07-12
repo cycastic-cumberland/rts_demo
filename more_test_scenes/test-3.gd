@@ -6,7 +6,7 @@ class_name PlaygroundNo3
 export(PackedScene) var fighter = preload("res://plane2/VTOLFighter2.tscn")
 export(PackedScene) var flag = preload("res://plane_icon/destination.tscn")
 export(PackedScene) var bullet = preload("res://plane2/test_bullet.tscn")
-export(AudioStream) var musik = preload("res://musik/ricardo_theme1.mp3")
+export(AudioStream) var musik = null
 export(bool) var playMusik = false
 
 const USE_PLANE_EQUATION = true
@@ -44,30 +44,8 @@ var dT := 0.0
 var cfg_path := "C:/Users/cycastic/Documents/testies_save.tres"
 
 func setup_w_profile() -> WeaponConfiguration:
-#	var profile := WeaponConfiguration.new()
-#	profile.weapon_name = "Hawkeye"
-#	profile.weaponGuidance = WeaponConfiguration.GUIDANCE.IHG
-#	profile.weaponFireMode = WeaponConfiguration.FIRE_MODE.BARRAGE
-#	profile.rounds = 100
-#	profile.loadingTime = 1.0
-#	profile.weaponArmTime = 0.8
-#	profile.seekingAngle = deg2rad(40.0)
-#	profile.travelSpeed = 3000.0
-#	profile.travelTime = 5.0
-#	profile.homingRange = 2000.0
-#	profile.proximity = 100.0
-#	profile.weaponProximityMode = WeaponConfiguration.PROXIMITY_MODE.DELAYED
-#	profile.projectile = bullet
 	var profile: WeaponConfiguration = preload("res://addons/EpicDogfight" + \
 		"/profiles/default_weapon_config.tres").duplicate()
-	profile.projectile = bullet
-#	var new_profile := AircraftConfiguration.new()
-#	new_profile.climbRate = 300.0
-#	new_profile.acceleration = 6400.0
-#	new_profile.turnRate = 0.05
-#	new_profile.maxTurnRate = 0.08
-#	new_profile.max_speed = 1500.0
-#	profile.dvConfig = new_profile
 	return profile
 
 func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
@@ -75,18 +53,11 @@ func setup_w_handler(curr_fighter = fighterList1["P0"]) -> WeaponHandler:
 	LevelManager.template.add_peripheral(handler)
 	var profile
 	profile = setup_w_profile()
-#	profile = WeaponConfiguration.new()
-#	profile = profile.load_res(cfg_path, profile)
 	handler.profile = profile
 	handler.compensation = 0.7
-#	handler.pgm_target = Vector3(-153, 0, 231)
 	var f: Spatial = curr_fighter
 	handler.carrier = f
-#	handler.set_hardpoints([f.get_node("Hardpoints/Hardpoint1"),\
-#							f.get_node("Hardpoints/Hardpoint2"),\
-#							f.get_node("Hardpoints/Hardpoint3")])
 	handler.target = launcher
-#	handler.set_hardpoints(1, [launcher])
 #	handler.target = f
 	return handler
 
@@ -197,11 +168,6 @@ func test_stuff():
 	return 0
 
 func _ready():
-#	print(preload("res://test_team_rel.tres").relationship == RCSUnilateralTeamProfile.TeamAllies)
-#	for a in get_property_list():
-#		if not (a['usage'] & 8192):
-#			continue
-#		print(a)
 	test_stuff()
 	my_watcher = Sentrience.memcontext_create()
 	Sentrience.set_active(true)
@@ -218,19 +184,11 @@ func _ready():
 	Sentrience.combatant_bind_chip(combatant, chip, true)
 	Sentrience.combatant_set_simulation(combatant, simulation)
 	var id := combatant.get_id()
-#	get_viewport().debanding = true
-#	SettingsServer.set_main_viewport(get_viewport())
 	SettingsServer.current_graphics_preset = SettingsServer.GRAPHICS_HIGH
-#	var def_res := preload("res://addons/Vehicular/configs/stdafbn_turn.tres")
-#	print(rad2deg(def_res.get_area(0.0, 5.0)))
 	get_tree().use_font_oversampling = true
 	if AdvancedFighterBrain.USE_MULTITHREADS:
 		var swarm: ProcessorsSwarm = SingletonManager.fetch("ProcessorsSwarm")
 		var cluster := swarm.add_cluster("AFB_cluster", true, true)
-#	get_viewport().usage = Viewport.USAGE_3D
-#	get_viewport().msaa = Viewport.MSAA_16X
-#	get_viewport().fxaa = true
-#	get_viewport().sharpen_intensity = 0.5
 	lastPos = squadron.global_transform.origin
 	initAll(squadron)
 	addAllFighters(squadron, fighterList1)
