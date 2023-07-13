@@ -4,16 +4,15 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.s3tc.stex"
 path.etc2="res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.etc2.stex"
-path.etc="res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.etc.stex"
 metadata={
-"imported_formats": [ "bptc", "s3tc", "etc2", "etc" ],
+"imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://SunA2/sphereNoisex5.png"
-dest_files=[ "res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.s3tc.stex", "res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.etc2.stex", "res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.etc.stex" ]
+dest_files=[ "res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.s3tc.stex", "res://.import/sphereNoisex5.png-85a54581ab917447a067d7bf0bcc7cbd.etc2.stex" ]
 
 [params]
 
